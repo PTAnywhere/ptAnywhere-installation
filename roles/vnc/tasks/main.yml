@@ -64,19 +64,19 @@
 
 
 # vncserver -kill :0
-- name: Kill existing VNC server in port 5900
-  shell: "vncserver -kill :0"
-  tags:
-    - vnc
-    - server
-    - kill
+# - name: Kill existing VNC server in port 5900
+#   shell: "vncserver -kill :0"
+#   tags:
+#     - vnc
+#     - server
+#     - kill
 
 
-# vncserver :0
-# access: vnc://192.168.34.2:5900
-- name: Init VNC server
-  shell: "vncserver :0"
-  tags:
-    - vnc
-    - server
-    - start
+# # vncserver :0
+# # access: vnc://192.168.34.2:5900
+# - name: Init VNC server
+#   shell: "vncserver :0"
+#   tags:
+#     - vnc
+#     - server
+#     - start

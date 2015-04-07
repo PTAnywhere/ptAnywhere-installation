@@ -17,3 +17,12 @@
   tags:
     - vnc
 
+- name: PacketTracer installation
+  hosts: all
+  sudo: true
+  roles:
+    - packetTracer
+  tags:
+    - packettracer
+
+
