@@ -1,0 +1,52 @@
+---
+
+
+# In Ubuntu Trusty this is necessary
+# dpkg --add-architecture i386
+
+
+- name: Update packages
+  apt: update_cache=yes
+  when: ansible_os_family=="Debian"
+  environment: proxy_env
+
+
+- name: Bulk dependency installation
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  when: ansible_os_family == "Debian"
+  environment: proxy_env
+  with_items:
+    - "libgtk2.0-0:i386"
+    - "libnss3-1d:i386"
+    - "libnspr4-0d:i386"
+    - "lib32nss-mdns"
+    - "libxml2:i386"
+    - "libxslt1.1:i386"
+    - "libqtwebkit-dev:i386"
+    - "libssl-dev:i386"
+  tags:
+    - apt
+    - installation
+    - install
+    - dependency
+    - debian
+
+
+# PT requires a X server
+- name: Install Desktop environment for PacketTracer
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  when: ansible_os_family == "Debian"
+  environment: proxy_env
+  with_items:
+    - "xubuntu-desktop"
+  tags:
+    - apt
+    - installation
+    - install
+    - x
+    - server
+    - debian

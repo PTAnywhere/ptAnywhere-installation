@@ -1,0 +1,4 @@
+#!/bin/sh
+
+xrdb $HOME/.Xresources
+startkde &

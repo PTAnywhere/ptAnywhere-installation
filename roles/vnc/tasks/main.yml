@@ -1,0 +1,82 @@
+---
+
+# Check this: https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-14-04
+
+- name: Install VNC server
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  when: ansible_os_family == "Debian"
+  environment: proxy_env
+  with_items:
+    - tightvncserver
+    - kubuntu-desktop
+  tags:
+    - apt
+    - installation
+    - install
+    - vnc
+    - server
+    - kde
+    - debian
+
+
+- name: Create user folder
+  file:
+    path: "/home/vagrant/.ICEauthority"
+    state: file
+    owner: vagrant
+    group: vagrant
+  tags:
+    - user
+    - folder
+    - kde
+
+
+- name: Create user folder
+  file:
+    path: "/home/vagrant/.vnc"
+    state: directory
+    owner: vagrant
+  tags:
+    - user
+    - folder
+    - vnc
+    - server
+    - configuration
+    - folder
+
+
+# vncserver :0
+- name: Copy VNC configuration file
+  copy:
+    src: "xstartup"
+    dest: "/home/vagrant/.vnc/xstartup"
+    owner: vagrant
+    group: vagrant
+    mode: "u=rwx,g=rx,o=r"
+  tags:
+    - installation
+    - install
+    - vnc
+    - configuration
+    - file
+
+
+# vncserver -kill :0
+- name: Kill existing VNC server in port 5900
+  shell: "vncserver -kill :0"
+  tags:
+    - vnc
+    - server
+    - kill
+
+
+# vncserver :0
+# access: vnc://192.168.34.2:5900
+- name: Init VNC server
+  shell: "vncserver :0"
+  tags:
+    - vnc
+    - server
+    - start

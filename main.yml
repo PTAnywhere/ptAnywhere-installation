@@ -4,7 +4,16 @@
   hosts: all
   sudo: true
   roles:
-    - common
+    - dependency
   tags:
     - pre
     - common
+
+- name: VNC management
+  hosts: all
+  sudo: true
+  roles:
+    - vnc
+  tags:
+    - vnc
+

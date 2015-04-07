@@ -1,8 +1,0 @@
----
-
-- name: Update packages
-  apt: update_cache=yes
-  when: ansible_os_family=="Debian"
-  environment: proxy_env
-
-- debug: msg="OK"
