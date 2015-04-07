@@ -1,0 +1,10 @@
+# Inventory file
+
+machine ansible_ssh_host=localhost
+
+[pt_backend]
+machine
+
+
+[local:children]
+pt_backend

@@ -1,0 +1,10 @@
+---
+
+- name: Common tasks in all servers
+  hosts: all
+  sudo: true
+  roles:
+    - common
+  tags:
+    - pre
+    - common
