@@ -1,0 +1,87 @@
+---
+
+- name: Copy weblab daemon configuration file
+  copy: src="{{upstart_file}}" dest="{{daemon_conf_file}}" # owner=foo group=foo mode=0644
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - copy
+    - configuration
+    - packetTracer
+
+
+- name: Replace the user which executes the upstart daemon
+  replace: dest="{{daemon_conf_file}}" regexp="\{\{execuser\}\}" replace="{{remote_user}}" # backup=yes
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - replace
+    - configuration
+    - packetTracer
+    - instance
+
+
+- name: Replace the path of the PacketTracer instance
+  replace: dest="{{daemon_conf_file}}" regexp="\{\{pt_exec\}\}" replace="{{ pt_path }}/{{ pt_bin_relative_path }}" # backup=yes
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - replace
+    - configuration
+    - packetTracer
+    - instance
+
+
+
+- name: Replace the user which executes the upstart daemon
+  replace: dest="{{daemon_conf_file}}" regexp="\{\{execuser\}\}" replace="{{remote_user}}" # backup=yes
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - replace
+    - configuration
+    - packetTracer
+    - instance
+
+
+- name: Specify the log file for the Upstart job
+  replace: dest="{{daemon_conf_file}}" regexp="\{\{log_file\}\}" replace="{{ upstart_log }}"
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - replace
+    - configuration
+    - packetTracer
+    - instance
+
+
+- name: Create log file if it does not exist
+  file: path="{{upstart_log}}" state="touch" owner="{{remote_user}}"
+  sudo: True
+  tags:
+    - upstart
+    - daemon
+    - log
+    - file
+    - create
+    - configuration
+    - packetTracer
+    - instance
+
+
+
+# TODO Consider using Systemd
+# Apparently, even Ubuntu plans to stop using Upstream
+- name: Reload configuration for daemons
+  shell: "initctl reload-configuration"
+  sudo: True
+  tags:
+    - initctl
+    - reload
+    - configuration
+    - daemon

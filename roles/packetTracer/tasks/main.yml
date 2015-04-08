@@ -1,25 +1,6 @@
 ---
 
-- name: Create PT folder
-  file:
-    path: "{{ installation_path }}"
-    state: directory
-    owner: vagrant
-  tags:
-    - user
-    - folder
-    - packettracer
+# file: main.yml
 
-
-# vncserver :0
-- name: Copy PT data
-  copy:
-    src:  "{{ original_path }}"
-    dest: "{{ installation_path }}"
-    owner: vagrant
-    group: vagrant
-  tags:
-    - packettracer
-    - installation
-    - install
-    - copy
+- include: install.yml
+- include: upstart.yml

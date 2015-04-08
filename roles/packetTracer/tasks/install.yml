@@ -1,0 +1,40 @@
+---
+
+- name: Create PT folder
+  file:
+    path: "{{ installation_path }}"
+    state: directory
+    owner: vagrant
+  tags:
+    - user
+    - folder
+    - packettracer
+
+
+- name: Copy PT data
+  copy:
+    src:  "{{ original_path }}"
+    dest: "{{ installation_path }}"
+    owner: vagrant
+    group: vagrant
+    force: no
+  tags:
+    - packettracer
+    - installation
+    - install
+    - copy
+
+
+- name: Ensure that is executable
+  file:
+    src:  "{{ original_path }}"
+    dest: "{{ installation_path }}/{{ pt_bin_relative_path }}"
+    mode: "u=rwx,g=rx,o=r"
+    state: file
+  tags:
+    - packettracer
+    - installation
+    - install
+    - chmod
+    - permissions
+    - executable

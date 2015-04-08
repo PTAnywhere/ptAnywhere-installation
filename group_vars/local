@@ -1,5 +1,10 @@
 ---
 
+# Connection settings for a vagrant box
+remote_user: "vagrant" # By default this is "vagrant," since that is what most public boxes are made as.
+home_dir: "/home/{{remote_user}}"
+
+
 proxy_env:
   http_proxy: http://wwwcache.open.ac.uk:80
   https_proxy: http://wwwcache.open.ac.uk:80
