@@ -2,8 +2,20 @@
 
 # Check this: https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-14-04
 
+# Needed at least the first time after creating vagrant machine.
+- name: Update packages
+  sudo: True
+  apt: update_cache=yes
+  when: ansible_os_family == "Debian"
+  environment: proxy_env
+  tags:
+    - apt
+    - update
+    - debian
+
+
 - name: Install VNC server
-  sudo: true
+  sudo: True
   apt:
     pkg: "{{ item }}"
     state: present
@@ -28,8 +40,8 @@
   file:
     path: "{{home_dir}}/.ICEauthority"
     state: touch
-    owner: vagrant
-    group: vagrant
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
   tags:
     - user
     - folder
@@ -40,7 +52,7 @@
   file:
     path: "{{home_dir}}/.vnc"
     state: directory
-    owner: vagrant
+    owner: "{{remote_user}}"
   tags:
     - user
     - folder
@@ -51,13 +63,55 @@
 
 
 # Otherwise it will prompt for a new password the first time (and ansible will get stuck).
-- name: "Copy VNC passwd file (WARNING: generate other file with vncpasswd before using in production site!)"
+# - name: "Copy VNC passwd file (WARNING: generate other file with vncpasswd before using in production site!)"
+#   copy:
+#     src: "passwd"
+#     dest: "{{home_dir}}/.vnc/passwd"
+#     owner: "{{remote_user}}"
+#     group: "{{remote_user}}"
+#     mode: "u=rw"
+#   tags:
+#     - copy
+#     - installation
+#     - install
+#     - vnc
+#     - passwd
+#     - file
+
+
+- name: Installing expect command to avoid user interaction in VNC passwd generation
+  sudo: True
+  apt:
+    pkg: expect
+    state: present
+  when: ansible_os_family == "Debian"
+  environment: proxy_env
+  tags:
+    - apt
+    - installation
+    - install
+    - expect
+    - debian
+
+
+- name: Copy script created to generate passwd file without requiring user input
   copy:
-    src: "passwd"
-    dest: "{{home_dir}}/.vnc/passwd"
-    owner: vagrant
-    group: vagrant
-    mode: "u=rw"
+    src: "vncpasswd.sh"
+    dest: "{{pass_script}}"
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
+    mode: "u=rwx,g=rx,o=r"
+  tags:
+    - copy
+    - installation
+    - install
+    - vnc
+    - passwd
+    - file
+
+
+- name: "Create a VNC passwd file (WARNING: change the password before using it in a production site!)"
+  command: "{{pass_script}} {{vnc_pass}}"
   tags:
     - copy
     - installation
@@ -71,8 +125,8 @@
   copy:
     src: "xstartup"
     dest: "{{home_dir}}/.vnc/xstartup"
-    owner: vagrant
-    group: vagrant
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
     mode: "u=rwx,g=rx,o=r"
   tags:
     - copy
@@ -88,8 +142,8 @@
   copy:
     src: "vncserver"
     dest: "{{init_script}}"
-    owner: vagrant
-    group: vagrant
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
     mode: "u=rwx,g=rx,o=rx"
   tags:
     - copy

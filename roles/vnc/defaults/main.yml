@@ -1,3 +1,7 @@
 ---
 
 init_script: "/etc/init.d/vncserver"
+pass_script: "/tmp/vncpasswd.sh"
+
+# WARNING: change this password before using it in any real production site!
+vnc_pass: password
