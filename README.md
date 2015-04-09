@@ -27,12 +27,8 @@ However, this project also provides a file to create a local virtual machine whe
 
 To create this VM:
  1. Install [Vagrant](https://www.vagrantup.com/) in the host.
-
  2. Go to this project's root directory and type ```vagrant up```
- 
- 3. Run the Ansible playbook with the following parameters:
-```
-    ansible-playbook -vvvv -u vagrant -l 'local' -i machine --private-key .vagrant/machines/default/virtualbox/private_key main.yml
-```
+ 3. Run the Ansible playbook with the following parameters: <br />
+ ```ansible-playbook -vvvv -u vagrant -l 'local' -i machine --private-key .vagrant/machines/default/virtualbox/private_key main.yml```
  4. Access to this machine (if you want) with ```vagrant ssh```
  5. See the PacketTracer instance running by connecting with a VNC client to: vnc://192.168.34.2:5901
