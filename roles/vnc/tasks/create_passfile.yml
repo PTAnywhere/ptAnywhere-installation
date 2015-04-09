@@ -1,0 +1,47 @@
+---
+
+
+- name: Install the expect command to avoid user interaction in VNC passwd generation
+  sudo: True
+  apt:
+    pkg: expect
+    state: present
+  when: ansible_os_family == "Debian"
+  environment: proxy_env
+  tags:
+    - apt
+    - installation
+    - install
+    - expect
+    - debian
+
+
+- name: Copy script created to generate passwd file without requiring user input
+  copy:
+    src: "vncpasswd.sh"
+    dest: "{{pass_script}}"
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
+    mode: "u=rwx,g=rx,o=r"
+  tags:
+    - copy
+    - installation
+    - install
+    - vnc
+    - passwd
+    - file
+
+
+- name: "Create a VNC passwd file (WARNING: change the password before using it in a production site!)"
+  command: "{{pass_script}} {{vnc_pass}}"
+  tags:
+    - copy
+    - installation
+    - install
+    - vnc
+    - passwd
+    - file
+
+
+# TODO As this should be a one-use only thing, we could remove the {{pass_script}}
+#    (and probably uninstall 'expect' command if it was not previously installed).

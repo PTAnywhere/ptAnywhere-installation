@@ -1,0 +1,67 @@
+---
+
+# Check this: https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-14-04
+
+
+- name: Install VNC server
+  sudo: True
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  when: ansible_os_family == "Debian"
+  environment: proxy_env
+  with_items:
+    - tightvncserver
+    - xfce4
+    - xfce4-goodies
+    #- kubuntu-desktop # Uncomment if we want to use KDE instead of xfce...
+  tags:
+    - apt
+    - installation
+    - install
+    - vnc
+    - server
+    - kde
+    - debian
+
+
+- name: Create ICEauthority file
+  file:
+    path: "{{home_dir}}/.ICEauthority"
+    state: touch
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
+  tags:
+    - user
+    - folder
+    - kde
+
+
+- name: Create user folder
+  file:
+    path: "{{home_dir}}/.vnc"
+    state: directory
+    owner: "{{remote_user}}"
+  tags:
+    - user
+    - folder
+    - vnc
+    - server
+    - configuration
+    - folder
+
+
+- name: Copy VNC configuration file
+  copy:
+    src: "xstartup"
+    dest: "{{home_dir}}/.vnc/xstartup"
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
+    mode: "u=rwx,g=rx,o=r"
+  tags:
+    - copy
+    - installation
+    - install
+    - vnc
+    - configuration
+    - file

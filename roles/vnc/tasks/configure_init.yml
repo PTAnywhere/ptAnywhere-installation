@@ -1,0 +1,50 @@
+---
+
+
+- name: Create init script
+  sudo: True
+  copy:
+    src: "vncserver"
+    dest: "{{init_script}}"
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
+    mode: "u=rwx,g=rx,o=rx"
+  tags:
+    - copy
+    - vnc
+    - init
+    - script
+    - file
+
+
+- name: Replace variables in init script
+  sudo: True
+  replace: dest="{{init_script}}" regexp="\[\[{{item.name}}\]\]" replace="{{item.value}}"
+  with_items:
+    - { name: 'execuser', value: '{{remote_user}}' }
+    - { name: 'display_number', value: '{{x_display}}' }
+  notify:
+    - restart vncserver
+  tags:
+    - replace
+    - vnc
+    - init
+    - script
+    - file
+
+
+- name: Make it run in the bootup
+  sudo: True
+  command: "update-rc.d vncserver defaults"
+  tags:
+    - configure
+    - vnc
+    - init
+    - script
+    - file
+
+
+# Mini documentation.
+#  * Start: vncserver :1
+#  * Stop: vncserver -kill :1
+#  * Access: vnc://192.168.34.2:5901
