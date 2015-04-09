@@ -31,4 +31,4 @@ To create this VM:
  3. Run the Ansible playbook with the following parameters: <br />
  ```ansible-playbook -vvvv -u vagrant -l 'local' -i machine --private-key .vagrant/machines/default/virtualbox/private_key main.yml```
  4. Access to this machine (if you want) with ```vagrant ssh```
- 5. See the PacketTracer instance running by connecting with a VNC client to: vnc://192.168.34.2:5901
+ 5. See the PacketTracer instance running by connecting with a VNC client to: __vnc://192.168.34.2:5901__
