@@ -13,17 +13,6 @@
     - i386
 
 
-- name: Update packages
-  sudo: True
-  apt: update_cache=yes
-  when: ansible_os_family == "Debian"
-  environment: proxy_env
-  tags:
-    - apt
-    - update
-    - debian
-
-
 - name: Bulk dependency installation
   sudo: True
   apt:

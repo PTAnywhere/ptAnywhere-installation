@@ -1,6 +1,6 @@
 ---
 
-- name: Check if folder existed
+- name: Check if folder exists
   stat: path="{{ installation_path }}"
   register: instp
   tags:
