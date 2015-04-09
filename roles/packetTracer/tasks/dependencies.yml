@@ -5,7 +5,7 @@
 - name: Enable access to i386 architecture's packages
   sudo: True
   command: "dpkg --add-architecture i386"
-  when: ansible_os_family=="Debian"
+  when: ansible_os_family == "Debian"
   tags:
     - apt
     - dpkg
@@ -14,12 +14,18 @@
 
 
 - name: Update packages
+  sudo: True
   apt: update_cache=yes
-  when: ansible_os_family=="Debian"
+  when: ansible_os_family == "Debian"
   environment: proxy_env
+  tags:
+    - apt
+    - update
+    - debian
 
 
 - name: Bulk dependency installation
+  sudo: True
   apt:
     pkg: "{{ item }}"
     state: present
@@ -39,22 +45,4 @@
     - installation
     - install
     - dependency
-    - debian
-
-
-# PT requires a X server
-- name: Install Desktop environment for PacketTracer
-  apt:
-    pkg: "{{ item }}"
-    state: present
-  when: ansible_os_family == "Debian"
-  environment: proxy_env
-  with_items:
-    - "xubuntu-desktop"
-  tags:
-    - apt
-    - installation
-    - install
-    - x
-    - server
     - debian

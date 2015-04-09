@@ -1,27 +1,9 @@
 ---
 
+
 - name: Common tasks in all servers
   hosts: all
-  sudo: true
-  roles:
-    - dependency
-  tags:
-    - pre
-    - common
-
-- name: VNC management
-  hosts: all
-  roles:
-    - vnc
-  tags:
-    - vnc
-
-- name: PacketTracer installation
-  hosts: all
-  sudo: true
   roles:
     - packetTracer
   tags:
     - packettracer
-
-

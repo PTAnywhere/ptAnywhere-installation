@@ -1,14 +1,25 @@
 ---
 
+- name: Check if folder existed
+  stat: path="{{ installation_path }}"
+  register: instp
+  tags:
+    - folder
+    - packettracer
+    - existence
+
+
 - name: Create PT folder
   file:
     path: "{{ installation_path }}"
     state: directory
     owner: vagrant
+  when: not instp.stat.exists
   tags:
-    - user
     - folder
+    - create
     - packettracer
+    - installation
 
 
 - name: Copy PT data
@@ -17,7 +28,7 @@
     dest: "{{ installation_path }}"
     owner: vagrant
     group: vagrant
-    force: no
+  when: not instp.stat.exists
   tags:
     - packettracer
     - installation
