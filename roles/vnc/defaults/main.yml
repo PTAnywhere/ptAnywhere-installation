@@ -1,0 +1,3 @@
+---
+
+init_script: "/etc/init.d/vncserver"

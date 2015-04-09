@@ -5,6 +5,11 @@ remote_user: "vagrant" # By default this is "vagrant," since that is what most p
 home_dir: "/home/{{remote_user}}"
 
 
+# X server number to use
+#  This means that it will be accessed as 5900+n
+x_display: 1
+
+
 proxy_env:
   http_proxy: http://wwwcache.open.ac.uk:80
   https_proxy: http://wwwcache.open.ac.uk:80

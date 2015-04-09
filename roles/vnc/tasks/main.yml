@@ -3,6 +3,7 @@
 # Check this: https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-14-04
 
 - name: Install VNC server
+  sudo: true
   apt:
     pkg: "{{ item }}"
     state: present
@@ -10,7 +11,9 @@
   environment: proxy_env
   with_items:
     - tightvncserver
-    - kubuntu-desktop
+    - xfce4
+    - xfce4-goodies
+    #- kubuntu-desktop # Uncomment if we want to use KDE instead of xfce...
   tags:
     - apt
     - installation
@@ -21,10 +24,10 @@
     - debian
 
 
-- name: Create user folder
+- name: Create ICEauthority file
   file:
-    path: "/home/vagrant/.ICEauthority"
-    state: file
+    path: "{{home_dir}}/.ICEauthority"
+    state: touch
     owner: vagrant
     group: vagrant
   tags:
@@ -35,7 +38,7 @@
 
 - name: Create user folder
   file:
-    path: "/home/vagrant/.vnc"
+    path: "{{home_dir}}/.vnc"
     state: directory
     owner: vagrant
   tags:
@@ -47,15 +50,32 @@
     - folder
 
 
-# vncserver :0
+# Otherwise it will prompt for a new password the first time (and ansible will get stuck).
+- name: "Copy VNC passwd file (WARNING: generate other file with vncpasswd before using in production site!)"
+  copy:
+    src: "passwd"
+    dest: "{{home_dir}}/.vnc/passwd"
+    owner: vagrant
+    group: vagrant
+    mode: "u=rw"
+  tags:
+    - copy
+    - installation
+    - install
+    - vnc
+    - passwd
+    - file
+
+
 - name: Copy VNC configuration file
   copy:
     src: "xstartup"
-    dest: "/home/vagrant/.vnc/xstartup"
+    dest: "{{home_dir}}/.vnc/xstartup"
     owner: vagrant
     group: vagrant
     mode: "u=rwx,g=rx,o=r"
   tags:
+    - copy
     - installation
     - install
     - vnc
@@ -63,19 +83,71 @@
     - file
 
 
-# vncserver -kill :0
+- name: Create init script
+  sudo: True
+  copy:
+    src: "vncserver"
+    dest: "{{init_script}}"
+    owner: vagrant
+    group: vagrant
+    mode: "u=rwx,g=rx,o=rx"
+  tags:
+    - copy
+    - vnc
+    - init
+    - script
+    - file
+
+
+- name: Replace variables in init script
+  sudo: True
+  replace: dest="{{init_script}}" regexp="\[\[{{item.name}}\]\]" replace="{{item.value}}"
+  with_items:
+    - { name: 'execuser', value: '{{remote_user}}' }
+    - { name: 'display_number', value: '{{x_display}}' }
+  notify:
+    - restart vncserver
+  tags:
+    - replace
+    - vnc
+    - init
+    - script
+    - file
+
+
+- name: Make it run in the bootup
+  sudo: True
+  command: "update-rc.d vncserver defaults"
+  tags:
+    - configure
+    - vnc
+    - init
+    - script
+    - file
+
+# vncserver -kill :1
 # - name: Kill existing VNC server in port 5900
-#   shell: "vncserver -kill :0"
+#   command: "vncserver -kill :{{x_display}}"
+#   ignore_errors: True  # If it didn't exist, is ok.
 #   tags:
 #     - vnc
 #     - server
 #     - kill
 
 
-# # vncserver :0
-# # access: vnc://192.168.34.2:5900
+# vncserver :1
+# access: vnc://192.168.34.2:5901
 # - name: Init VNC server
-#   shell: "vncserver :0"
+#   shell: "/usr/bin/vncserver :{{x_display}}"
+#   tags:
+#     - vnc
+#     - server
+#     - start
+
+
+# The command above does not open kde properly so this one trying it again...
+# - name: Start KDE
+#   shell: "export HOME={{home_dir}} && export DISPLAY=:{{x_display}} && {{home_dir}}/.vnc/xstartup"
 #   tags:
 #     - vnc
 #     - server
