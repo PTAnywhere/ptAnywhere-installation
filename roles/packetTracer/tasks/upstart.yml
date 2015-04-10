@@ -42,12 +42,13 @@
     - instance
 
 
-
 # TODO Consider using Systemd
 # Apparently, even Ubuntu plans to stop using Upstream
 - name: Reload configuration for daemons
-  shell: "initctl reload-configuration"
   sudo: True
+  shell: "initctl reload-configuration"
+  notify:
+    - restart packettracer
   tags:
     - initctl
     - reload

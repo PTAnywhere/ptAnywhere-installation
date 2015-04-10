@@ -1,0 +1,6 @@
+---
+
+- name: restart packettracer
+  service: name=packettracer state=restarted
+  sudo: True
+
