@@ -17,3 +17,6 @@
   # It creates the passwd file only if it does not exist yet.
   when: not passfile.stat.exists 
 - include: configure_init.yml
+
+- name: "Connect to vnc://192.168.34.2:5901"
+  debug: msg="If everything went ok, you should be able to connect to vnc://192.168.34.2:5901"
