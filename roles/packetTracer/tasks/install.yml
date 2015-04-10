@@ -38,10 +38,13 @@
 
 - name: Ensure that is executable
   file:
-    src:  "{{ original_path }}"
-    dest: "{{ installation_path }}/{{ pt_bin_relative_path }}"
+    dest: "{{ item }}"
     mode: "u=rwx,g=rx,o=r"
     state: file
+  with_items:
+    - "{{ installation_path }}/{{ pt_bin_relative_path }}"
+    - "{{ installation_path }}/set_ptenv.sh"
+    - "{{ installation_path }}/extensions/upnp/upnp"  # Otherwise it will prompt an error message on start...
   tags:
     - packettracer
     - installation
@@ -49,3 +52,11 @@
     - chmod
     - permissions
     - executable
+
+
+- name: Ensure that the user owns the profile folder
+  sudo: True
+  file:
+    dest: "/etc/profile"
+    owner: "{{remote_user}}"
+    group: "{{remote_user}}"
