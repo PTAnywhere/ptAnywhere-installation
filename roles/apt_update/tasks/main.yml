@@ -1,6 +1,18 @@
 ---
 
 
+# In Ubuntu Trusty this is necessary to access to i386 packages.
+- name: Enable access to i386 architecture's packages
+  sudo: True
+  command: "dpkg --add-architecture i386"
+  when: ansible_os_family == "Debian"
+  tags:
+    - apt
+    - dpkg
+    - architecture
+    - i386
+
+
 # Needed at least the first time after creating vagrant machine.
 # Calling this role once is enough, so allow_duplicates should be defined as "no" (it's the default behaviour).
 
