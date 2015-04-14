@@ -23,7 +23,7 @@
 
 
 - name: Copy PT data
-  copy:
+  unarchive:
     src:  "{{ original_path }}"
     dest: "{{ installation_path }}"
     owner: vagrant
@@ -34,6 +34,7 @@
     - installation
     - install
     - copy
+    - unpack
 
 
 - name: Ensure that is executable
