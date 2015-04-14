@@ -1,15 +1,39 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.configure("2") do |config|
+VAGRANTFILE_API_VERSION = "2"
 
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.network "private_network", ip: "192.168.34.2"
-  config.vm.hostname = "ptinstallation"
-#  config.vm.synced_folder "../packetTracer", "/home/vagrant/pt", :mount_options => ["dmode=777", "fmode=666"]
 
-  config.vm.provider :virtualbox do |vb|
-    vb.memory = 2048
-  end
+number_of_machines = 3
+box = "ubuntu/trusty64"
+memory = 512
 
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+	config.vm.provision "ansible" do |ansible|
+		ansible.groups = {
+		  "pt_backend" => Array.new(number_of_machines){ |i| "node#{i+1}" },
+		  "local:children" => ["pt_backend"]
+		}
+		ansible.playbook = "main.yml"
+		# Useful during testing 
+		ansible.host_key_checking = false
+		# ansible.verbose = "vvvv"
+		# ansible.inventory_path = "path"  # In this case we directly generate it
+		# ansible.limit = "local"
+	end
+
+
+	(1..number_of_machines).each do |i|
+		config.vm.define "node#{i}" do |node|
+			node.vm.box = box
+			node.vm.network "private_network", ip: "192.168.34.#{i}"
+			node.vm.hostname = "pt#{i}"
+			node.vm.provider :virtualbox do |vb|
+				vb.memory = memory
+			end
+		end
+	end
 end
+
