@@ -1,5 +1,5 @@
 # Remote PacketTracer installation
-PacketTracer installation listening on port 40000 (IPC) for a Linux distribution using Ansible.
+PacketTracer installation listening on port 39000 (IPC) for a Linux distribution using Ansible.
 
 ## Requisites
 
