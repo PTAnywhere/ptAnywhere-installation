@@ -1,0 +1,23 @@
+---
+
+- name: Install JRE using apt
+  sudo: True
+  apt: pkg=default-jre state=present
+  when: ansible_os_family == "Debian"
+  environment: proxy_env
+  tags:
+    - apt
+    - installation
+    - install
+    - dependency
+    - java
+    - debian
+
+- name: Download tomcat7
+  get_url: url="{{tomcat7_url}}" dest="{{tomcat7_download}}" mode=0440
+  environment: proxy_env
+
+- name: Unzip tomcat7
+  unarchive: src="{{tomcat7_download}}" dest="{{home_dir}}" copy=no
+  notify:
+    - restart tomcat7

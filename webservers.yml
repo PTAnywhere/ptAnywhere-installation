@@ -1,0 +1,11 @@
+---
+
+# file: webservers.yml
+
+- name: Install and configure web servers
+  hosts: web
+  roles:
+    - tomcat7
+  tags:
+    - web
+    - tomcat

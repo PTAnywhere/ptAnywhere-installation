@@ -1,0 +1,9 @@
+---
+
+# file: main.yml
+
+- include: apt_install.yml
+  when: ansible_os_family != "Debian"
+
+- include: manual_install.yml
+  when: ansible_os_family == "Debian"

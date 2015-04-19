@@ -1,0 +1,4 @@
+---
+
+- name: restart tomcat7
+  shell: "{{tomcat7_path}}/bin/shutdown.sh && {{tomcat7_path}}/bin/startup.sh"

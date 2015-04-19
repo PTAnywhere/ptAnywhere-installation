@@ -1,0 +1,11 @@
+---
+
+# file: ptinstances.yml
+
+- name: Install and configure PacketTracer instance
+  hosts: pt_backend
+  sudo: true
+  roles:
+    - packetTracer
+  tags:
+    - packetTracer

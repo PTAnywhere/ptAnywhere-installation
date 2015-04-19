@@ -1,9 +1,6 @@
 ---
 
 
-- name: Common tasks in all servers
-  hosts: all
-  roles:
-    - packetTracer
-  tags:
-    - packettracer
+# file: main.yml
+- include: webservers.yml
+- include: ptinstances.yml
