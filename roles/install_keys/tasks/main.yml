@@ -1,0 +1,15 @@
+---
+
+# file: main.yml
+
+- name: Create user for webserver access
+  user: name="{{web_access.user}}" groups="sudo"
+
+
+- name: Create sudoers file
+  sudo: True
+  copy: src="web" dest="/etc/sudoers.d/web"
+
+
+- name: Install keys to allow webserver restart the PT instance
+  authorized_key: user="{{web_access.user}}" key="{{ lookup('file', web_access.public_key) }}"

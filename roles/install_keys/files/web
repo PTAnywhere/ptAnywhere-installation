@@ -1,0 +1,2 @@
+
+web ALL=(ALL) NOPASSWD:ALL
