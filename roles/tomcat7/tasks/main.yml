@@ -7,3 +7,5 @@
 
 - include: manual_install.yml
   when: ansible_os_family == "Debian"
+
+- include: copy_playbook.yml

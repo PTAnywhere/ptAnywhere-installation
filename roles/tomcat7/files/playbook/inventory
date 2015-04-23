@@ -1,0 +1,15 @@
+
+node1 ansible_ssh_host=192.168.34.2
+node2 ansible_ssh_host=192.168.34.3
+node3 ansible_ssh_host=192.168.34.4
+
+
+[pt_backend]
+node1
+node2
+node3
+
+[local:children]
+pt_backend
+
+

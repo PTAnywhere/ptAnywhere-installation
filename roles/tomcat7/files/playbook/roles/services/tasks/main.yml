@@ -1,0 +1,10 @@
+---
+
+# file: ptservice.yml
+
+- name: Restart PacketTracer service
+  service: name=packettracer state=started
+  sudo: True
+  tags:
+    - packetTracer
+    - restart
