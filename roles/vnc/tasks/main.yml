@@ -2,6 +2,7 @@
 
 # file: main.yml
 
+- include: install.yml
 
 - name: Check if VNC passwd file exists
   stat: path="{{home_dir}}/.vnc/passwd"
@@ -11,11 +12,10 @@
     - file
     - existence
 
-
-- include: install.yml
 - include: create_passfile.yml
   # It creates the passwd file only if it does not exist yet.
   when: not passfile.stat.exists 
+
 - include: configure_init.yml
 
 - name: "Connect to vnc://192.168.34.2:5901"
