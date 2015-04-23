@@ -1,7 +1,7 @@
 ---
 
 original_path: "/Users/agg96/workspace/packetTracer/i386.zip"
-installation_path: "{{home_dir}}/packetTracer/"
+installation_path: "{{home_dir}}/packetTracer"
 
 upstart_file: "packettracer.conf"
 upstart_log: "/var/log/upstart/packettracer.log"

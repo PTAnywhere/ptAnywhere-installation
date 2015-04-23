@@ -13,7 +13,7 @@
   file:
     path: "{{ installation_path }}"
     state: directory
-    owner: vagrant
+    owner: "{{ remote_user }}"
   when: not instp.stat.exists
   tags:
     - folder
@@ -26,8 +26,8 @@
   unarchive:
     src:  "{{ original_path }}"
     dest: "{{ installation_path }}"
-    owner: vagrant
-    group: vagrant
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
   when: not instp.stat.exists
   tags:
     - packettracer
