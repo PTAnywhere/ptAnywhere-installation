@@ -4,7 +4,6 @@
 
 - name: Install and configure PacketTracer instance
   hosts: pt_backend
-  sudo: true
   roles:
     - packetTracer
     - install_keys
