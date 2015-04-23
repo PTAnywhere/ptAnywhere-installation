@@ -4,7 +4,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 
-number_of_machines = 3
+number_of_machines = 6
 box = "ubuntu/trusty64"
 memory = 512
 
@@ -26,10 +26,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
 
 
+	# Disabling the default /vagrant share.
+	#   http://docs.vagrantup.com/v2/synced-folders/
+	#   (Reason to disable it: In MacOS GuestAdditions trend to fail screwing the "up" or "reload".
+	config.vm.synced_folder ".", "/vagrant", disabled: true
+
 	(1..number_of_machines).each do |i|
 		config.vm.define "node#{i}" do |node|
 			node.vm.box = box
-			node.vm.network "private_network", ip: "192.168.34.#{i}"
+			node.vm.network "private_network", ip: "192.168.34.#{i+1}"
 			node.vm.hostname = "pt#{i}"
 			node.vm.provider :virtualbox do |vb|
 				vb.memory = memory
