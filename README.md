@@ -13,22 +13,28 @@ PacketTracer installation listening on port 39000 (IPC) for a Linux distribution
 
 ## Typical usage
 
+Edit the inventory file called __machine__ to specify your machine(s) details.
+
 Go to this project's root directory and simply type:
 
-    ansible-playbook -vvvv -u [remote-user] -l 'local' -i machine --private-key [private-key-location] main.yml
+    ansible-playbook -vvvv -u [remote-user] -l 'local' -i machine --private-key [private-key-location] ptinstances.yml
 
 If everything goes smoothly, you will be able to connect to the port 5901 with a VNC client and see the PacketTracer instance running.
+
+If you also want to install the web application server and its dependencies try:
+
+    ansible-playbook -vvvv -u [remote-user] -l 'local' -i machine --private-key [private-key-location] main.yml
 
 ## VM creation
 
 The Ansible playbook can be used to install PT in any Linux machine with SSH access.
 
-However, this project also provides a file to create a local virtual machine where we can install it.
+However, this project also provides a file to create one or multiple local virtual machine/s where we can install it (together with a web server and a Redis server).
 
-To create this VM:
+To create these VMs:
  1. Install [Vagrant](https://www.vagrantup.com/) in the host.
  2. Go to this project's root directory and type ```vagrant up```. <br />
     This command creates the machines defined in the configuration file and an Ansible inventory file for them (see _.vagrant/provisioners/ansible/inventory_).
  3. Access this machine (if you want) with ```vagrant ssh [node-name]```. <br />
     For a manual log in using _ssh_, simply type ```ssh -i .vagrant/machines/default/virtualbox/private_key [machine_ip]```.
- 4. See the PacketTracer instance running by connecting with a VNC client to: __vnc://192.168.34.2:5901__
+ 4. See the PacketTracer instance running by connecting with a VNC client to: __vnc://[machine_ip]:5901__
