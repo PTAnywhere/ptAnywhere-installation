@@ -6,9 +6,13 @@ machine ansible_ssh_host=192.168.34.2
 [web]
 machine
 
+[scheduling]
+machine
+
 [pt_backend]
 machine
 
 [local:children]
 web
+scheduling
 pt_backend
