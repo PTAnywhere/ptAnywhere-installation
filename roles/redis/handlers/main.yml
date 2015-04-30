@@ -1,0 +1,8 @@
+---
+
+- name: restart redis
+  service: name=redis-server state=restarted
+  sudo: True
+  tags:
+    - redis
+    - restart

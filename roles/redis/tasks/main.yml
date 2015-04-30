@@ -1,0 +1,38 @@
+---
+
+- name: Redis installation
+  apt:
+    pkg: "redis-server"
+    state: present
+  sudo: True
+  when: ansible_os_family == "Debian"
+  tags:
+    - apt
+    - installation
+    - install
+    - debian
+    - redis
+
+
+- name: Serve to other machines
+  replace: dest=/etc/redis/redis.conf regexp="^bind 127.0.0.1$" replace="bind 0.0.0.0"
+  sudo: True
+  tags:
+    - redis
+    - configuration
+    - file
+
+
+- name: Avoid storing anything in disk to reduce latency
+  replace: dest=/etc/redis/redis.conf regexp="^{{ item }}$" replace="#{{ item }}"
+  with_items:
+    - "save 900 1"
+    - "save 300 10"
+    - "save 60 10000"
+  sudo: True
+  notify:
+    - restart redis
+  tags:
+    - redis
+    - configuration
+    - file

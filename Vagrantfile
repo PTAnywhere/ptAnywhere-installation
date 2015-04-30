@@ -14,8 +14,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.provision "ansible" do |ansible|
 		ansible.groups = {
 			"web" => ["websvr"],
+			"scheduling" => ["websvr"],
 			"pt_backend" => Array.new(number_of_machines){ |i| "node#{i+1}" },
-			"local:children" => ["web", "pt_backend"]
+			"local:children" => ["web", "scheduling", "pt_backend"]
 		}
 		ansible.playbook = "main.yml"
 		# Useful during testing 
@@ -46,6 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.define "websvr" do |node|
 		node.vm.box = box
 		node.vm.network "private_network", ip: "192.168.34.201"
+		node.vm.network "forwarded_port", guest: 8080, host: 8080
 		node.vm.hostname = "websvr"
 		node.vm.provider :virtualbox do |vb|
 			vb.memory = memory

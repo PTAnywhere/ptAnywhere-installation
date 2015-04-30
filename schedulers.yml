@@ -1,0 +1,11 @@
+---
+
+# file: schedulers.yml
+
+- name: Install and configure schedulers
+  hosts: scheduling
+  roles:
+    - redis
+  tags:
+    - scheduling
+    - redis
