@@ -61,3 +61,8 @@ target/
 
 # MacOS
 .DS_Store
+
+
+# Files containing secrets
+# If you want to keep track of them, consider using ansible-vault.
+roles/tomcat7/vars/deployment_credentials.yml

@@ -8,4 +8,17 @@
 - include: manual_install.yml
   when: ansible_os_family == "Debian"
 
+- include_vars: deployment_credentials.yml
+- name: Set tomcat7 configuration
+  template:
+    src: tomcat-users.xml.j2
+    dest: "{{ tomcat7_path }}/conf/tomcat-users.xml"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0744
+  notify: restart tomcat7
+  tags:
+    - configuration
+    - tomcat7
+
 - include: copy_playbook.yml

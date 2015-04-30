@@ -23,6 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 		# ansible.verbose = "vvvv"
 		# ansible.inventory_path = "path"  # In this case we directly generate it
 		# ansible.limit = "local"
+		# ansible.raw_arguments = "--ask-vault-pass"
 	end
 
 
