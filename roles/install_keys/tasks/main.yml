@@ -3,6 +3,7 @@
 # file: main.yml
 
 - name: Create user for webserver access
+  sudo: True
   user: name="{{web_access.user}}" groups="sudo"
 
 
@@ -12,4 +13,5 @@
 
 
 - name: Install keys to allow webserver restart the PT instance
+  sudo: True
   authorized_key: user="{{web_access.user}}" key="{{ lookup('file', web_access.public_key) }}"
