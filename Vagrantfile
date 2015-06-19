@@ -4,9 +4,9 @@
 VAGRANTFILE_API_VERSION = "2"
 
 
-number_of_machines = 6
-box = "ubuntu/trusty64"
-memory = 512
+number_of_machines = 1
+box = "chef/centos-7.0"
+memory = 2048
 
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -45,12 +45,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
 
 	config.vm.define "websvr" do |node|
-		node.vm.box = box
+		node.vm.box = "ubuntu/trusty64"
 		node.vm.network "private_network", ip: "192.168.34.201"
 		node.vm.network "forwarded_port", guest: 8080, host: 8080
 		node.vm.hostname = "websvr"
 		node.vm.provider :virtualbox do |vb|
-			vb.memory = memory
+			vb.memory = 512
 		end
 	end
 end

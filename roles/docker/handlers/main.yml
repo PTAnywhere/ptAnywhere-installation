@@ -1,0 +1,9 @@
+---
+
+- name: restart docker
+  #service: name=docker state=started
+  shell: service docker start
+  become: True
+  tags:
+    - docker
+    - restart

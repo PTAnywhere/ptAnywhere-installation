@@ -1,0 +1,17 @@
+---
+
+- name: Update CentOS
+  yum: name=* state=latest
+  tags:
+   - update
+   - centos
+
+
+- name: Install Docker Repository
+  yum: name="https://get.docker.com/rpm/1.7.0/centos-7/RPMS/x86_64/docker-engine-1.7.0-1.el7.centos.x86_64.rpm" state=present
+  notify:
+    - restart docker
+  tags:
+   - install
+   - repository
+   - docker
