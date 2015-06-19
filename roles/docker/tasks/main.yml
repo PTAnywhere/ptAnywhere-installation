@@ -3,3 +3,26 @@
 - name: Install docker
   include: install.yml
   become: True
+
+
+- name: Copy docker files
+  copy: src="{{ item }}" dest="./"
+  with_items:
+    - "Dockerfile"
+    - "startXvfb.sh"
+    - "supervisord.conf"
+  tags:
+   - copy
+   - files
+   - docker
+
+
+- name: Build docker container
+  shell: "docker build --rm -t bla ./"
+  tags:
+   - build
+   - container
+   - docker
+
+
+ # docker run -p 5901:5900 -t -i bla
