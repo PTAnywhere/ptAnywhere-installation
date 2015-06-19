@@ -15,3 +15,21 @@
    - install
    - repository
    - docker
+
+
+- name: Add current user to docker group
+  user: name="{{ remote_user }}" groups="docker" append=yes
+  tags:
+   - add
+   - group
+   - docker
+
+
+- name: Start the docker daemon at boot
+  shell: chkconfig docker on
+  become: True
+  tags:
+   - start
+   - daemon
+   - boot
+   - docker
