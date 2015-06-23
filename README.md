@@ -4,12 +4,39 @@ PacketTracer installation listening on port 39000 (IPC) for a Linux distribution
 ## Requisites
 
  * The control machine needs to have [Ansible installed](http://www.ansible.com).
- * The control machine needs to have a PacketTracer directory with this program already installed and configured.
-  * Customize the _original\_path_ variable in _roles/packetTracer/defaults/main.yml_
+ * The control machine needs to have a directory containing a _Packet Tracer_ installation. Please, check the [next section](#preparing-pt-installation) to learn how to install and configure it.
  * The control machine needs to access the machine (or machines) where PT will be installed through SSH (it needs a private key).
   * Specify where PT will be installed by editing the _machine_ file. 
   * Specify the remote user through the _-u_ parameter and in the _group\_vars/local_ file (_remote\_user_ variable)
   * Specify the private key location through the _--private-key_ parameter.
+
+##  <a name="preparing-pt-installation">Preparing the PT installation</a>
+
+I cannot provide an already configured _Packet Tracer_ installation for intellectual property reasons.
+However, you can [get PT here](https://www.netacad.com/about-networking-academy/packet-tracer) and follow the following instructions to configure it.
+
+You can either use this script to install PT or [do it manually](https://www.youtube.com/watch?v=7A2rIcwl_co).
+
+After installing it,
+
+  * Run it for the first time and configure the following options:
+   * Make it listen on port 39000.
+  * Back up the following files:
+   * PT installation directory: ```tar -zcvf installation.tar.gz {INSTALLATION_PATH}```
+   * PT configuration file: ```cd; cp .packettracer packettracer.conf```
+     * Note that this is a hidden file in the home directory of the user who run PT.
+   * User configuration folder: ```cd; tar -zcvf userConfig.tar.gz {USER_CONFIG}```
+     * _USER\_CONFIG_ is a folder in the home directory of the user who run PT and has the same name as _INSTALLATION\_PATH_.
+     * For example, if _INSTALLATION\_PATH_ is "/opt/pt" and the user who run it was "vagrant", then _USER\_CONFIG_ will be _/home/vagrant/pt_.
+   * [TODO] provide a backup script
+  * Customize _roles/packetTracer/defaults/main.yml_ 
+   * _original\_path_ should point to PT's installation path.
+   * [TODO] rest of the variables.
+
+__Note__: You could also only copy PT's installation and run it for the first time in each newly provisioned VM or container.
+However, this will require your intervention for each machine (you will need to close all the emerging dialogs).
+To ensure that PT starts automatically without human intervention (i.e., that no dialogs are shown in PT), we need to be sure to also copy the last two listed files.
+
 
 ## Typical usage
 
