@@ -22,13 +22,18 @@ After installing it,
   * Run it for the first time and configure the following options:
    * Make it listen on port 39000.
   * Back up the following files:
-   * PT installation
+   * PT installation directory: ```tar -zcvf installation.tar.gz {INSTALLATION_PATH}```
+   * PT configuration file: ```cd; cp .packettracer packettracer.conf```
+     * Note that this is a hidden file in the home directory of the user who run PT.
+   * User configuration folder: ```cd; tar -zcvf userConfig.tar.gz {USER_CONFIG}```
+     * _USER\_CONFIG_ is a folder in the home directory of the user who run PT and has the same name as _INSTALLATION\_PATH_.
+     * For example, if _INSTALLATION\_PATH_ is "/opt/pt" and the user who run it was "vagrant", then _USER\_CONFIG_ will be _/home/vagrant/pt_.
    * [TODO] provide a backup script
   * Customize _roles/packetTracer/defaults/main.yml_ 
    * _original\_path_ should point to PT's installation path.
-   * _XXX_
+   * [TODO] rest of the variables.
 
-Note: You could also only copy PT's installation and run it for the first time in each newly provisioned VM or container.
+__Note__: You could also only copy PT's installation and run it for the first time in each newly provisioned VM or container.
 However, this will require your intervention for each machine (you will need to close all the emerging dialogs).
 To ensure that PT starts automatically without human intervention (i.e., that no dialogs are shown in PT), we need to be sure to also copy the last two listed files.
 
