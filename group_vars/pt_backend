@@ -1,0 +1,11 @@
+---
+
+installation_path: "/opt/pt"
+installation_file: "/Users/agg96/workspace/packetTracer/installation.tar.gz"
+
+
+ # You can set any of the following variables to false if you do not want to copy them.
+ # This will require you to run PT manually for the first time.
+
+user_configuration_file: "/Users/agg96/workspace/packetTracer/userConfig.tar.gz"
+pt_configuration_file: "/Users/agg96/workspace/packetTracer/packettracer.conf"

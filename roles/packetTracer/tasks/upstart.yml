@@ -15,8 +15,8 @@
   replace: dest="{{daemon_conf_file}}" regexp="\[\[{{item.name}}\]\]" replace="{{item.value}}" # backup=yes
   with_items:
     - { name: 'execuser', value: '{{remote_user}}' }
-    - { name: 'pt_exec', value: '{{ pt_path }}/{{ pt_bin_relative_path }}' }
-    - { name: 'pt_path', value: '{{ pt_path }}' }
+    - { name: 'pt_exec', value: '{{ installation_path }}/{{ pt_bin_relative_path }}' }
+    - { name: 'pt_path', value: '{{ installation_path }}' }
     - { name: 'log_file', value: '{{ upstart_log }}' }
     - { name: 'display_number', value: '{{ x_display }}' }
   sudo: True

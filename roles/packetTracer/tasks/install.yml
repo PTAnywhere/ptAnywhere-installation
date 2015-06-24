@@ -14,6 +14,7 @@
     path: "{{ installation_path }}"
     state: directory
     owner: "{{ remote_user }}"
+  become: True  # needed unless the folder is in the user home
   when: not instp.stat.exists
   tags:
     - folder
@@ -22,9 +23,9 @@
     - installation
 
 
-- name: Copy PT data
+- name: Copy PT installation
   unarchive:
-    src:  "{{ original_path }}"
+    src:  "{{ installation_file }}"
     dest: "{{ installation_path }}"
     owner: "{{ remote_user }}"
     group: "{{ remote_user }}"
@@ -35,6 +36,49 @@
     - install
     - copy
     - unpack
+
+
+- name: Create PT user folder
+  file:
+    path: "{{ user_configuration_path }}"
+    state: directory
+    owner: "{{ remote_user }}"
+  when: user_configuration_file != "false"
+  tags:
+    - folder
+    - create
+    - packettracer
+    - user
+    - configuration
+
+
+- name: Copy PT user data
+  unarchive:
+    src:  "{{ user_configuration_file }}"
+    dest: "{{ user_configuration_path }}"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+  when: user_configuration_file != "false"
+  tags:
+    - packettracer
+    - user
+    - configuration
+    - copy
+    - unpack
+
+
+- name: Copy PT configuration data
+  copy:
+    src:  "{{ pt_configuration_file }}"
+    dest: "{{ home_dir }}/.packettracer"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+  when: pt_configuration_file != "false"
+  tags:
+    - packettracer
+    - user
+    - configuration
+    - copy
 
 
 - name: Ensure that is executable

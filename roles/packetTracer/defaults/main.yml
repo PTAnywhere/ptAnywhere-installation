@@ -1,11 +1,10 @@
 ---
 
-original_path: "/Users/agg96/workspace/packetTracer/i386.zip"
-installation_path: "{{home_dir}}/packetTracer"
+# Note: "user_config_path" has the same name as the folder where PT is installed ("installation_path").
+user_configuration_path: "{{home_dir}}/pt"
 
 upstart_file: "packettracer.conf"
 upstart_log: "/var/log/upstart/packettracer.log"
 daemon_conf_file: "/etc/init/packettracer.conf"
 
-pt_path: "{{home_dir}}/packetTracer"
 pt_bin_relative_path: "bin/PacketTracer6"
