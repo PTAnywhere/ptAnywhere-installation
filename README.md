@@ -19,22 +19,25 @@ You can either use this script to install PT or [do it manually](https://www.you
 
 After installing it,
 
-  * Run it for the first time and configure the following options:
-   * Make it listen on port 39000.
+  * Run it for the first time and configure the following options ():
+   * Configure IPC
+     * Go to Extensions > IPC > Options...
+     * Listen Port Number: 39000.
+     * Always Listen On Start: checked.
+   * Save the options
+     * Go to Options > Preferences > Write Options To PT Installed Folder
+     * Press the "Write" button.
   * Back up the following files:
-   * PT installation directory: ```tar -zcvf installation.tar.gz {INSTALLATION_PATH}```
+   * PT installation directory: ```cd {INSTALLATION_PATH}; tar -zcvf installation.tar.gz ./*```
    * PT configuration file: ```cd; cp .packettracer packettracer.conf```
      * Note that this is a hidden file in the home directory of the user who run PT.
-   * User configuration folder: ```cd; tar -zcvf userConfig.tar.gz {USER_CONFIG}```
-     * _USER\_CONFIG_ is a folder in the home directory of the user who run PT and has the same name as _INSTALLATION\_PATH_.
-     * For example, if _INSTALLATION\_PATH_ is "/opt/pt" and the user who run it was "vagrant", then _USER\_CONFIG_ will be _/home/vagrant/pt_.
    * [TODO] provide a backup script
   * Customize _roles/packetTracer/defaults/main.yml_ 
    * _original\_path_ should point to PT's installation path.
    * [TODO] rest of the variables.
 
 __Note__: You could also only copy PT's installation and run it for the first time in each newly provisioned VM or container.
-However, this will require your intervention for each machine (you will need to close all the emerging dialogs).
+However, this will require your intervention for each machine (you will need to close an emerging dialog which appears the first time you run PT).
 To ensure that PT starts automatically without human intervention (i.e., that no dialogs are shown in PT), we need to be sure to also copy the last two listed files.
 
 
