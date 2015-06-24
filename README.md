@@ -19,8 +19,13 @@ You can either use this script to install PT or [do it manually](https://www.you
 
 After installing it,
 
-  * Run it for the first time and configure the following options:
-   * Make it listen on port 39000.
+  * Run it for the first time and configure the following options ():
+   * Configure IPC
+     * Go to Extensions > IPC > Options...
+     * Listen Port Number: 39000.
+     * Always Listen On Start: checked.
+   * Save the options
+     * Go to Options > Preferences > Write Options To PT Installed Folder and press the "Write" button.
   * Back up the following files:
    * PT installation directory: ```tar -zcvf installation.tar.gz {INSTALLATION_PATH}```
    * PT configuration file: ```cd; cp .packettracer packettracer.conf```
