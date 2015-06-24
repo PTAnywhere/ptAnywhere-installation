@@ -25,7 +25,8 @@ After installing it,
      * Listen Port Number: 39000.
      * Always Listen On Start: checked.
    * Save the options
-     * Go to Options > Preferences > Write Options To PT Installed Folder and press the "Write" button.
+     * Go to Options > Preferences > Write Options To PT Installed Folder
+     * Press the "Write" button.
   * Back up the following files:
    * PT installation directory: ```tar -zcvf installation.tar.gz {INSTALLATION_PATH}```
    * PT configuration file: ```cd; cp .packettracer packettracer.conf```
