@@ -5,6 +5,7 @@
 - name: Install and configure PacketTracer instance
   hosts: pt_backend
   roles:
-    - docker
+#    - packetTracer_unique
+    - packetTracer_multiple
   tags:
     - packetTracer
