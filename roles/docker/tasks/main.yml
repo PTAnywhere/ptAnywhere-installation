@@ -1,28 +1,47 @@
 ---
 
-- name: Install docker
-  include: install.yml
+# Install Docker in CentOS 7
+
+- name: Update CentOS
+  yum: name=* state=latest
   become: True
-
-
-- name: Copy docker files
-  copy: src="{{ item }}" dest="./"
-  with_items:
-    - "Dockerfile"
-    - "startXvfb.sh"
-    - "supervisord.conf"
   tags:
-   - copy
-   - files
+   - update
+   - centos
+
+
+- name: Install Docker Repository
+  yum: name="https://get.docker.com/rpm/1.7.0/centos-7/RPMS/x86_64/docker-engine-1.7.0-1.el7.centos.x86_64.rpm" state=present
+  become: True
+  tags:
+   - install
+   - repository
    - docker
 
 
-- name: Build docker container
-  shell: "docker build --rm -t bla ./"
+- name: Add current user to docker group
+  user: name="{{ remote_user }}" groups="docker" append=yes
+  become: True
+  register: added_to_group
   tags:
-   - build
-   - container
+   - add
+   - group
    - docker
 
 
- # docker run -p 5901:5900 -t -i bla
+- name: Start the docker daemon at boot
+  shell: chkconfig docker on
+  become: True
+  tags:
+   - start
+   - daemon
+   - boot
+   - docker
+
+
+- name: restart docker
+  shell: service docker restart
+  become: True
+  tags:
+    - docker
+    - restart

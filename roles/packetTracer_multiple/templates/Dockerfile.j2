@@ -5,9 +5,17 @@ FROM    ubuntu:14.10
 #  - http://stackoverflow.com/questions/16296753/can-you-run-gui-apps-in-a-docker-container/16311264#16311264
 
 
+# in Ubuntu Trusty this is necessary to access to i386 packages.
+RUN     dpkg --add-architecture i386
+
+
 # make sure the package repository is up to date
-RUN     echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
+# RUN     echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 RUN     apt-get update
+
+
+# Install PacketTracer's requirements
+RUN     apt-get install -y libgtk2.0-0:i386 libnss3-1d:i386 libnspr4-0d:i386 lib32nss-mdns libxml2:i386 libxslt1.1:i386 libqtwebkit-dev:i386 libssl-dev:i386
 
 
 # Install vnc, xvfb in order to create a 'fake' display and firefox
@@ -17,12 +25,18 @@ RUN     mkdir ~/.vnc
 RUN     x11vnc -storepasswd 1234 ~/.vnc/passwd
 
 
+RUN     mkdir {{ installation_path }}
+
 # Copy and run the program which starts VNC and firefox on it
 COPY startXvfb.sh startXvfb.sh
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD installation.tar.gz {{ installation_path }}
+COPY packettracer.conf /root/.packettracer
 
 
 EXPOSE 5900
+EXPOSE 39000
 
 
 #ENTRYPOINT
