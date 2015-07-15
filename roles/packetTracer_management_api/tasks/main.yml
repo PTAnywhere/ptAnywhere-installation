@@ -1,0 +1,8 @@
+---
+
+# file: main.yml
+
+- include: app.yml
+# - include: gunicorn.yml
+# - include: nginx.yml
+# - include: supervisor.yml

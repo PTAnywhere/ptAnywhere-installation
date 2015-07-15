@@ -1,0 +1,11 @@
+---
+
+venv_name: "ptapi"
+venv_path: "{{home_dir}}/{{venv_name}}"
+url: "git+https://github.com/gomezgoiri/pt-instances-management.git#egg=ptinstancemanager"
+
+
+config_file: "{{home_dir}}/config.ini"
+database_file: "{{home_dir}}/database.db"
+low_port: 39000
+high_port: 39050

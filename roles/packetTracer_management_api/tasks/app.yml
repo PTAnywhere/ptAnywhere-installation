@@ -1,0 +1,48 @@
+---
+
+- name: Install EPEL Repository
+  yum: name="http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm" state=present
+  become: True
+  tags:
+   - install
+   - repository
+   - epel
+
+
+- name: Install Git and virtualenv
+  yum: name="{{ item }}" state=present
+  become: True
+  with_items:
+    - git
+    - python-pip
+    - python-virtualenv.noarch
+  # when: ansible_os_family == "RedHat"
+  tags:
+    - install
+    - git
+    - yum
+
+
+- name: Install PT management API
+  pip: name="{{ url }}" virtualenv="{{ venv_path }}"
+  tags:
+    - install
+    - api
+    - pt-instances-management
+
+
+- name: Define webapp's limits
+  template: src=config.ini.j2 dest="{{ config_file }}"
+  tags:
+   - copy
+   - configuration
+   - api
+
+
+- name: Create database file
+  shell: "{{ venv_path }}/bin/run-api  -createdb -config {{ config_file }}"
+  tags:
+   - create
+   - database
+   - file
+   - api

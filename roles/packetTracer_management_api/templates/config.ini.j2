@@ -1,0 +1,9 @@
+
+[Database]
+uri: sqlite:///{{ database_file }}
+
+
+[Port]
+# Define in which ports Docker should make containers listen.
+lowest: {{ low_port }}
+highest: {{ high_port }}
