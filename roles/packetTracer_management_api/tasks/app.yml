@@ -39,8 +39,18 @@
    - api
 
 
+- name: Check if database file already exists
+  stat: path="{{ database_file }}"
+  register: dbfile
+  tags:
+    - database
+    - api
+    - existence
+
+
 - name: Create database file
   shell: "{{ venv_path }}/bin/run-api  -createdb -config {{ config_file }}"
+  when: not dbfile.stat.exists
   tags:
    - create
    - database
