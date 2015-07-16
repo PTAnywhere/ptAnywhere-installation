@@ -4,5 +4,5 @@
 
 - include: app.yml
 - include: gunicorn.yml
+- include: supervisor.yml
 - include: nginx.yml
-# - include: supervisor.yml

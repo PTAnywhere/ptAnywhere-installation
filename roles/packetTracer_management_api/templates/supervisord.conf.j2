@@ -1,0 +1,7 @@
+[supervisord]
+
+[program:flask_app]
+command = {{ run_script }}
+user = {{ remote_user }}
+# stdout_logfile = /var/logs/gunicorn_supervisor.log
+redirect_stderr = true

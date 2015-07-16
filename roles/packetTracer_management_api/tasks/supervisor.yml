@@ -1,0 +1,21 @@
+---
+
+- name: Install supervisor
+  yum: name=supervisor state=present
+  become: True
+  # when: ansible_os_family == "RedHat"
+  tags:
+    - install
+    - supervisor
+    - yum
+
+
+- name: Copy supervisor config file to run unicorn with our app
+  template: src=supervisord.conf.j2 dest=/etc/supervisord.conf
+  become: True
+  notify:
+    - restart supervisor
+  tags:
+   - copy
+   - configuration
+   - supervisor
