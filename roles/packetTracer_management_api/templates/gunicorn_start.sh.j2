@@ -1,0 +1,30 @@
+#!/bin/bash
+# Source: http://prakhar.me/articles/flask-on-nginx-and-gunicorn/
+
+NAME="PacketTracer instances' management API"
+# FLASKDIR=/Code/flask_app
+VENVDIR={{ venv_path }}
+SOCKFILE=/tmp/sock
+USER={{ remote_user }}
+GROUP={{ remote_user }}
+NUM_WORKERS=3
+
+echo "Starting $NAME"
+
+# activate the virtualenv
+cd $VENVDIR
+source bin/activate
+
+# export PYTHONPATH=$FLASKDIR:$PYTHONPATH
+
+# Create the run directory if it doesn't exist
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Start your unicorn
+exec gunicorn 'ptinstancemanager.wsgi:main("/home/vagrant/config.ini")' -b 127.0.0.1:8000 \
+  --name "$NAME" \
+  --workers $NUM_WORKERS \
+  --user=$USER --group=$GROUP \
+  --log-level=debug \
+  --bind=unix:$SOCKFILE

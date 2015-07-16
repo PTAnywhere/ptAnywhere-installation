@@ -1,0 +1,17 @@
+---
+
+# TODO http://prakhar.me/articles/flask-on-nginx-and-gunicorn/
+
+- name: Install Gunicorn
+  pip: name=gunicorn virtualenv="{{ venv_path }}"
+  tags:
+    - install
+    - gunicorn
+
+
+- name: Copy bash file to run unicorn with our app
+  template: src=gunicorn_start.sh.j2 dest="{{ run_script }}" mode=ug+x
+  tags:
+   - copy
+   - configuration
+   - api
