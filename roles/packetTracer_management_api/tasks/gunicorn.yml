@@ -1,7 +1,5 @@
 ---
 
-# TODO http://prakhar.me/articles/flask-on-nginx-and-gunicorn/
-
 - name: Install Gunicorn
   pip: name=gunicorn virtualenv="{{ venv_path }}"
   tags:
