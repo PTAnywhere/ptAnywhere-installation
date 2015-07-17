@@ -32,7 +32,7 @@
 
 
 - name: Create symbolic link to enable the config file of our app
-  file: src=/etc/nginx/sites-available/flaskapp dest=/etc/nginx/conf.d/flaskapp.conf state=link
+  file: src=/etc/nginx/sites-available/flaskapp.conf dest=/etc/nginx/conf.d/flaskapp.conf state=link
   become: True
   notify:
     - restart nginx
@@ -40,3 +40,5 @@
     - link
     - config
     - nginx
+
+# TODO comment http section in nginx.conf

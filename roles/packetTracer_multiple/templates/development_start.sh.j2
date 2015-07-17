@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Starting development server..."
+
+# activate the virtualenv
+source {{ venv_path }}/bin/activate
+
+run-api -config {{ config_file }}

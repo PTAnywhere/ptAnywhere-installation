@@ -1,46 +1,9 @@
 ---
 
-# TODO update file
-- name: Update and copy Dockerfile
-  template:
-    src: "Dockerfile.j2"
-    dest: "./Dockerfile"
-  tags:
-   - template
-   - copy
-   - files
-   - docker
+# file: main.yml
 
-
-- name: Copy secondary files
-  copy: src="{{ item }}" dest="./"
-  with_items:
-    - "startXvfb.sh"
-    - "supervisord.conf"
-    - "{{ installation_file }}"
-    - "{{ pt_configuration_file }}"
-  tags:
-   - copy
-   - files
-   - docker
-
-
-# Problem that I have not been able to solve:
-#   https://github.com/ansible/ansible-modules-core/issues/921
-- name: Build docker container automatically
-  shell: "docker build --rm -t bla ./"
-  ignore_errors: True
-  register: container_build
-  tags:
-   - build
-   - container
-   - docker
-
-
-- name: Build docker container manually
-  when: container_build.rc == 1
-  debug: msg="docker build --rm -t bla ./"
-
-
-- name: Instructions to create intances
-  debug: msg="docker run -p 5901:5900 -t -i bla"
+- include: app.yml
+- include: gunicorn.yml
+- include: supervisor.yml
+- include: nginx.yml
+- include: docker.yml

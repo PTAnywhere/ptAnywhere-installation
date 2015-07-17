@@ -56,3 +56,12 @@
    - database
    - file
    - api
+
+
+- name: Create script to start development server
+  template: src=development_start.sh.j2 dest={{ devel_script }} mode=ug+x
+  tags:
+   - copy
+   - script
+   - development
+   - api

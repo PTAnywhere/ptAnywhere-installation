@@ -1,0 +1,54 @@
+---
+
+- name: Update and copy Dockerfile
+  template:
+    src: "Dockerfile.j2"
+    dest: "./Dockerfile"
+  tags:
+   - template
+   - copy
+   - files
+   - docker
+
+
+- name: Copy secondary files
+  copy: src="{{ item }}" dest="./"
+  with_items:
+    - "startXvfb.sh"
+    - "supervisord.conf"
+    - "{{ installation_file }}"
+    - "{{ pt_configuration_file }}"
+  tags:
+   - copy
+   - files
+   - docker
+
+
+# Problem that I have not been able to solve:
+#   https://github.com/ansible/ansible-modules-core/issues/921
+- name: Build docker container automatically
+  shell: "docker build --rm -t {{ docker_image }} ./"
+  ignore_errors: True
+  register: container_build
+  tags:
+   - build
+   - container
+   - docker
+
+
+- name: Build docker container manually
+  when: container_build.rc == 1
+  debug: msg="docker build --rm -t {{ docker_image }} ./"
+
+
+- name: Reminders for docker usage
+  debug: msg="{{ item }}"
+  with_items:
+   - "docker images"
+   - "docker inspect {{ docker_image }}"
+   - "docker rmi {{ docker_image }}"
+   - "docker run -p 5901:5900 -t -i {{ docker_image }}"
+   - "docker ps  ( running containers )"
+   - "docker ps -a  ( all containers )"
+   - "docker start/stop/rm container_id"
+   - "docker port container_id"
