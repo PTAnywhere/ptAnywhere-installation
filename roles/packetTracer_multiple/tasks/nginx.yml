@@ -34,11 +34,20 @@
 - name: Create symbolic link to enable the config file of our app
   file: src=/etc/nginx/sites-available/flaskapp.conf dest=/etc/nginx/conf.d/flaskapp.conf state=link
   become: True
-  notify:
-    - restart nginx
   tags:
     - link
     - config
     - nginx
+
+
+- name: Start NGINX upon reboot
+  shell: systemctl enable nginx
+  become: True
+  notify:
+    - restart nginx
+  tags:
+    - enable
+    - nginx
+
 
 # TODO comment http section in nginx.conf

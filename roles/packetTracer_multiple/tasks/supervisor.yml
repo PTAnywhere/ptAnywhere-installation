@@ -13,9 +13,17 @@
 - name: Copy supervisor config file to run unicorn with our app
   template: src=supervisord.conf.j2 dest=/etc/supervisord.conf
   become: True
-  notify:
-    - restart supervisor
   tags:
    - copy
    - configuration
    - supervisor
+
+
+- name: Start supervisor upon reboot
+  shell: systemctl enable supervisord
+  become: True
+  notify:
+    - restart supervisor
+  tags:
+    - enable
+    - supervisor
