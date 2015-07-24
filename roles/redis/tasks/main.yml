@@ -1,22 +1,27 @@
 ---
 
-- name: Redis installation
-  apt:
-    pkg: "redis-server"
-    state: present
-  sudo: True
-  when: ansible_os_family == "Debian"
+
+- name: Install EPEL Repository
+  yum: name="http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm" state=present
+  become: True
   tags:
-    - apt
+   - install
+   - repository
+
+
+- name: Install Redis using yum
+  yum: name=redis state=present
+  become: True
+  tags:
+    - redis
     - installation
     - install
-    - debian
-    - redis
+    - yum
 
 
 - name: Serve to other machines
-  replace: dest=/etc/redis/redis.conf regexp="^bind 127.0.0.1$" replace="bind 0.0.0.0"
-  sudo: True
+  replace: dest=/etc/redis.conf regexp="^bind 127.0.0.1$" replace="bind 0.0.0.0"
+  become: True
   tags:
     - redis
     - configuration
@@ -24,7 +29,7 @@
 
 
 - name: Avoid storing anything in disk to reduce latency
-  replace: dest=/etc/redis/redis.conf regexp="^{{ item }}$" replace="#{{ item }}"
+  replace: dest=/etc/redis.conf regexp="^{{ item }}$" replace="#{{ item }}"
   with_items:
     - "save 900 1"
     - "save 300 10"
