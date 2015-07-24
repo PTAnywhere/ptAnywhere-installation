@@ -1,0 +1,30 @@
+---
+
+# Warning: WebSockets do not work in the current tomcat7 repositories
+#  (install "tomcat7-examples" and go to /examples/websocket/echo.xhtml to check it)
+
+
+- name: Install tomcat7 using yum
+  yum: name="{{ item }}" state=present
+  with_items:
+    - "tomcat"
+    - "tomcat-admin-webapps"
+  tags:
+    - tomcat7
+    - installation
+    - install
+    - yum
+
+
+- include_vars: deployment_credentials.yml
+- name: Set Tomcat 7 configuration
+  template:
+    src: tomcat-users.xml.j2
+    dest: "{{ tomcat7_yum_path }}/tomcat-users.xml"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+    mode: 0744
+  notify: restart tomcat7-yum
+  tags:
+    - configuration
+    - tomcat7
