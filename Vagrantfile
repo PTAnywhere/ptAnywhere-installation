@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	end
 
 	config.vm.define "websvr" do |node|
-		node.vm.box = "ubuntu/trusty64"
+		node.vm.box = box
 		node.vm.network "private_network", ip: "192.168.34.201"
 		node.vm.network "forwarded_port", guest: 8080, host: 8080
 		node.vm.hostname = "websvr"
