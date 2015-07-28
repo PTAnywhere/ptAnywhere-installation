@@ -38,35 +38,6 @@
     - unpack
 
 
-- name: Create PT user folder
-  file:
-    path: "{{ user_configuration_path }}"
-    state: directory
-    owner: "{{ remote_user }}"
-  when: user_configuration_file != "false"
-  tags:
-    - folder
-    - create
-    - packettracer
-    - user
-    - configuration
-
-
-- name: Copy PT user data
-  unarchive:
-    src:  "{{ user_configuration_file }}"
-    dest: "{{ user_configuration_path }}"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
-  when: user_configuration_file != "false"
-  tags:
-    - packettracer
-    - user
-    - configuration
-    - copy
-    - unpack
-
-
 - name: Copy PT configuration data
   copy:
     src:  "{{ pt_configuration_file }}"
@@ -81,7 +52,7 @@
     - copy
 
 
-- name: Ensure that is executable
+- name: Ensure that it is executable
   file:
     dest: "{{ item }}"
     mode: "u=rwx,g=rx,o=r"
@@ -105,3 +76,26 @@
     dest: "/etc/profile"
     owner: "{{remote_user}}"
     group: "{{remote_user}}"
+
+
+- name: Create backup folder
+  file:
+    path: "{{ backup_path }}"
+    state: directory
+    owner: "{{ remote_user }}"
+  tags:
+    - folder
+    - create
+    - backup
+    - configuration
+    - installation
+
+
+- name: Create script to back up PT configuration files
+  template: src=backup.sh.j2 dest="{{ home_dir }}/backup.sh" mode=ug+x
+  tags:
+    - copy
+    - script
+    - backup
+    - configuration
+    - installation
