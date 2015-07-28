@@ -39,11 +39,6 @@ Once you have started PT, configure the following options:
    * Press the "Write" button.
 
 
-__Note__: You could also only copy PT's installation and run it for the first time in each newly provisioned VM or container.
-However, this will require your intervention for each machine (you will need to close an emerging dialog which appears the first time you run PT).
-To ensure that PT starts automatically without human intervention (i.e., that no dialogs are shown in PT), we need to be sure to also copy the last two listed files.
-
-
 ### Back up the configuration files
 
 Back up the following files:
@@ -52,6 +47,10 @@ Back up the following files:
  * PT configuration file: ```cd; cp .packettracer packettracer.conf```
    * Note that this is a hidden file in the home directory of the user who run PT.
  * [TODO] provide a backup script
+
+__Note__: You could also only copy PT's installation and run it for the first time in each newly provisioned VM or container.
+However, this will require your intervention for each machine (you will need to close an emerging dialog which appears the first time you run PT).
+To ensure that PT starts automatically without human intervention (i.e., that no dialogs are shown in PT), we need to be sure to also copy the last two listed files.
 
 
 ### Tell Ansible where these files are
