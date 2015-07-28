@@ -1,8 +1,9 @@
 ---
 
 - name: restart tomcat7-manual
-  shell: "{{tomcat7_path}}/bin/shutdown.sh && {{tomcat7_path}}/bin/startup.sh"
+  shell: "{{tomcat7_manual_path}}/bin/shutdown.sh && {{tomcat7_manual_path}}/bin/startup.sh"
 
 
 - name: restart tomcat7-yum
+  become: True
   service: name=tomcat state=restarted

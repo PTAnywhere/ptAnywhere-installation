@@ -1,6 +1,6 @@
 ---
 
-##  Warning: WebSockets do not work in the current tomcat7 on the APT repositories
+##  Warning: WebSockets do not work in the current tomcat7 on current Ubuntu's APT repositories
 ##  (install "tomcat7-examples" and go to /examples/websocket/echo.xhtml to check it)
 # - name: Install tomcat7 using apt
 #   apt: pkg="{{ item }}" state=present
@@ -18,27 +18,42 @@
   environment: proxy_env
   tags:
     - apt
-    - installation
     - install
-    - dependency
+    - java
+    - debian
+
+
+- name: Install JRE using yum
+  become: True
+  yum: name=java-1.8.0-openjdk state=present
+  when: ansible_os_family == "RedHat"
+  tags:
+    - yum
+    - install
     - java
     - debian
 
 
 - name: Download Tomcat 7
   get_url: url="{{tomcat7_url}}" dest="{{tomcat7_download}}" mode=0440
-  environment: proxy_env
+  #environment: proxy_env
 
 
 - name: Unzip Tomcat 7
   unarchive: src="{{tomcat7_download}}" dest="{{home_dir}}" copy=no
+  # In CentOS 7 it gives problems, so we could alternatively use:
+  # shell: "tar zxvf {{tomcat7_download}} -C {{home_dir}}"
+  tags:
+    - unzip
+    - tomcat
+    - installation
 
 
 - include_vars: deployment_credentials.yml
 - name: Set Tomcat 7 configuration
   template:
     src: tomcat-users.xml.j2
-    dest: "{{ tomcat7_path }}/conf/tomcat-users.xml"
+    dest: "{{ tomcat7_manual_path }}/conf/tomcat-users.xml"
     owner: "{{ remote_user }}"
     group: "{{ remote_user }}"
     mode: 0744
@@ -49,4 +64,4 @@
 
 
 - name: Remember to start tomcat7 manually on restart using the following command
-  debug: msg="{{tomcat7_path}}/bin/startup.sh"
+  debug: msg="{{tomcat7_manual_path}}/bin/startup.sh"
