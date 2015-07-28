@@ -19,7 +19,7 @@ However, you can [get PT here](https://www.netacad.com/about-networking-academy/
 ### Create a base PT installation
 
 To install PT on a Linux machine, you could [do it manually](https://www.youtube.com/watch?v=7A2rIcwl_co) or use the Ansible script in this project.
-However, the easiest procedure is to create a VM which contains a PT installation using the following command:
+However, the easiest procedure is to create a VM which contains a PT installation (from now on the __installation VM__) using the following command:
 
     MACHINES='./vagrant/only_packetTracer.rb' vagrant up
 
@@ -27,7 +27,7 @@ However, the easiest procedure is to create a VM which contains a PT installatio
 ### Configure PT
 
 Access the machine where PT is installed and run PT for the first time.
-If you have created a VM using vagrant as suggested, simply start a VNC session on _vnc://192.168.35.2:5901_.
+If you have created the _installation VM_ as suggested, simply start a VNC session on _vnc://192.168.35.2:5901_.
 
 Once you have started PT, configure the following options:
  * Configure IPC
@@ -41,12 +41,16 @@ Once you have started PT, configure the following options:
 
 ### Back up the configuration files
 
-Back up the following files:
+If you are creating the base installation using the _installation VM_ as suggested, simply access the VM through ssh and run the backup script as follows:
+
+    MACHINES='./vagrant/only_packetTracer.rb' vagrant ssh
+    ~/backup.sh
+
+Otherwise, manually back up the following files:
 
  * PT installation directory: ```cd {INSTALLATION_PATH}; tar -zcvf installation.tar.gz ./*```
  * PT configuration file: ```cd; cp .packettracer packettracer.conf```
    * Note that this is a hidden file in the home directory of the user who run PT.
- * [TODO] provide a backup script
 
 __Note__: You could also only copy PT's installation and run it for the first time in each newly provisioned VM or container.
 However, this will require your intervention for each machine (you will need to close an emerging dialog which appears the first time you run PT).
