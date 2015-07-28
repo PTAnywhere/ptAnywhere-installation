@@ -15,7 +15,10 @@ PacketTracer installation listening on port 39000 (IPC) for a Linux distribution
 I cannot provide an already configured _Packet Tracer_ installation for intellectual property reasons.
 However, you can [get PT here](https://www.netacad.com/about-networking-academy/packet-tracer) and follow the following instructions to configure it.
 
-You can either use this script to install PT or [do it manually](https://www.youtube.com/watch?v=7A2rIcwl_co).
+To install PT on a Linux machine, you could [do it manually](https://www.youtube.com/watch?v=7A2rIcwl_co) or use the Ansible script in this project.
+However, the easiest procedure is to create a VM which contains a PT installation using the following command:
+
+    MACHINES='./vagrant/only_packetTracer.rb' vagrant up
 
 After installing it,
 
