@@ -2,10 +2,9 @@
 
 # file: ptinstances.yml
 
-- name: Install and configure PacketTracer instance
+- name: Install and configure PacketTracer instances' manager
   hosts: pt_backend
   roles:
-#    - packetTracer_unique
     - packetTracer_multiple
   tags:
     - packetTracer

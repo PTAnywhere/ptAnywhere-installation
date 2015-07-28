@@ -18,5 +18,6 @@
 
 - include: configure_init.yml
 
-- name: "Connect to vnc://192.168.34.X:5901"
-  debug: msg="If everything went ok, you should be able to connect to vnc://192.168.34.X:5901"
+# If the vagrant/only_packetTracer.rb file was used...
+- name: "Connect to vnc://machine-ip:5901"
+  debug: msg="If everything went ok, you should be able to connect to 'vnc://192.168.35.2:5901'-like URL."

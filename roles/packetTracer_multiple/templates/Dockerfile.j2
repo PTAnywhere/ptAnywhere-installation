@@ -27,7 +27,7 @@ RUN     x11vnc -storepasswd 1234 ~/.vnc/passwd
 
 RUN     mkdir {{ installation_path }}
 
-# Copy and run the program which starts VNC and firefox on it
+# Copy and run the program which starts VNC and PacketTracer on it
 COPY startXvfb.sh startXvfb.sh
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
