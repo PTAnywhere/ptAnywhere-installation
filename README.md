@@ -55,9 +55,10 @@ To ensure that PT starts automatically without human intervention (i.e., that no
 
 ### Tell Ansible where these files are
 
-For this, you need to customize _roles/packetTracer/defaults/main.yml_ 
- * _original\_path_ should point to PT's installation path.
- * [TODO] rest of the variables.
+For this, you need to customize _group\_vars/pt\_backend_ 
+
+ * _installation\_file_ should point to _installation.tar.gz_.
+ * _pt\_configuration\_file_ should point to _packettracer.conf_.
 
 
 ## Typical usage
