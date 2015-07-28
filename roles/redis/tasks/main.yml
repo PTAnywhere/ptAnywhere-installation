@@ -34,10 +34,17 @@
     - "save 900 1"
     - "save 300 10"
     - "save 60 10000"
-  sudo: True
-  notify:
-    - restart redis
+  become: True
   tags:
     - redis
     - configuration
     - file
+
+
+- name: Start Redis upon reboot
+  shell: systemctl enable redis
+  become: True
+  notify: restart redis
+  tags:
+    - enable
+    - redis
