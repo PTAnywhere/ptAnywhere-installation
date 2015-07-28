@@ -1,7 +1,7 @@
 ---
 
-tomcat7_name: "apache-tomcat-7.0.61"
-tomcat7_url: "http://apache.mirror.anlx.net/tomcat/tomcat-7/v7.0.61/bin/{{tomcat7_name}}.tar.gz"
+tomcat7_name: "apache-tomcat-7.0.63"
+tomcat7_url: "http://mirror.catn.com/pub/apache/tomcat/tomcat-7/v7.0.63/bin/{{tomcat7_name}}.tar.gz"
 tomcat7_download: "{{home_dir}}/{{tomcat7_name}}.tar.gz"
 tomcat7_manual_path: "{{home_dir}}/{{tomcat7_name}}"
 tomcat7_yum_path: "/etc/tomcat"
