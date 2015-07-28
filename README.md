@@ -15,33 +15,50 @@ PacketTracer installation listening on port 39000 (IPC) for a Linux distribution
 I cannot provide an already configured _Packet Tracer_ installation for intellectual property reasons.
 However, you can [get PT here](https://www.netacad.com/about-networking-academy/packet-tracer) and follow the following instructions to configure it.
 
+
+### Create a base PT installation
+
 To install PT on a Linux machine, you could [do it manually](https://www.youtube.com/watch?v=7A2rIcwl_co) or use the Ansible script in this project.
 However, the easiest procedure is to create a VM which contains a PT installation using the following command:
 
     MACHINES='./vagrant/only_packetTracer.rb' vagrant up
 
-After installing it,
 
-  * Run it for the first time and configure the following options ():
-   * Configure IPC
-     * Go to Extensions > IPC > Options...
-     * Listen Port Number: 39000.
-     * Always Listen On Start: checked.
-   * Save the options
-     * Go to Options > Preferences > Write Options To PT Installed Folder
-     * Press the "Write" button.
-  * Back up the following files:
-   * PT installation directory: ```cd {INSTALLATION_PATH}; tar -zcvf installation.tar.gz ./*```
-   * PT configuration file: ```cd; cp .packettracer packettracer.conf```
-     * Note that this is a hidden file in the home directory of the user who run PT.
-   * [TODO] provide a backup script
-  * Customize _roles/packetTracer/defaults/main.yml_ 
-   * _original\_path_ should point to PT's installation path.
-   * [TODO] rest of the variables.
+### Configure PT
+
+Access the machine where PT is installed and run PT for the first time.
+If you have created a VM using vagrant as suggested, simply start a VNC session on _vnc://192.168.35.2:5901_.
+
+Once you have started PT, configure the following options:
+ * Configure IPC
+   * Go to Extensions > IPC > Options...
+   * Listen Port Number: 39000.
+   * Always Listen On Start: checked.
+ * Save the options
+   * Go to Options > Preferences > Write Options To PT Installed Folder
+   * Press the "Write" button.
+
 
 __Note__: You could also only copy PT's installation and run it for the first time in each newly provisioned VM or container.
 However, this will require your intervention for each machine (you will need to close an emerging dialog which appears the first time you run PT).
 To ensure that PT starts automatically without human intervention (i.e., that no dialogs are shown in PT), we need to be sure to also copy the last two listed files.
+
+
+### Back up the configuration files
+
+Back up the following files:
+
+ * PT installation directory: ```cd {INSTALLATION_PATH}; tar -zcvf installation.tar.gz ./*```
+ * PT configuration file: ```cd; cp .packettracer packettracer.conf```
+   * Note that this is a hidden file in the home directory of the user who run PT.
+ * [TODO] provide a backup script
+
+
+### Tell Ansible where these files are
+
+For this, you need to customize _roles/packetTracer/defaults/main.yml_ 
+ * _original\_path_ should point to PT's installation path.
+ * [TODO] rest of the variables.
 
 
 ## Typical usage
