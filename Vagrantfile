@@ -9,6 +9,11 @@ machines_file ||= './vagrant/two_machines'
 require machines_file
 
 
+# Assings a default playbook if another one has not been defined in the config file.
+ANSIBLE_PLAYBOOK ||= "main.yml"
+
+
+
 # Assign machines to their Ansible groups
 def generate_ansible_groups(machines)
 	require 'set'
@@ -36,7 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 	config.vm.provision "ansible" do |ansible|
 		ansible.groups = generate_ansible_groups(MACHINES)
-		ansible.playbook = "main.yml"
+		ansible.playbook = ANSIBLE_PLAYBOOK
 		ansible.host_key_checking = false  # Useful during testing 
 		# ansible.verbose = "vvvv"
 		# ansible.inventory_path = "path"  # In this case we directly generate it
