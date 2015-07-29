@@ -50,4 +50,12 @@
     - nginx
 
 
-# TODO comment http section in nginx.conf
+# The new file removes the default server section
+- name: Customize Nginx configuration
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf backup=yes
+  become: True
+  notify:
+    - restart nginx
+  tags:
+    - configure
+    - nginx
