@@ -43,7 +43,7 @@ Once you have started PT, configure the following options:
    * Listen Port Number: 39000.
    * Always Listen On Start: checked.
  * Save the options
-   * Go to Options > Preferences > Write Options To PT Installed Folder
+   * Go to Options > Preferences > Administrative (tab) > Write Options To PT Installed Folder
    * Press the "Write" button.
 
 
