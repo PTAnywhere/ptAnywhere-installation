@@ -49,10 +49,11 @@ Once you have started PT, configure the following options:
 
 ### Back up the configuration files
 
-If you are creating the base installation using the _installation VM_ as suggested, simply access the VM through ssh and run the backup script as follows:
+If you are creating the base installation using the _installation VM_ as suggested, run the following command.
+It will create a folder with the desired files in the _/tmp/backup_ directory.
 
-    MACHINES='./vagrant/only_packetTracer.rb' vagrant ssh
-    ~/backup.sh
+    MACHINES='./vagrant/only_packetTracer.rb' BACKUP=true vagrant provision
+
 
 Otherwise, manually back up the following files:
 
