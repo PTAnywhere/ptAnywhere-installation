@@ -1,0 +1,4 @@
+---
+
+backup_path: "{{home_dir}}/backup"
+local_backup_path: "/tmp/backup"

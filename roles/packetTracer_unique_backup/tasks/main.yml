@@ -1,0 +1,61 @@
+---
+
+- name: Create backup folder
+  file:
+    path: "{{ backup_path }}"
+    state: directory
+    owner: "{{ remote_user }}"
+  tags:
+    - folder
+    - create
+    - backup
+    - configuration
+    - installation
+
+
+#- name: Create script to back up PT configuration files
+#  template: src=backup.sh.j2 dest="{{ home_dir }}/backup.sh" mode=ug+x
+#  tags:
+#    - copy
+#    - script
+#    - backup
+#    - configuration
+#    - installation
+
+
+- name: Backup installation folder
+  shell: "tar -zcf {{ backup_path }}/installation.tar.gz ./*"
+  args:
+    chdir: "{{ installation_path }}"
+  tags:
+    - backup
+    - packettracer
+    - installation
+
+
+- name: Backup configuration file
+  shell: "cp .packettracer {{ backup_path }}/packettracer.conf"
+  tags:
+    - backup
+    - packettracer
+    - configuration
+
+
+- name: Fetch files from VM
+  fetch:
+      src: "{{ backup_path }}/{{ item }}"
+      dest: "{{ local_backup_path }}"
+      flat: yes
+      validate_checksum: no
+  with_items:
+    - packettracer.conf
+    - installation.tar.gz
+  tags:
+    - fetch
+    - backup
+    - configuration
+    - packettracer
+
+
+- name: Post-backup instructions
+  debug: msg="Backup finished. Please, check the following directory {{ local_backup_path }}"

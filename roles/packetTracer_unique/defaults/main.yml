@@ -3,8 +3,6 @@
 # Note: "user_config_path" has the same name as the folder where PT is installed ("installation_path").
 # user_configuration_path: "{{home_dir}}/pt"
 
-backup_path: "{{home_dir}}/backup"
-
 upstart_file: "packettracer.conf"
 upstart_log: "/var/log/upstart/packettracer.log"
 daemon_conf_file: "/etc/init/packettracer.conf"

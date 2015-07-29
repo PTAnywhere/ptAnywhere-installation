@@ -71,31 +71,8 @@
 
 
 - name: Ensure that the user owns the profile folder
-  sudo: True
+  become: True
   file:
     dest: "/etc/profile"
     owner: "{{remote_user}}"
     group: "{{remote_user}}"
-
-
-- name: Create backup folder
-  file:
-    path: "{{ backup_path }}"
-    state: directory
-    owner: "{{ remote_user }}"
-  tags:
-    - folder
-    - create
-    - backup
-    - configuration
-    - installation
-
-
-- name: Create script to back up PT configuration files
-  template: src=backup.sh.j2 dest="{{ home_dir }}/backup.sh" mode=ug+x
-  tags:
-    - copy
-    - script
-    - backup
-    - configuration
-    - installation
