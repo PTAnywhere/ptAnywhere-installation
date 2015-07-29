@@ -7,8 +7,13 @@ will be used as a base for the Docker-based installation afterwards.
 
 =end
 
+backup = ENV['BACKUP']
+backup ||= false
 
-ANSIBLE_PLAYBOOK = "ptonly.yml"
+ANSIBLE_PLAYBOOK = "ptonly.yml" # unless backup
+ANSIBLE_PLAYBOOK = "ptonly_backup.yml" if backup
+
+
 MACHINES = [
   {
     "hostname"=> "packetTracer",

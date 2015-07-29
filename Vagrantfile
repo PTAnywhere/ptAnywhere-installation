@@ -42,7 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.provision "ansible" do |ansible|
 		ansible.groups = generate_ansible_groups(MACHINES)
 		ansible.playbook = ANSIBLE_PLAYBOOK
-		ansible.host_key_checking = false  # Useful during testing 
+		ansible.host_key_checking = false  # Useful during testing
 		# ansible.verbose = "vvvv"
 		# ansible.inventory_path = "path"  # In this case we directly generate it
 		# ansible.limit = "local"
