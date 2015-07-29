@@ -19,9 +19,17 @@ However, you can [get PT here](https://www.netacad.com/about-networking-academy/
 ### Create a base PT installation
 
 To install PT on a Linux machine, you could [do it manually](https://www.youtube.com/watch?v=7A2rIcwl_co) or use the Ansible script in this project.
+
 However, the easiest procedure is to create a VM which contains a PT installation (from now on the __installation VM__) using the following command:
 
     MACHINES='./vagrant/only_packetTracer.rb' vagrant up
+
+
+__Before__ executing this command make sure that:
+
+ * _installation\_file_ inside the _group\_vars/pt\_backend_ file points to a _tar.gz_ file with the base PacketTracer installation. For example, the one you have downloaded from the official site.
+ * _pt\_configuration\_file_ inside the _group\_vars/pt\_backend_ file is set to _False_. Alternatively you can add the path to a previous PacketTracer configuration file.
+ * The folder _/tmp/backup_ exists. You could also change the folder to be synced in _vagrant/only\_packetTracer.rb_.
 
 
 ### Configure PT
