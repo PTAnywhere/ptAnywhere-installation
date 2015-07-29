@@ -94,10 +94,18 @@ The Ansible playbook can be used to install PT in any Linux machine with SSH acc
 
 However, this project also provides a file to create one or multiple local virtual machine/s where we can install it (together with a web server and a Redis server).
 
+The base configuration file can be found in _vagrant/only_packetTracer.rb_.
+This file defines a web server called _websvr_ where the [PTAnywhere](https://github.com/gomezgoiri/ptAnywhere) app should be deployed and a support machine called _node1_ which will have an [HTTP API to manage PT instances](https://github.com/gomezgoiri/pt-instances-management) using Docker.
+To create more support machines edite the configuration file on _NOTE 1_.
+
+
 To create these VMs:
  1. Install [Vagrant](https://www.vagrantup.com/) in the host.
  2. Go to this project's root directory and type ```vagrant up```. <br />
     This command creates the machines defined in the configuration file and an Ansible inventory file for them (see _.vagrant/provisioners/ansible/inventory_).
- 3. Access this machine (if you want) with ```vagrant ssh [node-name]```. <br />
-    For a manual log in using _ssh_, simply type ```ssh -i .vagrant/machines/default/virtualbox/private_key [machine_ip]```.
- 4. See the PacketTracer instance running by connecting with a VNC client to: __vnc://[machine_ip]:5901__
+ 3. Access _node1_ with ```vagrant ssh node1```.
+ 4. Create the base container for PacketTracer instances (only needed the first time): ```docker build --rm -t bla ./```
+
+Once you have completed these steps, you will be able to:
+ * Deploy [PTAnywhere](https://github.com/gomezgoiri/ptAnywhere) in _websvr_.
+ * Access and create new instances using the web application on _node1_'s port 80.
