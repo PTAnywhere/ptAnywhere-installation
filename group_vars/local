@@ -19,9 +19,3 @@ proxy_env:
 #  http_proxy: http://wwwcache.open.ac.uk:80
 #  https_proxy: http://wwwcache.open.ac.uk:80
 #  ftp_proxy: http://wwwcache.open.ac.uk:80
-
-
-web_access:
-  user: web
-  private_key: "~/.ssh/web"
-  public_key: "~/.ssh/web.pub"
