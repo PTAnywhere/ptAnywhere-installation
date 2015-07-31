@@ -1,5 +1,4 @@
 ---
 
 dependencies:
-  - { role: apt_update }
   - { role: vnc }
