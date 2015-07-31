@@ -6,11 +6,11 @@ PTAnywhere installation script for a Linux distribution using Ansible (and optio
 
 Please go to [project wiki](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/) to find an extensive documentation of how to use these installation scripts:
 
- * [Requisites](Requirements)
- * [How does a typical PTAnywhere installation look like?](Typical-installation)
- * [Preparing the PT installation](Preparing-the-PT-installation)
- * [Install PTAnywhere in predefined local Virtual Machines](Install-PTAnywhere-using-Vagrant) (using Vagrant)
- * [Install PTAnywhere in any machine](Install-PTAnywhere-using-Ansible) (using Ansible)
+ * [Requisites](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/Requirements)
+ * [How does a typical PTAnywhere installation look like?](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/Typical-installation)
+ * [Preparing the PT installation](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/Preparing-the-PT-installation)
+ * [Install PTAnywhere in predefined local Virtual Machines](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/Install-PTAnywhere-using-Vagrant) (using Vagrant)
+ * [Install PTAnywhere in any machine](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/nstall-PTAnywhere-using-Ansible) (using Ansible)
 
 
 ## Acknowledgements
