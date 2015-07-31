@@ -10,7 +10,7 @@ Please go to [project wiki](https://github.com/PTAnywhere/ptAnywhere-installatio
  * [How does a typical PTAnywhere installation look like?](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/Typical-installation)
  * [Preparing the PT installation](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/Preparing-the-PT-installation)
  * [Install PTAnywhere in predefined local Virtual Machines](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/Install-PTAnywhere-using-Vagrant) (using Vagrant)
- * [Install PTAnywhere in any machine](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/nstall-PTAnywhere-using-Ansible) (using Ansible)
+ * [Install PTAnywhere in any machine](https://github.com/PTAnywhere/ptAnywhere-installation/wiki/Install-PTAnywhere-using-Ansible) (using Ansible)
 
 
 ## Acknowledgements
