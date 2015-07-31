@@ -1,5 +1,6 @@
-# Remote PacketTracer installation
-PacketTracer installation listening on port 39000 (IPC) for a Linux distribution using Ansible.
+# PTAnywhere installation
+
+PTAnywhere installation script for a Linux distribution using Ansible (and optionally Vagrant).
 
 ## Requisites
 
