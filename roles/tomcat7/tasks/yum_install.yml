@@ -15,8 +15,7 @@
     - install
     - yum
 
-
-- include_vars: deployment_credentials.yml
+- include_vars: vars.secret.yml
 - name: Set Tomcat configuration
   template:
     src: tomcat-users.xml.j2

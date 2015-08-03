@@ -35,7 +35,8 @@
 # If this apparently does not generate the file (at least not in the place you are looking for it),
 # check that the user executing it is not root.
 # In other words, check that you are not sudoing this by mistake (e.g., by defining "sudo" in any of the upper files).
-- name: "Create a VNC passwd file (WARNING: change the password before using it in a production site!)"
+- include_vars: vars.secret.yml
+- name: "Create a VNC passwd file"
   command: "{{ pass_script }} {{ vnc_password }}"
   tags:
     - copy
