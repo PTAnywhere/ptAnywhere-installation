@@ -1,4 +1,5 @@
 ---
 
 dependencies:
+  - { role: proxy }
   - { role: docker }
