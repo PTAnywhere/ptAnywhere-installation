@@ -22,7 +22,7 @@ RUN     apt-get install -y libgtk2.0-0:i386 libnss3-1d:i386 libnspr4-0d:i386 lib
 RUN     apt-get install -y x11vnc xvfb firefox supervisor
 RUN     mkdir ~/.vnc
 # Setup a password
-RUN     x11vnc -storepasswd 1234 ~/.vnc/passwd
+RUN     x11vnc -storepasswd {{ vnc_password }} ~/.vnc/passwd
 
 
 RUN     mkdir {{ installation_path }}

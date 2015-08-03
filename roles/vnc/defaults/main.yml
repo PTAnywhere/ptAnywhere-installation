@@ -3,5 +3,8 @@
 init_script: "/etc/init.d/vncserver"
 pass_script: "/tmp/vncpasswd.sh"
 
-# WARNING: change this password before using it in any real production site!
-vnc_pass: password
+
+# X server number to use
+#  This means that this server will be accessed in 5900+n
+x_display: 1  # This can be override when this role is marked as a dependency.
+# Please, note that "packetTracer_unique" overrides it with the same value.

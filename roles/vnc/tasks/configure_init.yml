@@ -21,8 +21,8 @@
   sudo: True
   replace: dest="{{init_script}}" regexp="\[\[{{item.name}}\]\]" replace="{{item.value}}"
   with_items:
-    - { name: 'execuser', value: '{{remote_user}}' }
-    - { name: 'display_number', value: '{{x_display}}' }
+    - { name: 'execuser', value: '{{ remote_user }}' }
+    - { name: 'display_number', value: '{{ x_display }}' }
   notify:
     - restart vncserver
   tags:

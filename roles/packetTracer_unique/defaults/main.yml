@@ -8,3 +8,8 @@ upstart_log: "/var/log/upstart/packettracer.log"
 daemon_conf_file: "/etc/init/packettracer.conf"
 
 pt_bin_relative_path: "bin/PacketTracer6"
+
+
+# X server number to use
+#  This means that this server will be accessed in the port 5901.
+x_server_number: 1

@@ -18,7 +18,7 @@
     - { name: 'pt_exec', value: '{{ installation_path }}/{{ pt_bin_relative_path }}' }
     - { name: 'pt_path', value: '{{ installation_path }}' }
     - { name: 'log_file', value: '{{ upstart_log }}' }
-    - { name: 'display_number', value: '{{ x_display }}' }
+    - { name: 'display_number', value: '{{ x_server_number }}' }
   sudo: True
   tags:
     - upstart
