@@ -9,7 +9,7 @@ home_dir: "{{ ansible_env.HOME }}"
 
 # Change it only if your remote user should belong to a different group.
 # So far it is only used for the app handled by gunicorn.
-remote_group: {{ remote_user }}
+remote_group: "{{ remote_user }}"
 
 proxy_env:
 #  http_proxy: http://wwwcache.open.ac.uk:80
