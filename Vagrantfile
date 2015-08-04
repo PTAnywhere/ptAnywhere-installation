@@ -5,7 +5,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 
 machines_file = ENV['MACHINES']
-machines_file ||= './vagrant/two_machines'
+machines_file ||= './vagrant/one_machine'
 require machines_file
 
 
