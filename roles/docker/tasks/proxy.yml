@@ -16,7 +16,6 @@
   template:
     src: "proxy.conf.j2"
     dest: "/etc/systemd/system/docker.service.d/proxy.conf"
-  become: True
   tags:
    - template
    - copy
@@ -26,7 +25,6 @@
 
 - name: Flush proxy changes
   shell: systemctl daemon-reload
-  become: True
   tags:
    - docker
    - daemon
