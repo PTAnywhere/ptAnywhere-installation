@@ -1,8 +1,15 @@
 ---
 
-# Connection settings for a vagrant box
-remote_user: "vagrant" # By default this is "vagrant," since that is what most public boxes are made as.
-home_dir: "/home/{{remote_user}}"
+## DO NOT EDIT THE FOLLOWING VARIABLES ##
+remote_user: "{{ ansible_env.USER }}"
+home_dir: "{{ ansible_env.HOME }}"
+
+
+## EDITABLE VARIABLES ##
+
+# Change it only if your remote user should belong to a different group.
+# So far it is only used for the app handled by gunicorn.
+remote_group: {{ remote_user }}
 
 proxy_env:
 #  http_proxy: http://wwwcache.open.ac.uk:80
