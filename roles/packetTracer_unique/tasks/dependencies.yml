@@ -14,6 +14,9 @@
 
 
 # Needed at least the first time after creating vagrant machine.
+# WARNING: this is redundant. An apt-update has already been done in dependent "docker" role.
+# Would it be best to create a role to ensure that it is called just once?
+# (cons: create a new role only for this?)
 - name: Update packages
   sudo: True
   apt: update_cache=yes
