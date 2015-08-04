@@ -5,6 +5,17 @@ FROM    ubuntu:14.10
 #  - http://stackoverflow.com/questions/16296753/can-you-run-gui-apps-in-a-docker-container/16311264#16311264
 
 
+{% if proxy_env.http_proxy %}
+ENV http_proxy  {{ proxy_env.http_proxy }}
+{% endif %}
+{% if proxy_env.https_proxy %}
+ENV https_proxy  {{ proxy_env.https_proxy }}
+{% endif %}
+{% if proxy_env.ftp_proxy %}
+ENV ftp_proxy  {{ proxy_env.ftp_proxy }}
+{% endif %}
+
+
 # in Ubuntu Trusty this is necessary to access to i386 packages.
 RUN     dpkg --add-architecture i386
 
