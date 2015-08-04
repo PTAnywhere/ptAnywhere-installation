@@ -39,6 +39,9 @@
    - docker
 
 
+- include: proxy.yml
+
+
 - name: restart docker
   shell: service docker restart
   become: True

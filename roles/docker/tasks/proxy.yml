@@ -1,0 +1,33 @@
+---
+
+# Configure proxies in Docker
+#  https://docs.docker.com/articles/systemd/#http-proxy
+
+- name: Create a systemd drop-in directory for the docker service
+  file: path=/etc/systemd/system/docker.service.d state=directory
+  tags:
+    - create
+    - folder
+    - docker
+    - service
+
+
+- name: Create file for proxy configuration  # Using templates too!
+  template:
+    src: "proxy.conf.j2"
+    dest: "/etc/systemd/system/docker.service.d/proxy.conf"
+  become: True
+  tags:
+   - template
+   - copy
+   - files
+   - docker
+
+
+- name: Flush proxy changes
+  shell: systemctl daemon-reload
+  become: True
+  tags:
+   - docker
+   - daemon
+   - reload

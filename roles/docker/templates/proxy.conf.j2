@@ -1,0 +1,11 @@
+[Service]
+Environment=
+{% if proxy_env.http_proxy -%}
+"HTTP_PROXY={{ proxy_env.http_proxy }}"
+{%- endif %}
+{% if proxy_env.https_proxy -%}
+"HTTPS_PROXY={{ proxy_env.https_proxy }}"
+{%- endif %}
+{% if proxy_env.ftp_proxy -%}
+"FTP_PROXY={{ proxy_env.ftp_proxy }}"
+{%- endif %}
