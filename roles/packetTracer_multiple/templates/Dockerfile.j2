@@ -30,17 +30,16 @@ RUN     apt-get install -y libgtk2.0-0:i386 libnss3-1d:i386 libnspr4-0d:i386 lib
 
 
 # Install vnc, xvfb in order to create a 'fake' display and firefox
-RUN     apt-get install -y x11vnc xvfb firefox supervisor
+RUN     apt-get install -y x11vnc xvfb supervisor
 RUN     mkdir ~/.vnc
 # Setup a password
-RUN     x11vnc -storepasswd {{ vnc_password }} ~/.vnc/passwd
+RUN     x11vnc -storepasswd "{{ vnc_password }}" ~/.vnc/passwd
 
 
 RUN     mkdir {{ installation_path }}
 
 # Copy and run the program which starts VNC and PacketTracer on it
 COPY startXvfb.sh startXvfb.sh
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD installation.tar.gz {{ installation_path }}
 COPY packettracer.conf /root/.packettracer
