@@ -14,4 +14,4 @@ high_port: 39050
 run_script: "{{home_dir}}/start"
 
 
-docker_image: "bla"
+docker_image: "packettracer"
