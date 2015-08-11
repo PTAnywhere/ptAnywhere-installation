@@ -18,6 +18,14 @@
    - repository
    - docker
 
+# Change data directory in CentOS 7:
+#   sudo nano /usr/lib/systemd/system/docker.service
+#      Append ""-g /data/docker" at the end of "ExecStart" line.
+#   sudo systemctl daemon-reload
+#   sudo service docker restart
+#   sudo ps -ax | grep "docker"
+# (NOTE: editing /etc/sysconfig/docker did not seem to have an effect)
+
 
 - name: Add current user to docker group
   user: name="{{ remote_user }}" groups="docker" append=yes
