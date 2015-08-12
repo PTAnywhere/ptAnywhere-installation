@@ -23,6 +23,18 @@
     - yum
 
 
+- name: Configure proxies in Git
+  shell: "git config --global {{ item.var_name }} {{ item.proxy_value }}"
+  when: item.proxy_value
+  with_items:
+    - { var_name: 'http.proxy', proxy_value: '{{ proxy_env.http_proxy }}' }
+    - { var_name: 'https.proxy', proxy_value: '{{ proxy_env.https_proxy }}' }
+  tags:
+    - configure
+    - proxy
+    - git
+
+
 - name: Install PT management API
   pip: name="{{ url }}" virtualenv="{{ venv_path }}"
   tags:
