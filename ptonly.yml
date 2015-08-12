@@ -5,4 +5,4 @@
 - name: Install and configure a single PacketTracer instance
   hosts: pt_backend
   roles:
-    - packetTracer_unique
+    - pt_configurator

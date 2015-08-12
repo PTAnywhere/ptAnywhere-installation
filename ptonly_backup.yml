@@ -5,4 +5,4 @@
 - name: Backup and fetch PacketTracer's configuration files
   hosts: pt_backend
   roles:
-    - packetTracer_unique_backup
+    - pt_configurator_backup

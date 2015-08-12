@@ -5,6 +5,6 @@
 - name: Install and configure PacketTracer instances' manager
   hosts: pt_backend
   roles:
-    - packetTracer_multiple
+    - pt_instance_manager
   tags:
     - packetTracer
