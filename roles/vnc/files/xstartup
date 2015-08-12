@@ -1,5 +1,0 @@
-#!/bin/bash
-
-xrdb $HOME/.Xresources
-#startkde &  # Uncomment if we want to use KDE instead of xfce...
-startxfce4 &

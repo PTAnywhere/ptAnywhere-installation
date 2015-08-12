@@ -1,6 +1,0 @@
----
-
-- name: restart vncserver
-  service: name=vncserver state=restarted
-  sudo: True
-
