@@ -1,5 +1,0 @@
----
-
-- name: restart supervisor
-  service: name=supervisord state=restarted
-  become: True

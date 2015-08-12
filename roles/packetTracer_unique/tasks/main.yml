@@ -1,6 +1,67 @@
 ---
 
-# file: main.yml
+- name: Check if folder exists
+  stat: path="{{ directory_to_mount }}"
+  register: instp
+  tags:
+    - folder
+    - packettracer
+    - existence
 
-- include: docker.yml
-- include: mount.yml
+
+- name: Create PT folder
+  file:
+    path: "{{ directory_to_mount }}"
+    state: directory
+    owner: "{{ remote_user }}"
+  become: True  # needed unless the folder is in the user home
+  when: not instp.stat.exists
+  tags:
+    - folder
+    - create
+    - packettracer
+    - installation
+
+
+- name: Copy PT installation
+  unarchive:
+    src:  "{{ installation_file }}"
+    dest: "{{ directory_to_mount }}"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+  when: not instp.stat.exists
+  tags:
+    - packettracer
+    - installation
+    - install
+    - copy
+    - unpack
+
+
+- name: Copy PT configuration data
+  copy:
+    src:  "{{ pt_configuration_file }}"
+    dest: "{{ home_dir }}/.packettracer"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+  when: pt_configuration_file != "false"
+  tags:
+    - packettracer
+    - user
+    - configuration
+    - copy
+
+
+- name: Create container used to configure PT
+  shell: "docker run -p {{ public_vnc_port }}:{{ docker_vnc_port }} -v {{ directory_to_mount }}:{{ installation_path }} -dti {{ docker_image }}"
+  ignore_errors: True
+  register: configuration_container_build
+  tags:
+   - build
+   - container
+   - docker
+
+
+- name: Create container used to configure PT manually
+  when: configuration_container_build.rc == 1
+  debug: msg="docker run -p {{ public_vnc_port }}:{{ docker_vnc_port }} -v {{ directory_to_mount }}:{{ installation_path }}  -dti {{ docker_image }}"

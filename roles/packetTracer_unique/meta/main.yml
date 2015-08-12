@@ -1,5 +1,4 @@
 ---
 
 dependencies:
-#  - { role: vnc, x_display: '{{ x_server_number }}' }
-  - { role: docker }
+  - { role: packetTracer_docker }

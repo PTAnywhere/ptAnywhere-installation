@@ -44,8 +44,8 @@ RUN   apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 # Configure VNC server
 RUN   touch /root/.ICEauthority && mkdir /root/.vnc
 COPY  xstartup /root/.vnc/xstartup
-COPY  vncpasswd.sh vncpasswd.sh
-RUN   chmod ug+x /vncpasswd.sh && /vncpasswd.sh "{{ vnc_password }}"
+COPY  vncpasswd.sh /root/vncpasswd.sh
+RUN   chmod ug+x /root/vncpasswd.sh && /root/vncpasswd.sh "{{ vnc_password }}"
 
 
 # Copy and configure PacketTracer
@@ -58,8 +58,8 @@ COPY  packettracer.conf /root/.packettracer
 COPY  supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
-EXPOSE 5900
-EXPOSE 39000
+EXPOSE {{ docker_vnc_port }}
+EXPOSE {{ docker_pt_port }}
 
 
 #ENTRYPOINT
