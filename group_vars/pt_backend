@@ -9,7 +9,10 @@ installation_file: "/Users/agg96/workspace/packetTracer/installation.tar.gz"
 pt_configuration_file: "/Users/agg96/workspace/packetTracer/packettracer.conf"
 
 
-# It is not necessary to edit the following variables.
+# It is not necessary to edit the following variables related to Docker.
 docker_image: "packettracer"
+x_server_number: 0  # X server number to use
+docker_vnc_port: "{{ x_server_number + 5900 }}"
+docker_pt_port: 39000
 installation_path: "/opt/pt"
 directory_to_mount: "/tmp/pt"
