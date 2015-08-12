@@ -5,6 +5,7 @@
 - name: Install and configure web servers
   hosts: web
   roles:
+    - proxy
     - tomcat7
   tags:
     - web

@@ -1,5 +1,4 @@
 ---
 
 dependencies:
-  - { role: proxy }
   - { role: packetTracer_docker_xvfb, install_xfce: True }

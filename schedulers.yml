@@ -5,6 +5,7 @@
 - name: Install and configure schedulers
   hosts: scheduling
   roles:
+    - proxy
     - redis
   tags:
     - scheduling
