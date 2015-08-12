@@ -12,6 +12,3 @@ devel_script: "{{home_dir}}/development_start"
 low_port: 39000
 high_port: 39050
 run_script: "{{home_dir}}/start"
-
-
-docker_image: "packettracer"

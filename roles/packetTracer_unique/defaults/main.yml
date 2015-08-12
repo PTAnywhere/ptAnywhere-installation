@@ -1,7 +1,5 @@
 ---
 
-docker_image: "packettracer"
-
 # X server number to use
 #  This means that this server will be accessed in the port 5901.
 x_server_number: 0  # TODO parametrize supervisord file!

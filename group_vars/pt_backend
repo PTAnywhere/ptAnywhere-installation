@@ -10,5 +10,6 @@ pt_configuration_file: "/Users/agg96/workspace/packetTracer/packettracer.conf"
 
 
 # It is not necessary to edit the following variables.
+docker_image: "packettracer"
 installation_path: "/opt/pt"
 directory_to_mount: "/tmp/pt"
