@@ -1,0 +1,66 @@
+FROM    ubuntu:14.10
+
+# Sources:
+#  - http://www.nuxeo.com/blog/docker-containers-nuxeo-part-2-add-vnc-openbox/
+#  - http://stackoverflow.com/questions/16296753/can-you-run-gui-apps-in-a-docker-container/16311264#16311264
+#  - https://github.com/welkineins/docker-ubuntu-xfce-vnc-desktop
+
+
+{% if proxy_env.http_proxy %}
+ENV http_proxy  {{ proxy_env.http_proxy }}
+{% endif %}
+{% if proxy_env.https_proxy %}
+ENV https_proxy  {{ proxy_env.https_proxy }}
+{% endif %}
+{% if proxy_env.ftp_proxy %}
+ENV ftp_proxy  {{ proxy_env.ftp_proxy }}
+{% endif %}
+
+
+# in Ubuntu Trusty this is necessary to access to i386 packages.
+RUN   dpkg --add-architecture i386
+
+
+# make sure the package repository is up to date
+RUN   apt-get update
+
+
+# Install supervisor, vnc, xvfb and xfce in order to create a graphic session
+RUN   apt-get install -y supervisor \
+      		xfce4 xfce4-goodies \
+      		tightvncserver expect nano
+
+
+# Install PacketTracer's requirements
+RUN   apt-get install -y libgtk2.0-0:i386 libnss3-1d:i386 libnspr4-0d:i386 \
+          lib32nss-mdns libxml2:i386 libxslt1.1:i386 libqtwebkit-dev:i386 \
+          libssl-dev:i386
+
+
+# Clean packages
+RUN   apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
+
+
+# Configure VNC server
+RUN   touch /root/.ICEauthority && mkdir /root/.vnc
+COPY  xstartup /root/.vnc/xstartup
+COPY  vncpasswd.sh vncpasswd.sh
+RUN   chmod ug+x /vncpasswd.sh && /vncpasswd.sh "{{ vnc_password }}"
+
+
+# Copy and configure PacketTracer
+RUN   mkdir {{ installation_path }}
+ADD   installation.tar.gz {{ installation_path }}
+COPY  packettracer.conf /root/.packettracer
+
+
+# Set tasks to run in the appropriate order (VNC, Xfce and PT)
+COPY  supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+
+EXPOSE 5900
+EXPOSE 39000
+
+
+#ENTRYPOINT
+CMD   ["/usr/bin/supervisord"]

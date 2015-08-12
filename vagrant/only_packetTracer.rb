@@ -18,7 +18,7 @@ MACHINES = [
   {
     "hostname"=> "packetTracer",
     "ip"=> "192.168.35.2",
-    "box"=> "ubuntu/trusty64",
+    "box"=> "chef/centos-7.0",
     "memory"=> 512,
     "cpus"=> 1,
     "ports"=> [],

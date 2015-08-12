@@ -1,15 +1,9 @@
 ---
 
-# Note: "user_config_path" has the same name as the folder where PT is installed ("installation_path").
-# user_configuration_path: "{{home_dir}}/pt"
-
-upstart_file: "packettracer.conf"
-upstart_log: "/var/log/upstart/packettracer.log"
-daemon_conf_file: "/etc/init/packettracer.conf"
-
-pt_bin_relative_path: "bin/PacketTracer6"
-
+docker_image: "packettracer"
 
 # X server number to use
 #  This means that this server will be accessed in the port 5901.
-x_server_number: 1
+x_server_number: 0  # TODO parametrize supervisord file!
+docker_vnc_port: "{{ x_server_number + 5900 }}"
+public_vnc_port: 5900

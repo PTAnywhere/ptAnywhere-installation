@@ -1,7 +1,7 @@
 ---
 
 - name: Check if folder exists
-  stat: path="{{ installation_path }}"
+  stat: path="{{ directory_to_mount }}"
   register: instp
   tags:
     - folder
@@ -11,7 +11,7 @@
 
 - name: Create PT folder
   file:
-    path: "{{ installation_path }}"
+    path: "{{ directory_to_mount }}"
     state: directory
     owner: "{{ remote_user }}"
   become: True  # needed unless the folder is in the user home
@@ -26,7 +26,7 @@
 - name: Copy PT installation
   unarchive:
     src:  "{{ installation_file }}"
-    dest: "{{ installation_path }}"
+    dest: "{{ directory_to_mount }}"
     owner: "{{ remote_user }}"
     group: "{{ remote_user }}"
   when: not instp.stat.exists
@@ -52,27 +52,18 @@
     - copy
 
 
-- name: Ensure that it is executable
-  file:
-    dest: "{{ item }}"
-    mode: "u=rwx,g=rx,o=r"
-    state: file
-  with_items:
-    - "{{ installation_path }}/{{ pt_bin_relative_path }}"
-    - "{{ installation_path }}/set_ptenv.sh"
-    - "{{ installation_path }}/extensions/upnp/upnp"  # Otherwise it will prompt an error message on start...
+- name: Create container used to configure PT
+  shell: "docker run -p {{ public_vnc_port }}:{{ docker_vnc_port }} -v {{ directory_to_mount }}:{{ installation_path }} -dti {{ docker_image }}"
+  ignore_errors: True
+  register: configuration_container_build
   tags:
-    - packettracer
-    - installation
-    - install
-    - chmod
-    - permissions
-    - executable
+   - build
+   - container
+   - docker
 
 
-- name: Ensure that the user owns the profile folder
-  become: True
-  file:
-    dest: "/etc/profile"
-    owner: "{{remote_user}}"
-    group: "{{remote_user}}"
+- name: Create container used to configure PT manually
+  when: configuration_container_build.rc == 1
+  debug: msg="docker run -p {{ public_vnc_port }}:{{ docker_vnc_port }} -v {{ directory_to_mount }}:{{ installation_path }}  -dti {{ docker_image }}"
+
+# docker rm $(docker ps -a -q)

@@ -1,0 +1,40 @@
+[supervisord]
+nodaemon=true
+
+[program:vncserver]
+priority=10
+directory=/
+command=vncserver :{{ x_server_number }}
+user=root
+environment=USER="root"
+autostart=true
+autorestart=false
+stopsignal=QUIT
+stdout_logfile=/var/log/vncserver.log
+stderr_logfile=/var/log/vncserver.err
+
+[program:startxfce4]
+priority=20
+directory=/root
+command=/usr/bin/startxfce4
+user=root
+autostart=true
+autorestart=true
+stopsignal=QUIT
+environment=DISPLAY=":{{ x_server_number }}",HOME="/root"
+stdout_logfile=/var/log/xfce4.log
+stderr_logfile=/var/log/xfce4.err
+
+[program:packetTracer]
+priority=30
+command={{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt
+user=root
+environment=DISPLAY=":{{ x_server_number }}"
+directory={{ installation_path }}
+autostart=true
+autorestart=true
+stdout_logfile=/var/log/packettracer.log
+stderr_logfile=/var/log/packettracer.err
+
+# Afterwards you could run other apps in this virtual display. E.g.:
+# DISPLAY=:{{ x_server_number }} firefox http://www.google.com &

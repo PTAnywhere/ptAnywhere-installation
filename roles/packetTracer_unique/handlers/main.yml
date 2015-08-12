@@ -1,6 +1,5 @@
 ---
 
-- name: restart packettracer
-  service: name=packettracer state=restarted
-  sudo: True
-
+- name: restart supervisor
+  service: name=supervisord state=restarted
+  become: True

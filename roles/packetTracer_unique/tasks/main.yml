@@ -2,6 +2,5 @@
 
 # file: main.yml
 
-- include: dependencies.yml
-- include: install.yml
-- include: upstart.yml
+- include: docker.yml
+- include: mount.yml
