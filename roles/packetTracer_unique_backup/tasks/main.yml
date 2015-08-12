@@ -24,9 +24,9 @@
 
 
 - name: Backup installation folder
-  shell: "tar -zcf {{ backup_path }}/installation.tar.gz ./*"
+  shell: "tar -zcf {{ backup_path }}/{{ compressed_installation_backup }} ./*"
   args:
-    chdir: "{{ installation_path }}"
+    chdir: "{{ directory_to_mount }}"
   tags:
     - backup
     - packettracer
@@ -34,7 +34,7 @@
 
 
 - name: Backup configuration file
-  shell: "cp .packettracer {{ backup_path }}/packettracer.conf"
+  shell: "cp .packettracer {{ backup_path }}/{{ configuration_file_backup }}"
   tags:
     - backup
     - packettracer
@@ -48,8 +48,8 @@
       flat: yes
       validate_checksum: no
   with_items:
-    - packettracer.conf
-    - installation.tar.gz
+    - "{{ configuration_file_backup }}"
+    - "{{ compressed_installation_backup }}"
   tags:
     - fetch
     - backup
