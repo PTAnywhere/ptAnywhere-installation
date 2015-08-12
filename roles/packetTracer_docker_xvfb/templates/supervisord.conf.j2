@@ -4,7 +4,7 @@ nodaemon=true
 [program:xvfb]
 priority=10
 directory=/
-command=/usr/bin/Xvfb :1 -screen 0 1024x768x16
+command=/usr/bin/Xvfb :{{ x_server_number }} -screen 0 1024x768x16
 user=root
 autostart=true
 autorestart=true
@@ -15,7 +15,7 @@ stderr_logfile=/var/log/xvfb.err
 [program:x11vnc]
 priority=20
 directory=/
-command=x11vnc -display :1 -xkb
+command=x11vnc -forever -usepw -display :{{ x_server_number }}
 user=root
 autostart=true
 autorestart=true
@@ -25,14 +25,14 @@ stderr_logfile=/var/log/x11vnc.err
 
 [program:packetTracer]
 priority=20
-command=/opt/pt/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt
+command={{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt
 user=root
-environment=DISPLAY=":1"
-directory=/opt/pt
+environment=DISPLAY=":{{ x_server_number }}"
+directory={{ installation_path }}
 autostart=true
 autorestart=true
 stdout_logfile=/var/log/packettracer.log
 stderr_logfile=/var/log/packettracer.err
 
 # Afterwards you could run other apps in this virtual display. E.g.:
-# DISPLAY=:1 firefox http://www.google.com &
+# DISPLAY=:{{ x_server_number }} firefox http://www.google.com &

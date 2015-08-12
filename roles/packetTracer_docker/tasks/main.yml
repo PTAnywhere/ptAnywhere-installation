@@ -25,7 +25,7 @@
    - docker
 
 
-- name: Copy secondary files (2)
+- name: Copy supervisor's configuration file
   template:
     src: "supervisord.conf.j2"
     dest: "./supervisord.conf"

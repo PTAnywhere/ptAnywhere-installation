@@ -15,10 +15,18 @@
 - name: Copy secondary files
   copy: src="{{ item }}" dest="./"
   with_items:
-    - "startXvfb.sh"
-    - "supervisord.conf"
     - "{{ installation_file }}"
     - "{{ pt_configuration_file }}"
+  tags:
+   - copy
+   - files
+   - docker
+
+
+- name: Copy supervisor's configuration file
+  template:
+    src: "supervisord.conf.j2"
+    dest: "./supervisord.conf"
   tags:
    - copy
    - files
@@ -48,8 +56,9 @@
    - "docker images"
    - "docker inspect {{ docker_image }}"
    - "docker rmi {{ docker_image }}"
-   - "docker run -p 5901:5900 -t -i {{ docker_image }}"
+   - "docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
    - "docker ps  ( running containers )"
    - "docker ps -a  ( all containers )"
    - "docker start/stop/rm container_id"
+   - "docker rm $(docker ps -a -q)"
    - "docker port container_id"

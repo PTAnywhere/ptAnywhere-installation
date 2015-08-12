@@ -6,4 +6,3 @@
 - include: gunicorn.yml
 - include: supervisor.yml
 - include: nginx.yml
-- include: docker.yml
