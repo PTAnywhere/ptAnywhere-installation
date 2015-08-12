@@ -23,8 +23,22 @@ stopsignal=QUIT
 stdout_logfile=/var/log/x11vnc.log
 stderr_logfile=/var/log/x11vnc.err
 
-[program:packetTracer]
+{% if install_xfce %}
+[program:startxfce4]
 priority=20
+directory=/root
+command=/usr/bin/startxfce4
+user=root
+autostart=true
+autorestart=true
+stopsignal=QUIT
+environment=DISPLAY=":{{ x_server_number }}",HOME="/root"
+stdout_logfile=/var/log/xfce4.log
+stderr_logfile=/var/log/xfce4.err
+{% endif %}
+
+[program:packetTracer]
+priority=30
 command={{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt
 user=root
 environment=DISPLAY=":{{ x_server_number }}"

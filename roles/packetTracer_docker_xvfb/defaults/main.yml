@@ -1,0 +1,3 @@
+---
+
+install_xfce: False  # This can be override when this role is marked as a dependency.

@@ -25,8 +25,11 @@ RUN   dpkg --add-architecture i386
 RUN   apt-get update
 
 
-# Install supervisor, vnc, xvfb and xfce in order to create a graphic session
-RUN   apt-get install -y x11vnc xvfb supervisor
+# Install supervisor, vnc and xvfb (and xfce) in order to create a graphic session
+RUN   apt-get install -y supervisor x11vnc xvfb
+{%- if install_xfce %}
+ xfce4 xfce4-goodies
+{% endif %}
 
 
 # Configure VNC server
@@ -37,6 +40,7 @@ RUN   mkdir ~/.vnc && x11vnc -storepasswd "{{ vnc_password }}" ~/.vnc/passwd
 RUN   apt-get install -y libgtk2.0-0:i386 libnss3-1d:i386 libnspr4-0d:i386  \
           lib32nss-mdns libxml2:i386 libxslt1.1:i386 libqtwebkit-dev:i386 \
           libssl-dev:i386
+
 
 # Clean packages
 RUN   apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
