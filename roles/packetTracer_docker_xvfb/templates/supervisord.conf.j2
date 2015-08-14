@@ -39,7 +39,7 @@ stderr_logfile=/var/log/xfce4.err
 
 [program:packetTracer]
 priority=30
-command={{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt
+command=/bin/bash -c "unset http_proxy; {{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt"
 user=root
 environment=DISPLAY=":{{ x_server_number }}"
 directory={{ installation_path }}
