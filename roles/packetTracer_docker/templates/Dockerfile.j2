@@ -21,20 +21,21 @@ ENV ftp_proxy  {{ proxy_env.ftp_proxy }}
 RUN   dpkg --add-architecture i386
 
 
-# make sure the package repository is up to date
-RUN   apt-get update
-
-
-# Install supervisor, vnc, xvfb and xfce in order to create a graphic session
-RUN   apt-get install -y supervisor \
-      		xfce4 xfce4-goodies \
-      		tightvncserver expect nano
-
-
-# Install PacketTracer's requirements
-RUN   apt-get install -y libgtk2.0-0:i386 libnss3-1d:i386 libnspr4-0d:i386 \
-          lib32nss-mdns libxml2:i386 libxslt1.1:i386 libqtwebkit-dev:i386 \
-          libssl-dev:i386
+RUN   apt-get update && apt-get install -y \
+      # BEGIN: PacketTracer's requirements
+      lib32nss-mdns \
+      libgtk2.0-0:i386 \
+      libnss3-1d:i386 \
+      libnspr4-0d:i386  \
+      libssl-dev:i386 \
+      libxml2:i386 \
+      libxslt1.1:i386 \
+      libqtwebkit-dev:i386  \
+      # END: PacketTracer's requirements
+      supervisor \
+      tightvncserver \
+      xfce4 \
+      xfce4-goodies
 
 
 # Clean packages
