@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-  - { role: packetTracer_docker_xvfb, install_xfce: True }
+  - { role: packetTracer_docker_xvfb, install_xfce: False }
