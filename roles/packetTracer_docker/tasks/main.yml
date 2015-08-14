@@ -18,7 +18,6 @@
     - "xstartup"
     - "vncpasswd.sh"
     - "{{ installation_file }}"
-    - "{{ pt_configuration_file }}"
   tags:
    - copy
    - files

@@ -49,9 +49,26 @@ RUN   chmod ug+x /root/vncpasswd.sh && /root/vncpasswd.sh "{{ vnc_password }}"
 
 
 # Copy and configure PacketTracer
-RUN   mkdir {{ installation_path }}
-ADD   installation.tar.gz {{ installation_path }}
-COPY  packettracer.conf /root/.packettracer
+# RUN   mkdir {{ installation_path }}
+ADD   {{ compressed_installation_file.name }} {{ compressed_installation_file.decompressed }}
+{% for file in compressed_installation_file.files %}
+  {% set src = compressed_installation_file.decompressed + "/" + file.backup %}
+  {% set dest = file.original_path + "/" + file.original_name %}
+  {% if file.optional %}
+RUN   if [ -f "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
+  {% else %}
+RUN   mv {{ src }} {{ dest }}
+  {% endif %}
+{% endfor %}
+{% for folder in compressed_installation_file.folders %}
+  {% set src = compressed_installation_file.decompressed + "/" + folder.backup %}
+  {% set dest = folder.original %}
+  {% if folder.optional %}
+RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
+  {% else %}
+RUN   mv {{ src }} {{ dest }}
+  {% endif %}
+{% endfor %}
 
 
 # Set tasks to run in the appropriate order (VNC, Xfce and PT)

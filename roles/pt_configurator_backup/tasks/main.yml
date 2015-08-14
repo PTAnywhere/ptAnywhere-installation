@@ -1,5 +1,16 @@
 ---
 
+- name: Delete backup folder if it existed beforehand
+  file:
+    path: "{{ backup_path }}"
+    state: absent
+  tags:
+    - folder
+    - delete
+    - previous
+    - backup
+
+
 - name: Create backup folder
   file:
     path: "{{ backup_path }}"
@@ -13,43 +24,67 @@
     - installation
 
 
-#- name: Create script to back up PT configuration files
-#  template: src=backup.sh.j2 dest="{{ home_dir }}/backup.sh" mode=ug+x
-#  tags:
-#    - copy
-#    - script
-#    - backup
-#    - configuration
-#    - installation
-
-
-- name: Backup installation folder
-  shell: "tar -zcf {{ backup_path }}/{{ compressed_installation_backup }} ./*"
-  args:
-    chdir: "{{ directory_to_mount }}"
+- name: Backup files from container
+  shell: "docker cp {{ docker_configuration_container }}:{{ item.original_path }}/{{ item.original_name }} {{ backup_path }}/{{ item.tmp_folder }}"
+  with_items:
+    - "{{ compressed_installation_file.files }}"
   tags:
     - backup
+    - docker
+    - file
     - packettracer
     - installation
 
 
-- name: Backup configuration file
-  shell: "cp .packettracer {{ backup_path }}/{{ configuration_file_backup }}"
+# UGLY COMMAND. Reason: "docker cp" insists on copying files to the folder provided (it does not treat it as a file).
+- name: Copy configuration file to backup root
+  shell: "mv {{ backup_path }}/{{ item.tmp_folder }}/{{ item.original_name }} {{ backup_path }}/{{ item.backup }}; rm -r {{ backup_path }}/{{ item.tmp_folder }}"
+  with_items: "{{ compressed_installation_file.files }}"
   tags:
     - backup
     - packettracer
     - configuration
 
 
-- name: Fetch files from VM
+- name: Backup folders from container
+  shell: "docker cp {{ docker_configuration_container }}:{{ item.original }}/. {{ backup_path }}/{{ item.backup }}"
+  with_items:
+    - "{{ compressed_installation_file.folders }}"
+  ignore_errors: True  # The last folder might not exist
+  tags:
+    - backup
+    - docker
+    - folder
+    - packettracer
+    - installation
+
+
+# UGLY COMMAND. Reason: "docker cp" insists on copying folders under their top folder name.
+- name: Copy configuration folders to backup root
+  shell: "mv {{ backup_path }}/{{ item.backup }}/{{ item.root_folder }}/* {{ backup_path }}/{{ item.backup }}; rm -r {{ backup_path }}/{{ item.backup }}/{{ item.root_folder }} "
+  with_items: "{{ compressed_installation_file.folders }}"
+  tags:
+    - backup
+    - packettracer
+    - configuration
+
+
+- name: Backup installation files and folders
+  shell: "tar -zcf {{ backup_path }}/{{ compressed_installation_file.name }} ./*"
+  args:
+    chdir: "{{ backup_path }}"
+  tags:
+    - backup
+    - packettracer
+    - installation
+
+
+- name: Fetch compressed file from VM
   fetch:
-      src: "{{ backup_path }}/{{ item }}"
+      src: "{{ backup_path }}/{{ compressed_installation_file.name }}"
       dest: "{{ local_backup_path }}"
       flat: yes
       validate_checksum: no
-  with_items:
-    - "{{ configuration_file_backup }}"
-    - "{{ compressed_installation_backup }}"
   tags:
     - fetch
     - backup
