@@ -19,7 +19,7 @@ Please go to [project wiki](https://github.com/PTAnywhere/ptAnywhere-installatio
   * What happens? The remote user you are running needs to introduce a password to become sudo.
   * Quick solution: Add the ```--ask-become-pass``` parameter.
  * The PT instance gets stuck in a machine running behind a HTTP proxy and logs don't throw any meaningul information.
-  * As strange as it sounds, you might want to [unset the proxy for PacketTracer](https://github.com/PTAnywhere/ptAnywhere-installation/commit/b7518b994264c0516e540e21261e96cf6bc77318).
+  * Strange as it may sound, you might want to [unset the proxy for PacketTracer](https://github.com/PTAnywhere/ptAnywhere-installation/commit/b7518b994264c0516e540e21261e96cf6bc77318).
 
 
 ## Acknowledgements
