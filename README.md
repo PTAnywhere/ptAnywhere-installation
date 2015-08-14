@@ -18,7 +18,7 @@ Please go to [project wiki](https://github.com/PTAnywhere/ptAnywhere-installatio
  * Ansible throws an error which says: ```Missing become password```.
   * What happens? The remote user you are running needs to introduce a password to become sudo.
   * Quick solution: Add the ```--ask-become-pass``` parameter.
- * The PT instance gets stuck in a machine running behind a HTTP proxy and logs don't throw any meaningul information.
+ * The PT instance gets stuck in a machine running behind a HTTP proxy and logs don't show any meaningul information.
   * Strange as it may sound, you might want to [unset the proxy for PacketTracer](https://github.com/PTAnywhere/ptAnywhere-installation/commit/b7518b994264c0516e540e21261e96cf6bc77318).
 
 
