@@ -49,7 +49,6 @@ RUN   chmod ug+x /root/vncpasswd.sh && /root/vncpasswd.sh "{{ vnc_password }}"
 
 
 # Copy and configure PacketTracer
-# RUN   mkdir {{ installation_path }}
 ADD   {{ compressed_installation_file.name }} {{ compressed_installation_file.decompressed }}
 {% for file in compressed_installation_file.files %}
   {% set src = compressed_installation_file.decompressed + "/" + file.backup %}

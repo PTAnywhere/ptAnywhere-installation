@@ -12,11 +12,8 @@
    - docker
 
 
-- name: Copy secondary files
-  copy: src="{{ item }}" dest="./"
-  with_items:
-    - "{{ installation_file }}"
-    - "{{ pt_configuration_file }}"
+- name: Copy installation file
+  copy: src="{{ installation_file }}" dest="./"
   tags:
    - copy
    - files
