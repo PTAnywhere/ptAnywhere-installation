@@ -1,0 +1,4 @@
+---
+
+docker_image: "packettracer_conf"  # Overriden!
+docker_configuration_container: "pt_configurator"

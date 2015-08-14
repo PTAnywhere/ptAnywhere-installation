@@ -22,6 +22,6 @@ MACHINES = [
     "memory"=> 512,
     "cpus"=> 1,
     "ports"=> [],
-    "ansible_groups" => ["pt_backend"]
+    "ansible_groups" => ["pt_configuration"]
   },
 ]

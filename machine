@@ -9,10 +9,17 @@ ptAnywere
 [scheduling]
 ptAnywere
 
+[pt_configuration]
+ptAnywere
+
 [pt_backend]
 ptAnywere
+
+[pt_installation:children]
+pt_backend
+pt_configuration
 
 [local:children]
 web
 scheduling
-pt_backend
+pt_installation

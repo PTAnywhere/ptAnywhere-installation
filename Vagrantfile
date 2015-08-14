@@ -19,6 +19,7 @@ def generate_ansible_groups(machines)
 	require 'set'
 	ansible_groups = {}
 	all = Set.new
+	ansible_groups["pt_installation:children"] = ["pt_backend", "pt_configuration"]
 	machines.each do |m|
 	  m["ansible_groups"].each do |group|
 	    if not ansible_groups.has_key?(group)
@@ -28,7 +29,12 @@ def generate_ansible_groups(machines)
 	      ansible_groups["local:vars"] = []
 	    end
 	    ansible_groups[group].push(m["hostname"])
-	    all = all.add(group)
+			# if does not contain a set...
+			if ansible_groups["pt_installation:children"].include?(group)
+				all = all.add("pt_installation")  # Adding special supergroup instead of the group
+			else
+	    	all = all.add(group)
+			end
 	  end
 	end
 	ansible_groups["local:children"] = all.to_a
