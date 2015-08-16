@@ -24,4 +24,4 @@ Please go to [project wiki](https://github.com/PTAnywhere/ptAnywhere-installatio
 
 ## Acknowledgements
 
-This installation scripts were made as part of the [FORGE project](http://ict-forge.eu/).
+These installation scripts were made as part of the [FORGE project](http://ict-forge.eu/).
