@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-  - { role: packetTracer_docker, docker_image: "packettracer_conf" }  # Overriden!
+  - { role: packetTracer_docker, docker_image: "{{ docker_configuration_image }}" }  # Overriden!

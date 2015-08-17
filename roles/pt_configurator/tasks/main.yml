@@ -14,7 +14,7 @@
 
 
 - name: Create container used to configure PT
-  shell: "docker run -p {{ public_vnc_port }}:{{ docker_vnc_port }} --name {{ docker_configuration_container }} -dti {{ docker_image }}"
+  shell: "docker run -p {{ public_vnc_port }}:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} --name {{ docker_configuration_container }} -dti {{ docker_configuration_image }}"
   ignore_errors: True
   register: configuration_container_build
   tags:
@@ -25,4 +25,4 @@
 
 - name: Create container used to configure PT manually
   when: configuration_container_build.rc == 1
-  debug: msg="docker run -p {{ public_vnc_port }}:{{ docker_vnc_port }} --name {{ docker_configuration_container }} -dti {{ docker_image }}"
+  debug: msg="docker run -p {{ public_vnc_port }}:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} --name {{ docker_configuration_container }} -dti {{ docker_configuration_image }}"

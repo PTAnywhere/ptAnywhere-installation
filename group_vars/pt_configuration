@@ -1,3 +1,5 @@
 ---
 
+docker_configuration_image: "packettracer_conf"
 docker_configuration_container: "pt_configurator"
+public_vnc_port: 5900
