@@ -35,8 +35,8 @@ RUN   apt-get update && apt-get install -y \
       # END: PacketTracer's requirements
       supervisor \
       x11vnc \
-      xvfb \  # graphic session
-{%- if install_xfce %}
+      xvfb
+{%- if install_xfce %} \
       xfce4 \
       xfce4-goodies
 {% endif %}
