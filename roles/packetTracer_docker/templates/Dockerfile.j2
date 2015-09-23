@@ -54,22 +54,22 @@ RUN   chmod ug+x /root/vncpasswd.sh && /root/vncpasswd.sh "{{ vnc_password }}"
 # Copy and configure PacketTracer
 ADD   {{ compressed_installation_file.name }} {{ compressed_installation_file.decompressed }}
 {% for file in compressed_installation_file.files %}
-  {% set src = compressed_installation_file.decompressed + "/" + file.backup %}
-  {% set dest = file.original_path + "/" + file.original_name %}
-  {% if file.optional %}
+{%    set src = compressed_installation_file.decompressed + "/" + file.backup %}
+{%    set dest = file.original_path + "/" + file.original_name %}
+{%    if file.optional %}
 RUN   if [ -f "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
-  {% else %}
+{%    else %}
 RUN   mv {{ src }} {{ dest }}
-  {% endif %}
+{%    endif %}
 {% endfor %}
 {% for folder in compressed_installation_file.folders %}
-  {% set src = compressed_installation_file.decompressed + "/" + folder.backup %}
-  {% set dest = folder.original %}
-  {% if folder.optional %}
+{%    set src = compressed_installation_file.decompressed + "/" + folder.backup %}
+{%    set dest = folder.original %}
+{%    if folder.optional %}
 RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
-  {% else %}
+{%    else %}
 RUN   mv {{ src }} {{ dest }}
-  {% endif %}
+{%    endif %}
 {% endfor %}
 
 
