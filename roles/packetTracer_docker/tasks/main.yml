@@ -1,65 +1,30 @@
 ---
 
-- include_vars: vars.secret.yml
-- name: Update and copy Dockerfile
+- name: Update and copy Dockerfile for base image
   template:
     src: "Dockerfile.j2"
-    dest: "./Dockerfile_xfce4"
+    dest: "./Dockerfile_base"
   tags:
    - template
    - copy
    - files
+   - base
    - docker
 
 
-- name: Copy secondary files
-  copy: src="{{ item }}" dest="./"
-  with_items:
-    - "xstartup"
-    - "vncpasswd.sh"
-    - "{{ installation_file }}"
-  tags:
-   - copy
-   - files
-   - docker
-
-
-- name: Copy supervisor's configuration file
-  template:
-    src: "supervisord.conf.j2"
-    dest: "./supervisord.conf"
-  tags:
-   - copy
-   - files
-   - docker
-
-
-# Problem that I have not been able to solve:
+# FIXME Problem that I have not been able to solve:
 #   https://github.com/ansible/ansible-modules-core/issues/921
 - name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_image }} -f Dockerfile_xfce4 ./"
+  shell: "docker build --rm -t {{ docker_base_image }} -f Dockerfile_base ./"
   ignore_errors: True
   register: container_build
   tags:
    - build
    - container
+   - base
    - docker
 
 
 - name: Build docker container manually
   when: container_build.rc == 1
-  debug: msg="docker build --rm -t {{ docker_image }} ./"
-
-
-- name: Reminders for docker usage
-  debug: msg="{{ item }}"
-  with_items:
-   - "docker images"
-   - "docker inspect {{ docker_image }}"
-   - "docker rmi {{ docker_image }}"
-   - "docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
-   - "docker ps  ( running containers )"
-   - "docker ps -a  ( all containers )"
-   - "docker start/stop/rm container_id"
-   - "docker rm $(docker ps -a -q)"
-   - "docker port container_id"
+  debug: msg="docker build --rm -t {{ docker_base_image }} ./"

@@ -1,58 +1,38 @@
-FROM  {{ docker_base_image }}
+FROM  ubuntu:15.10
 MAINTAINER "Aitor Gomez-Goiri" <aitor.gomez-goiri@open.ac.uk>
 
+# Sources:
+#  - http://www.nuxeo.com/blog/docker-containers-nuxeo-part-2-add-vnc-openbox/
+#  - http://stackoverflow.com/questions/16296753/can-you-run-gui-apps-in-a-docker-container/16311264#16311264
+#  - https://github.com/welkineins/docker-ubuntu-xfce-vnc-desktop
+#  - http://blog.tutum.co/2014/10/22/how-to-optimize-your-dockerfile/
 
-ENV   DEBIAN_FRONTEND noninteractive
 
-# FIXME keyboard layout selection (28)
+{% if proxy_env.http_proxy %}
+ENV http_proxy  {{ proxy_env.http_proxy }}
+{% endif %}
+{% if proxy_env.https_proxy %}
+ENV https_proxy  {{ proxy_env.https_proxy }}
+{% endif %}
+{% if proxy_env.ftp_proxy %}
+ENV ftp_proxy  {{ proxy_env.ftp_proxy }}
+{% endif %}
+
+
+# in Ubuntu Trusty this is necessary to access to i386 packages.
+RUN   dpkg --add-architecture i386
+
+
+# Install Packet Tracer requirements and supervisor
 RUN   apt-get update && apt-get install -y \
-      tightvncserver \
-      apt-utils \
-      xfce4 \
-      xfce4-goodies \
-      expect
-
-
-# Clean packages
-RUN   apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
-
-
-# Configure VNC server
-RUN   touch /root/.ICEauthority && mkdir /root/.vnc
-COPY  xstartup /root/.vnc/xstartup
-COPY  vncpasswd.sh /root/vncpasswd.sh
-RUN   chmod ug+x /root/vncpasswd.sh && /root/vncpasswd.sh "{{ vnc_password }}"
-
-
-# Copy and configure PacketTracer
-ADD   {{ compressed_installation_file.name }} {{ compressed_installation_file.decompressed }}
-{% for file in compressed_installation_file.files %}
-{%    set src = compressed_installation_file.decompressed + "/" + file.backup %}
-{%    set dest = file.original_path + "/" + file.original_name %}
-{%    if file.optional %}
-RUN   if [ -f "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
-{%    else %}
-RUN   mv {{ src }} {{ dest }}
-{%    endif %}
-{% endfor %}
-{% for folder in compressed_installation_file.folders %}
-{%    set src = compressed_installation_file.decompressed + "/" + folder.backup %}
-{%    set dest = folder.original %}
-{%    if folder.optional %}
-RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
-{%    else %}
-RUN   mv {{ src }} {{ dest }}
-{%    endif %}
-{% endfor %}
-
-
-# Set tasks to run in the appropriate order (VNC, Xfce and PT)
-COPY  supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-
-EXPOSE {{ docker_vnc_port }}
-EXPOSE {{ docker_pt_port }}
-
-
-#ENTRYPOINT
-CMD   ["/usr/bin/supervisord"]
+      # BEGIN: PacketTracer's requirements
+      lib32nss-mdns \
+      libgtk2.0-0:i386 \
+      libnss3-1d:i386 \
+      libnspr4-0d:i386  \
+      libssl-dev:i386 \
+      libxml2:i386 \
+      libxslt1.1:i386 \
+      libqtwebkit-dev:i386  \
+      # END: PacketTracer's requirements
+      supervisor
