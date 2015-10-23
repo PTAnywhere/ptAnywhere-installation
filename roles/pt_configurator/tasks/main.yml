@@ -5,7 +5,7 @@
     src:  "{{ installation_file }}"
     dest: "{{ home_dir }}/{{ compressed_installation_file.name }}"
     owner: "{{ remote_user }}"
-    group: "{{ remote_user }}"
+    group: "{{ remote_group }}"
   tags:
     - packettracer
     - user
