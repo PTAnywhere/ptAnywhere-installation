@@ -1,0 +1,24 @@
+FROM  {{ docker_xvfb_base_image }}
+MAINTAINER "Aitor Gomez-Goiri" <aitor.gomez-goiri@open.ac.uk>
+
+
+# Copy and configure PacketTracer
+ADD   {{ compressed_installation_file.name }} {{ compressed_installation_file.decompressed }}
+{% for file in compressed_installation_file.files %}
+{%    set src = compressed_installation_file.decompressed + "/" + file.backup %}
+{%    set dest = file.original_path + "/" + file.original_name %}
+{%    if file.optional %}
+RUN   if [ -f "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
+{%    else %}
+RUN   mv {{ src }} {{ dest }}
+{%    endif %}
+{% endfor %}
+{% for folder in compressed_installation_file.folders %}
+{%    set src = compressed_installation_file.decompressed + "/" + folder.backup %}
+{%    set dest = folder.original %}
+{%    if folder.optional %}
+RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
+{%    else %}
+RUN   mv {{ src }} {{ dest }}
+{%    endif %}
+{% endfor %}

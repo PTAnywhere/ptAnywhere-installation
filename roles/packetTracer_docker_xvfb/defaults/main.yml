@@ -1,3 +1,8 @@
 ---
 
 install_xfce: False  # This can be override when this role is marked as a dependency.
+
+# docker image names
+docker_xvfb_base_image: "packettracer_xvfb_pre"  # PT must be either copied or mounted in this image.
+docker_xvfb_ptadd_image: "packettracer_xvfb_add"
+docker_xvfb_ptmount_image: "packettracer_xvfb_mount"

@@ -1,4 +1,4 @@
-FROM  {{ docker_image }}
+FROM  {{ docker_xvfb_base_image }}
 MAINTAINER "Aitor Gomez-Goiri" <aitor.gomez-goiri@open.ac.uk>
 
 
@@ -16,9 +16,13 @@ RUN   mv {{ src }} {{ dest }}
 {% for folder in compressed_installation_file.folders %}
 {%    set src = compressed_installation_file.decompressed + "/" + folder.backup %}
 {%    set dest = folder.original %}
+# Not copying PT installation folder
 {%    if folder.optional %}
 RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
-{%    else %}
-RUN   mv {{ src }} {{ dest }}
 {%    endif %}
 {% endfor %}
+
+# FIXME the container size increases even if the copied file and folders are super light
+# Is it removing properly the uncompressed file?
+# Remove temporary files
+RUN   rm -r {{ compressed_installation_file.decompressed }}
