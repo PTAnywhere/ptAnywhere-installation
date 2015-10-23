@@ -4,7 +4,7 @@
 - name: Update and copy Dockerfile
   template:
     src: "Dockerfile.j2"
-    dest: "./Dockerfile"
+    dest: "./Dockerfile_xfce4"
   tags:
    - template
    - copy
@@ -37,7 +37,7 @@
 # Problem that I have not been able to solve:
 #   https://github.com/ansible/ansible-modules-core/issues/921
 - name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_image }} ./"
+  shell: "docker build --rm -t {{ docker_image }} -f Dockerfile_xfce4 ./"
   ignore_errors: True
   register: container_build
   tags:

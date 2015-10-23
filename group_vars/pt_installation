@@ -2,10 +2,14 @@
 
 # Compressed folder of the base Packet Tracer installation folders and files.
 installation_file: "/Users/agg96/workspace/packetTracer/installation.tar.gz"
+# Should PT be included in the image used?  (otherwise it will be mounted)
+include_pt: True
 
 
 # It is not necessary to edit the following variables related to Docker.
-docker_image: "packettracer"
+docker_base_image: "packettracer_base"
+docker_image: "packettracer"  # PT must be either copied or mounted in this image.
+docker_image_pt_included: "packettracer_included"
 x_server_number: 0  # X server number to use
 docker_vnc_port: "{{ x_server_number + 5900 }}"
 docker_pt_port: 39000

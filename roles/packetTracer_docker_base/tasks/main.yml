@@ -1,0 +1,30 @@
+---
+
+- name: Update and copy Dockerfile for base image
+  template:
+    src: "Dockerfile.j2"
+    dest: "./Dockerfile_base"
+  tags:
+   - template
+   - copy
+   - files
+   - base
+   - docker
+
+
+# FIXME Problem that I have not been able to solve:
+#   https://github.com/ansible/ansible-modules-core/issues/921
+- name: Build docker container automatically
+  shell: "docker build --rm -t {{ docker_base_image }} -f Dockerfile_base ./"
+  ignore_errors: True
+  register: container_build
+  tags:
+   - build
+   - container
+   - base
+   - docker
+
+
+- name: Build docker container manually
+  when: container_build.rc == 1
+  debug: msg="docker build --rm -t {{ docker_base_image }} ./"

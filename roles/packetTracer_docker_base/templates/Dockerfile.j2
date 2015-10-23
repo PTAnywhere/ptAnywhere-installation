@@ -1,0 +1,38 @@
+FROM  ubuntu:15.10
+MAINTAINER "Aitor Gomez-Goiri" <aitor.gomez-goiri@open.ac.uk>
+
+# Sources:
+#  - http://www.nuxeo.com/blog/docker-containers-nuxeo-part-2-add-vnc-openbox/
+#  - http://stackoverflow.com/questions/16296753/can-you-run-gui-apps-in-a-docker-container/16311264#16311264
+#  - https://github.com/welkineins/docker-ubuntu-xfce-vnc-desktop
+#  - http://blog.tutum.co/2014/10/22/how-to-optimize-your-dockerfile/
+
+
+{% if proxy_env.http_proxy %}
+ENV http_proxy  {{ proxy_env.http_proxy }}
+{% endif %}
+{% if proxy_env.https_proxy %}
+ENV https_proxy  {{ proxy_env.https_proxy }}
+{% endif %}
+{% if proxy_env.ftp_proxy %}
+ENV ftp_proxy  {{ proxy_env.ftp_proxy }}
+{% endif %}
+
+
+# in Ubuntu Trusty this is necessary to access to i386 packages.
+RUN   dpkg --add-architecture i386
+
+
+# Install Packet Tracer requirements and supervisor
+RUN   apt-get update && apt-get install -y \
+      # BEGIN: PacketTracer's requirements
+      lib32nss-mdns \
+      libgtk2.0-0:i386 \
+      libnss3-1d:i386 \
+      libnspr4-0d:i386  \
+      libssl-dev:i386 \
+      libxml2:i386 \
+      libxslt1.1:i386 \
+      libqtwebkit-dev:i386  \
+      # END: PacketTracer's requirements
+      supervisor

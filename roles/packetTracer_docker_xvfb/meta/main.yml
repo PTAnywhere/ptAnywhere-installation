@@ -1,4 +1,4 @@
 ---
 
 dependencies:
-  - { role: docker }
+  - { role: packetTracer_docker_base }

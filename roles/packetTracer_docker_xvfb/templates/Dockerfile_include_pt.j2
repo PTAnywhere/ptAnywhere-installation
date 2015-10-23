@@ -1,27 +1,5 @@
-FROM  {{ docker_base_image }}
+FROM  {{ docker_image }}
 MAINTAINER "Aitor Gomez-Goiri" <aitor.gomez-goiri@open.ac.uk>
-
-
-ENV   DEBIAN_FRONTEND noninteractive
-
-# FIXME keyboard layout selection (28)
-RUN   apt-get update && apt-get install -y \
-      tightvncserver \
-      apt-utils \
-      xfce4 \
-      xfce4-goodies \
-      expect
-
-
-# Clean packages
-RUN   apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
-
-
-# Configure VNC server
-RUN   touch /root/.ICEauthority && mkdir /root/.vnc
-COPY  xstartup /root/.vnc/xstartup
-COPY  vncpasswd.sh /root/vncpasswd.sh
-RUN   chmod ug+x /root/vncpasswd.sh && /root/vncpasswd.sh "{{ vnc_password }}"
 
 
 # Copy and configure PacketTracer
@@ -44,15 +22,3 @@ RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
 RUN   mv {{ src }} {{ dest }}
 {%    endif %}
 {% endfor %}
-
-
-# Set tasks to run in the appropriate order (VNC, Xfce and PT)
-COPY  supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-
-EXPOSE {{ docker_vnc_port }}
-EXPOSE {{ docker_pt_port }}
-
-
-#ENTRYPOINT
-CMD   ["/usr/bin/supervisord"]

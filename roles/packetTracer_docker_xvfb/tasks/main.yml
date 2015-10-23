@@ -1,10 +1,10 @@
 ---
 
 - include_vars: vars.secret.yml
-- name: Update and copy Dockerfile
+- name: Update and copy Dockerfile for PT
   template:
     src: "Dockerfile.j2"
-    dest: "./Dockerfile"
+    dest: "./Dockerfile_xvfb"
   tags:
    - template
    - copy
@@ -33,7 +33,7 @@
 # Problem that I have not been able to solve:
 #   https://github.com/ansible/ansible-modules-core/issues/921
 - name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_image }} ./"
+  shell: "docker build --rm -t {{ docker_image }} -f Dockerfile_xvfb ./"
   ignore_errors: True
   register: container_build
   tags:
@@ -47,13 +47,22 @@
   debug: msg="docker build --rm -t {{ docker_image }} ./"
 
 
+- name: Build docker container with Packet Tracer embedded
+  include: pt_added.yml
+  when: include_pt
+
+
+- name: Reminder to run image built
+  debug: msg="docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
+  when: not include_pt
+
+
 - name: Reminders for docker usage
   debug: msg="{{ item }}"
   with_items:
    - "docker images"
    - "docker inspect {{ docker_image }}"
    - "docker rmi {{ docker_image }}"
-   - "docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
    - "docker ps  ( running containers )"
    - "docker ps -a  ( all containers )"
    - "docker start/stop/rm container_id"
