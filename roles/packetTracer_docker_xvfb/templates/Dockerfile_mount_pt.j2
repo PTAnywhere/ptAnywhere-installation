@@ -13,10 +13,10 @@ RUN   if [ -f "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
 RUN   mv {{ src }} {{ dest }}
 {%    endif %}
 {% endfor %}
+# Not copying PT installation folder
 {% for folder in compressed_installation_file.folders %}
 {%    set src = compressed_installation_file.decompressed + "/" + folder.backup %}
 {%    set dest = folder.original %}
-# Not copying PT installation folder
 {%    if folder.optional %}
 RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
 {%    endif %}

@@ -59,7 +59,7 @@
 
 
 - name: Move installation folder to appropriate path
-  shell: mv "{{ compressed_installation_file.decompressed }}/{{ compressed_installation_file.folders[0].backup }}" "{{ compressed_installation_file.folders[0].original }}"
+  shell: "mv {{ compressed_installation_file.decompressed }}/{{ compressed_installation_file.folders[0].backup }} {{ compressed_installation_file.folders[0].original }}"
   become: True
 
 
@@ -76,4 +76,4 @@
 
 
 - name: Reminder to run image built
-  debug: msg="docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
+  debug: msg="docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }} -v {{ compressed_installation_file.folders[0].original }}:{{ compressed_installation_file.folders[0].original }}"
