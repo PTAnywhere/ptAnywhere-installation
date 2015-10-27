@@ -22,7 +22,7 @@
 
 
 - name: Add 'packettracer' tag
-  shell: "docker tag {{ docker_xvfb_ptmount_image }} {{ docker_image }}"
+  shell: "docker tag  -f {{ docker_xvfb_ptmount_image }} {{ docker_image }}"
   when: container_build.rc != 1
   ignore_errors: True
   register: container_build
@@ -59,9 +59,11 @@
 
 
 - name: Move installation folder to appropriate path
-  shell: "mv {{ compressed_installation_file.decompressed }}/{{ compressed_installation_file.folders[0].backup }} {{ compressed_installation_file.folders[0].original }}"
+  shell: "{{ item }}"
   become: True
-
+  with_items:
+    - "rm -r {{ compressed_installation_file.folders[0].original }}"
+    - "mv {{ compressed_installation_file.decompressed }}/{{ compressed_installation_file.folders[0].backup }} {{ compressed_installation_file.folders[0].original }}"
 
 - name: Change ownership of the installation folder
   file:
