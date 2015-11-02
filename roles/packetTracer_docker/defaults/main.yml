@@ -1,0 +1,3 @@
+---
+
+base_context: "{{ docker_contexts }}/{{ docker_base_image }}"

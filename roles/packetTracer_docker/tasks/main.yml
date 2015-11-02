@@ -1,9 +1,13 @@
 ---
 
+- name: Create Dockerfile_base context
+  file: path="{{ base_context }}" state=directory
+
+
 - name: Update and copy Dockerfile for base image
   template:
     src: "Dockerfile.j2"
-    dest: "./Dockerfile_base"
+    dest: "{{ base_context }}/Dockerfile"
   tags:
    - template
    - copy
@@ -15,7 +19,7 @@
 # FIXME Problem that I have not been able to solve:
 #   https://github.com/ansible/ansible-modules-core/issues/921
 - name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_base_image }} -f Dockerfile_base ./"
+  shell: "docker build --rm -t {{ docker_base_image }} {{ base_context }}"
   ignore_errors: True
   register: container_build
   tags:
