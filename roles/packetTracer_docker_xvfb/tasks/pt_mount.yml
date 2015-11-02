@@ -29,20 +29,11 @@
    - packetTracer
 
 
-- name: Move PT main folder to appropriate path
+- name: Remove unused PT main folder (it will be mounted from a data-only container)
   shell: "{{ item }}"
   become: True
   with_items:
-    - "rm -rf {{ compressed_installation_file.folders[0].original }}"
-    - "mv {{ docker_context_uncompressed_installation }}/{{ compressed_installation_file.folders[0].backup }} {{ compressed_installation_file.folders[0].original }}"
-
-
-- name: Change ownership of the installation folder
-  file:
-    path: "{{ compressed_installation_file.folders[0].original }}"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_group }}"
-  become: True
+    - "rm -rf {{ docker_context_uncompressed_installation }}/{{ compressed_installation_file.folders[0].backup }}"
 
 
 - name: Build docker container automatically
@@ -79,5 +70,5 @@
 
 
 - name: Reminder to run image built
-  debug: msg="docker run -p 5901:{{ docker_vnc_port }} -p 39000:{{ docker_pt_port }} -ti {{ docker_image }} -v {{ compressed_installation_file.folders[0].original }}:{{ compressed_installation_file.folders[0].original }}"
+  debug: msg="docker run --volumes-from {{ data_container }} -p 5901:{{ docker_vnc_port }} -p 39000:{{ docker_pt_port }} -ti {{ docker_image }}"
   when: not include_pt
