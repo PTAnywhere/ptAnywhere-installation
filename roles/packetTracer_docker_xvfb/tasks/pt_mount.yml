@@ -1,9 +1,13 @@
 ---
 
+- name: Create xvfb_mount context and PT uncompressing folder
+  file: path="{{ docker_context_uncompressed_installation }}" state=directory
+
+
 - name: Update and copy Dockerfile for adding PT
   template:
     src: "Dockerfile_mount_pt.j2"
-    dest: "./Dockerfile_xvfb_mount"
+    dest: "{{ xvfb_ptmount_context }}/Dockerfile"
   tags:
    - template
    - copy
@@ -11,8 +15,38 @@
    - docker
 
 
+- name: Uncompress installation files
+  shell: "tar zxvf {{ xvfb_ptadd_context }}/{{ compressed_installation_file.name }} -C {{ docker_context_uncompressed_installation }}"
+#  unarchive:
+#    src: "{{ compressed_installation_file.name }}"
+#    dest: "{{ compressed_installation_file.decompressed }}"
+#    creates: yes
+#    copy: no
+  tags:
+   - uncompress
+   - installation
+   - files
+   - packetTracer
+
+
+- name: Move PT main folder to appropriate path
+  shell: "{{ item }}"
+  become: True
+  with_items:
+    - "rm -rf {{ compressed_installation_file.folders[0].original }}"
+    - "mv {{ docker_context_uncompressed_installation }}/{{ compressed_installation_file.folders[0].backup }} {{ compressed_installation_file.folders[0].original }}"
+
+
+- name: Change ownership of the installation folder
+  file:
+    path: "{{ compressed_installation_file.folders[0].original }}"
+    owner: "{{ remote_user }}"
+    group: "{{ remote_group }}"
+  become: True
+
+
 - name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_xvfb_ptmount_image }} -f Dockerfile_xvfb_mount ./"
+  shell: "docker build --rm -t {{ docker_xvfb_ptmount_image }} {{ xvfb_ptmount_context }}"
   ignore_errors: True
   register: container_build
   tags:
@@ -36,41 +70,8 @@
   debug: msg="{{ item }}"
   when: container_build.rc == 1
   with_items:
-    - "docker build --rm -t {{ docker_xvfb_ptmount_image }} -f Dockerfile_xvfb_mount ./"
+    - "docker build --rm -t {{ docker_xvfb_ptmount_image }} {{ xvfb_ptmount_context }}"
     - "docker tag {{ docker_xvfb_ptmount_image }} {{ docker_image }}"
-
-
-- name: Create temporary folder
-  file: path="{{ compressed_installation_file.decompressed }}" state=directory
-
-
-- name: Uncompress installation files
-  shell: "tar zxvf {{ compressed_installation_file.name }} -C {{ compressed_installation_file.decompressed }}"
-#  unarchive:
-#    src: "{{ compressed_installation_file.name }}"
-#    dest: "{{ compressed_installation_file.decompressed }}"
-#    creates: yes
-#    copy: no
-  tags:
-   - uncompress
-   - installation
-   - files
-   - packetTracer
-
-
-- name: Move installation folder to appropriate path
-  shell: "{{ item }}"
-  become: True
-  with_items:
-    - "rm -r {{ compressed_installation_file.folders[0].original }}"
-    - "mv {{ compressed_installation_file.decompressed }}/{{ compressed_installation_file.folders[0].backup }} {{ compressed_installation_file.folders[0].original }}"
-
-- name: Change ownership of the installation folder
-  file:
-    path: "{{ compressed_installation_file.folders[0].original }}"
-    owner: "{{ remote_user }}"
-    group: "{{ remote_group }}"
-  become: True
 
 
 - name: Remove temporary folder
@@ -78,4 +79,5 @@
 
 
 - name: Reminder to run image built
-  debug: msg="docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }} -v {{ compressed_installation_file.folders[0].original }}:{{ compressed_installation_file.folders[0].original }}"
+  debug: msg="docker run -p 5901:{{ docker_vnc_port }} -p 39000:{{ docker_pt_port }} -ti {{ docker_image }} -v {{ compressed_installation_file.folders[0].original }}:{{ compressed_installation_file.folders[0].original }}"
+  when: not include_pt

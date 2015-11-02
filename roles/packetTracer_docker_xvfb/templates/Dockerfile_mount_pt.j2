@@ -3,26 +3,29 @@ MAINTAINER "Aitor Gomez-Goiri" <aitor.gomez-goiri@open.ac.uk>
 
 
 # Copy and configure PacketTracer
-ADD   {{ compressed_installation_file.name }} {{ compressed_installation_file.decompressed }}
+# FIXME optional files and folders can not exist so ADD could fail
 {% for file in compressed_installation_file.files %}
-{%    set src = compressed_installation_file.decompressed + "/" + file.backup %}
+{%  if file.optional %}
+{%    set src = docker_context_installation_subfolder + "/" + file.backup %}
 {%    set dest = file.original_path + "/" + file.original_name %}
-{%    if file.optional %}
-RUN   if [ -f "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
-{%    else %}
-RUN   mv {{ src }} {{ dest }}
-{%    endif %}
+ADD   {{ src }} {{ dest }}
+{%  endif %}
 {% endfor %}
 # Not copying PT installation folder
 {% for folder in compressed_installation_file.folders %}
-{%    set src = compressed_installation_file.decompressed + "/" + folder.backup %}
+{%  if folder.optional %}
+{%    set src = docker_context_installation_subfolder + "/" + folder.backup %}
 {%    set dest = folder.original %}
-{%    if folder.optional %}
-RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
-{%    endif %}
+ADD   {{ src }} {{ dest }}
+{%  endif %}
 {% endfor %}
 
-# FIXME the container size increases even if the copied file and folders are super light
-# Is it removing properly the uncompressed file?
-# Remove temporary files
-RUN   rm -r {{ compressed_installation_file.decompressed }}
+
+# Note: If any build steps change the data within the volume after
+# it has been declared, those changes will be discarded.
+VOLUME
+{%- for folder in compressed_installation_file.folders %}
+{%    if not folder.optional %}
+ {{ folder.original }}
+{%    endif %}
+{%- endfor %}
