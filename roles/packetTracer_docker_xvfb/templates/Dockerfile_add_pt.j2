@@ -22,3 +22,13 @@ RUN   if [ -d "{{ src }}" ]; then mv {{ src }} {{ dest }}; fi
 RUN   mv {{ src }} {{ dest }}
 {%    endif %}
 {% endfor %}
+
+
+# Note: If any build steps change the data within the volume after
+# it has been declared, those changes will be discarded.
+VOLUME
+{%- for folder in compressed_installation_file.folders %}
+{%    if not folder.optional %}
+ {{ folder.original }}
+{%    endif %}
+{%- endfor %}

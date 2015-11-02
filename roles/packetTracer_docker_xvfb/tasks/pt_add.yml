@@ -38,5 +38,20 @@
     - "docker tag {{ docker_xvfb_ptadd_image }} {{ docker_image }}"
 
 
+- name: Create data volume container
+  ignore_errors: True
+  register: volume_creation
+  shell: "docker create -v {{ compressed_installation_file.folders[0].original }} --name ptdata {{ docker_image }} echo 'Data volume'"
+  tags:
+   - container
+   - docker
+   - tag
+
+
+- name: Create data volume container manually
+  debug: msg="docker create -v {{ compressed_installation_file.folders[0].original }} --name ptdata {{ docker_image }} echo 'Data volume'"
+  when: volume_creation.rc == 1
+
+
 - name: Reminder to run image built
-  debug: msg="docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
+  debug: msg="docker run --volumes-from {{ data_container }} -p 5901:{{ docker_vnc_port }} -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"

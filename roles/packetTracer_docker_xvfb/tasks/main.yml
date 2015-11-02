@@ -1,6 +1,7 @@
 ---
 
 - include_vars: vars.secret.yml
+
 - name: Update and copy Dockerfile for PT
   template:
     src: "Dockerfile_base.j2"
