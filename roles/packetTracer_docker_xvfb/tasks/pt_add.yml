@@ -1,9 +1,13 @@
 ---
 
+- name: Create xvfb_add context
+  file: path="{{ xvfb_ptadd_context }}" state=directory
+
+
 - name: Update and copy Dockerfile for adding PT
   template:
     src: "Dockerfile_add_pt.j2"
-    dest: "./Dockerfile_xvfb_add"
+    dest: "{{ xvfb_ptadd_context }}/Dockerfile"
   tags:
    - template
    - copy
@@ -11,8 +15,18 @@
    - docker
 
 
+- name: Copy installation file
+  copy:
+    src: "{{ installation_file }}"
+    dest: "{{ xvfb_ptadd_context }}/"
+  tags:
+   - copy
+   - files
+   - docker
+
+
 - name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_xvfb_ptadd_image }} -f Dockerfile_xvfb_add ./"
+  shell: "docker build --rm -t {{ docker_xvfb_ptadd_image }} {{ xvfb_ptadd_context }}"
   ignore_errors: True
   register: container_build
   tags:
@@ -22,8 +36,8 @@
 
 
 - name: Add 'packettracer' tag
-  when: container_build.rc != 1
   shell: "docker tag -f {{ docker_xvfb_ptadd_image }} {{ docker_image }}"
+  when: include_pt and container_build.rc != 1
   tags:
    - container
    - docker
@@ -34,14 +48,14 @@
   debug: msg="{{ item }}"
   when: container_build.rc == 1
   with_items:
-    - "docker build --rm -t {{ docker_xvfb_ptadd_image }} -f Dockerfile_xvfb_add ./"
+    - "docker build --rm -t {{ docker_xvfb_ptadd_image }} {{ xvfb_ptadd_context }}"
     - "docker tag {{ docker_xvfb_ptadd_image }} {{ docker_image }}"
 
 
 - name: Create data volume container
   ignore_errors: True
   register: volume_creation
-  shell: "docker create -v {{ compressed_installation_file.folders[0].original }} --name ptdata {{ docker_image }} echo 'Data volume'"
+  shell: "docker create -v {{ compressed_installation_file.folders[0].original }} --name ptdata {{ docker_xvfb_ptadd_image }} echo 'Data volume'"
   tags:
    - container
    - docker
@@ -49,9 +63,10 @@
 
 
 - name: Create data volume container manually
-  debug: msg="docker create -v {{ compressed_installation_file.folders[0].original }} --name ptdata {{ docker_image }} echo 'Data volume'"
+  debug: msg="docker create -v {{ compressed_installation_file.folders[0].original }} --name {{ data_container }} {{ docker_xvfb_ptadd_image }} echo 'Data volume'"
   when: volume_creation.rc == 1
 
 
 - name: Reminder to run image built
   debug: msg="docker run --volumes-from {{ data_container }} -p 5901:{{ docker_vnc_port }} -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
+  when: include_pt

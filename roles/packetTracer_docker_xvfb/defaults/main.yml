@@ -6,3 +6,12 @@ install_xfce: False  # This can be override when this role is marked as a depend
 docker_xvfb_base_image: "packettracer_xvfb_pre"  # PT must be either copied or mounted in this image.
 docker_xvfb_ptadd_image: "packettracer_xvfb_add"
 docker_xvfb_ptmount_image: "packettracer_xvfb_mount"
+
+# docker building contexts
+xvfb_base_context: "{{ docker_contexts }}/{{ docker_xvfb_base_image }}"
+xvfb_ptadd_context: "{{ docker_contexts }}/{{ docker_xvfb_ptadd_image }}"
+xvfb_ptmount_context: "{{ docker_contexts }}/{{ docker_xvfb_ptmount_image }}"
+
+# uncompressed installation folder
+docker_context_installation_subfolder: installation
+docker_context_uncompressed_installation: "{{ xvfb_ptmount_context }}/{{ docker_context_installation_subfolder }}"
