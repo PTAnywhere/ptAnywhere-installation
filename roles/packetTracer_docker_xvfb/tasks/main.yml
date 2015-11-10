@@ -1,35 +1,23 @@
 ---
 
-- include_vars: vars.secret.yml
-- name: Build base image with VNC
-  include: build_image.yml
+- name: Build base image
+  include: build_base_image.yml
   vars:
     context_path: "{{ xvfb_base_context }}"
     image_name: "{{ docker_xvfb_base_image }}"
-    install_vnc: True
-    pt_command: "{{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt"
 
 
 # Mounted always as the data-only container will be of this type
-- name: Build docker container with Packet Tracer embedded
-  include: pt_add.yml
+- name: Create a data volume container which contains Packet Tracer
+  include: create_data_container.yml
 
 
-- name: Build GUIless image
-  include: build_image.yml
-  vars:
-    context_path: "{{ nogui_base_context }}"
-    image_name: "{{ docker_nogui_image }}"
-    install_vnc: False
-    pt_command: "{{installation_path}}/bin/PacketTracer6 --no-gui --ipc-port {{ docker_pt_port }} saves/FORGE/ibookdemo611.pkt"
-
-
-- name: Prepare folders to be mounted in the Packet Tracer container
-  include: pt_mount.yml
+- name: Build image without Packet Tracer installation (it should be mounted later on)
+  include: build_final_image.yml
   vars:
     context_path: "{{ xvfb_ptmount_context }}"
     image_name: "{{ docker_xvfb_ptmount_image }}"
-    base_image: "{{ docker_nogui_image }}"
+    base_image: "{{ docker_xvfb_base_image }}"
   when: not include_pt
 
 

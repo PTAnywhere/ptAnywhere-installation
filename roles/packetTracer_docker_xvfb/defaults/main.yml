@@ -1,15 +1,15 @@
 ---
 
-install_xfce: False  # This can be override when this role is marked as a dependency.
+# The following variables can be overriden when this role is marked as a dependency.
+install_xfce: False
+install_vnc: False
 
 # docker image names
-docker_nogui_image: "packettracer_nogui"
 docker_xvfb_base_image: "packettracer_xvfb_pre"  # PT must be either copied or mounted in this image.
 docker_xvfb_ptadd_image: "packettracer_xvfb_add"
 docker_xvfb_ptmount_image: "packettracer_xvfb_mount"
 
 # docker building contexts
-nogui_base_context: "{{ docker_contexts }}/{{ docker_nogui_image }}"
 xvfb_base_context: "{{ docker_contexts }}/{{ docker_xvfb_base_image }}"
 xvfb_ptadd_context: "{{ docker_contexts }}/{{ docker_xvfb_ptadd_image }}"
 xvfb_ptmount_context: "{{ docker_contexts }}/{{ docker_xvfb_ptmount_image }}"

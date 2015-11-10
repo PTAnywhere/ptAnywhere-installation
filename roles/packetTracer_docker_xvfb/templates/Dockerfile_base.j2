@@ -24,7 +24,7 @@ RUN   mkdir ~/.vnc && x11vnc -storepasswd "{{ vnc_password }}" ~/.vnc/passwd
 {% endif %}
 
 
-# Set tasks to run in the appropriate order (Xvfb and PT and maybe x11vnc)
+# Set tasks to run in the appropriate order
 COPY  supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
