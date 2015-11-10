@@ -2,7 +2,7 @@
 
 venv_name: "ptapi"
 venv_path: "{{home_dir}}/{{venv_name}}"
-url: "git+https://github.com/gomezgoiri/pt-instances-management.git#egg=ptinstancemanager"
+url: "git+https://github.com/PTAnywhere/pt-instances-management.git#egg=ptinstancemanager"
 
 
 config_file: "{{home_dir}}/config.ini"
