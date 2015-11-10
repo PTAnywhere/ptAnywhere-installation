@@ -68,5 +68,5 @@
 
 
 - name: Reminder to run image built
-  debug: msg="docker run --volumes-from {{ data_container }} -p 5901:{{ docker_vnc_port }} -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
+  debug: msg="docker run --volumes-from {{ data_container }} -p 5901:{{ docker_vnc_port }} -p  39000:{{ docker_pt_port }} -dti {{ docker_image }}"
   when: include_pt

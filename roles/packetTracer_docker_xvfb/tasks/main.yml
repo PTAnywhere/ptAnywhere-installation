@@ -1,48 +1,13 @@
 ---
 
 - include_vars: vars.secret.yml
-
-
-- name: Create xvfb_ptadd_context context
-  file: path="{{ xvfb_base_context }}" state=directory
-
-
-- name: Update and copy Dockerfile for PT
-  template:
-    src: "Dockerfile_base.j2"
-    dest: "{{ xvfb_base_context }}/Dockerfile"
-  tags:
-   - template
-   - copy
-   - files
-   - docker
-
-
-- name: Copy supervisor's configuration file
-  template:
-    src: "supervisord.conf.j2"
-    dest: "{{ xvfb_base_context }}/supervisord.conf"
-  tags:
-   - copy
-   - files
-   - docker
-
-
-# Problem that I have not been able to solve:
-#   https://github.com/ansible/ansible-modules-core/issues/921
-- name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_xvfb_base_image }} {{ xvfb_base_context }}"
-  ignore_errors: True
-  register: container_build
-  tags:
-   - build
-   - container
-   - docker
-
-
-- name: Build docker container manually
-  when: container_build.rc == 1
-  debug: msg="docker build --rm -t {{ docker_xvfb_base_image }} {{ xvfb_base_context }}"
+- name: Build base image with VNC
+  include: build_image.yml
+  vars:
+    context_path: "{{ xvfb_base_context }}"
+    image_name: "{{ docker_xvfb_base_image }}"
+    install_vnc: True
+    pt_command: "{{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt"
 
 
 # Mounted always as the data-only container will be of this type
@@ -50,8 +15,21 @@
   include: pt_add.yml
 
 
+- name: Build GUIless image
+  include: build_image.yml
+  vars:
+    context_path: "{{ nogui_base_context }}"
+    image_name: "{{ docker_nogui_image }}"
+    install_vnc: False
+    pt_command: "{{installation_path}}/bin/PacketTracer6 --no-gui --ipc-port {{ docker_pt_port }} saves/FORGE/ibookdemo611.pkt"
+
+
 - name: Prepare folders to be mounted in the Packet Tracer container
   include: pt_mount.yml
+  vars:
+    context_path: "{{ xvfb_ptmount_context }}"
+    image_name: "{{ docker_xvfb_ptmount_image }}"
+    base_image: "{{ docker_nogui_image }}"
   when: not include_pt
 
 

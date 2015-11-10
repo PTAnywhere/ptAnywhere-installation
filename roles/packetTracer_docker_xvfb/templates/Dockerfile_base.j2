@@ -4,8 +4,10 @@ MAINTAINER "Aitor Gomez-Goiri" <aitor.gomez-goiri@open.ac.uk>
 
 # Install vnc and xvfb (and xfce) in order to create a graphic session
 RUN   apt-get update && apt-get install -y \
-      x11vnc \
       xvfb
+{%- if install_vnc %} \
+      x11vnc
+{% endif %}
 {%- if install_xfce %} \
       xfce4 \
       xfce4-goodies
@@ -16,16 +18,14 @@ RUN   apt-get update && apt-get install -y \
 RUN   apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 
 
+{% if install_vnc %}
 # Configure VNC server
 RUN   mkdir ~/.vnc && x11vnc -storepasswd "{{ vnc_password }}" ~/.vnc/passwd
+{% endif %}
 
 
-# Set tasks to run in the appropriate order (Xvfb, x11vnc and PT)
+# Set tasks to run in the appropriate order (Xvfb and PT and maybe x11vnc)
 COPY  supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-
-
-EXPOSE {{ docker_vnc_port }}
-EXPOSE {{ docker_pt_port }}
 
 
 #ENTRYPOINT

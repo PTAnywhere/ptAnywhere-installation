@@ -1,18 +1,22 @@
 ---
 
-- name: Create xvfb_mount context and PT uncompressing folder
-  file: path="{{ docker_context_uncompressed_installation }}" state=directory
+- name: Create {{ context_path }} context
+  file: path="{{ context_path }}" state=directory
 
 
 - name: Update and copy Dockerfile for adding PT
   template:
     src: "Dockerfile_mount_pt.j2"
-    dest: "{{ xvfb_ptmount_context }}/Dockerfile"
+    dest: "{{ context_path }}/Dockerfile"
   tags:
    - template
    - copy
    - files
    - docker
+
+
+- name: Create PT uncompressing folder
+  file: path="{{ docker_context_uncompressed_installation }}" state=directory
 
 
 - name: Uncompress installation files
@@ -37,7 +41,7 @@
 
 
 - name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_xvfb_ptmount_image }} {{ xvfb_ptmount_context }}"
+  shell: "docker build --rm -t {{ image_name }} {{ context_path }}"
   ignore_errors: True
   register: container_build
   tags:
@@ -47,7 +51,7 @@
 
 
 - name: Add 'packettracer' tag
-  shell: "docker tag  -f {{ docker_xvfb_ptmount_image }} {{ docker_image }}"
+  shell: "docker tag  -f {{ image_name }} {{ docker_image }}"
   when: container_build.rc != 1
   ignore_errors: True
   register: container_build
@@ -61,8 +65,8 @@
   debug: msg="{{ item }}"
   when: container_build.rc == 1
   with_items:
-    - "docker build --rm -t {{ docker_xvfb_ptmount_image }} {{ xvfb_ptmount_context }}"
-    - "docker tag {{ docker_xvfb_ptmount_image }} {{ docker_image }}"
+    - "docker build --rm -t {{ image_name }} {{ context_path }}"
+    - "docker tag {{ image_name }} {{ docker_image }}"
 
 
 - name: Remove temporary folder
@@ -70,5 +74,5 @@
 
 
 - name: Reminder to run image built
-  debug: msg="docker run --volumes-from {{ data_container }} -p 5901:{{ docker_vnc_port }} -p 39000:{{ docker_pt_port }} -ti {{ docker_image }}"
+  debug: msg="docker run --volumes-from {{ data_container }} -p 5901:{{ docker_vnc_port }} -p 39000:{{ docker_pt_port }} -dti {{ docker_image }}"
   when: not include_pt

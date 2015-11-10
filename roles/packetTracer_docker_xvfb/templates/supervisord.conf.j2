@@ -12,6 +12,7 @@ stopsignal=QUIT
 stdout_logfile=/var/log/xvfb.log
 stderr_logfile=/var/log/xvfb.err
 
+{% if install_vnc %}
 [program:x11vnc]
 priority=20
 directory=/
@@ -22,6 +23,7 @@ autorestart=true
 stopsignal=QUIT
 stdout_logfile=/var/log/x11vnc.log
 stderr_logfile=/var/log/x11vnc.err
+{% endif %}
 
 {% if install_xfce %}
 [program:startxfce4]
@@ -39,7 +41,7 @@ stderr_logfile=/var/log/xfce4.err
 
 [program:packetTracer]
 priority=30
-command=/bin/bash -c "unset http_proxy; {{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt"
+command=/bin/bash -c "unset http_proxy; {{ pt_command }}"
 user=root
 environment=DISPLAY=":{{ x_server_number }}"
 directory={{ installation_path }}
