@@ -1,0 +1,46 @@
+---
+
+- include_vars: vars.secret.yml
+  when: install_vnc
+
+
+- name: "Create {{ context_path }} context"
+  file: path="{{ context_path }}" state=directory
+
+
+- name: Update and copy Dockerfile for PT
+  template:
+    src: "Dockerfile_base.j2"
+    dest: "{{ context_path }}/Dockerfile"
+  tags:
+   - template
+   - copy
+   - files
+   - docker
+
+
+- name: Copy supervisor's configuration file
+  template:
+    src: "supervisord.conf.j2"
+    dest: "{{ context_path }}/supervisord.conf"
+  tags:
+   - copy
+   - files
+   - docker
+
+
+# Problem that I have not been able to solve:
+#   https://github.com/ansible/ansible-modules-core/issues/921
+- name: Build docker container automatically
+  shell: "docker build --rm -t {{ image_name }} {{ context_path }}"
+  ignore_errors: True
+  register: container_build
+  tags:
+   - build
+   - container
+   - docker
+
+
+- name: Build docker container manually
+  when: container_build.rc == 1
+  debug: msg="docker build --rm -t {{ image_name }} {{ context_path }}"
