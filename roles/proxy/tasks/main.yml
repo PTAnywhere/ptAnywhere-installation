@@ -1,5 +1,6 @@
 ---
 
+# TODO Unset them if they are empty and a non-empty value has been set before.
 - name: Set proxies as environment variables
   lineinfile:
     dest: .bashrc

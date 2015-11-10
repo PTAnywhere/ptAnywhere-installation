@@ -23,6 +23,8 @@
     - yum
 
 
+# TODO Unset them if they are empty and a non-empty value has been set before.
+# git config --global --unset http.proxy
 - name: Configure proxies in Git
   shell: "git config --global {{ item.var_name }} {{ item.proxy_value }}"
   when: item.proxy_value
