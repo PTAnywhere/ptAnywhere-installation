@@ -10,6 +10,10 @@
 # Mounted always as the data-only container will be of this type
 - name: Create a data volume container which contains Packet Tracer
   include: create_data_container.yml
+  vars:
+    context_path: "{{ xvfb_ptadd_context }}"
+    image_name: "{{ docker_xvfb_ptadd_image }}"
+    base_image: "{{ docker_xvfb_base_image }}"
 
 
 - name: Build image without Packet Tracer installation (it should be mounted later on)
