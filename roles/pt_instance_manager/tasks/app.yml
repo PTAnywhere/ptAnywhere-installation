@@ -15,7 +15,7 @@
   with_items:
     - git
     - python-pip
-    - python-virtualenv.noarch
+    - python-virtualenv
   # when: ansible_os_family == "RedHat"
   tags:
     - install
@@ -63,7 +63,7 @@
 
 
 - name: Create database file
-  shell: "{{ venv_path }}/bin/run-api  -createdb -config {{ config_file }}"
+  shell: "{{ venv_path }}/bin/python {{ venv_path }}/src/ptinstancemanager/src/ptinstancemanager/run.py -createdb -config {{ config_file }}"
   when: not dbfile.stat.exists
   tags:
    - create
