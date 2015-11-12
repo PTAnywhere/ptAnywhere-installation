@@ -2,8 +2,13 @@
 
 # Compressed folder of the base Packet Tracer installation folders and files.
 installation_file: "/Users/agg96/workspace/packetTracer/installation.tar.gz"
-# Should PT be included in the image used?  (otherwise it will be mounted)
+
+# Should PT be included in the image used?
+#   (otherwise it will be mounted from another container)
 include_pt: False
+
+# Where should we store the Packet Tracer files to be opened?
+files_cache_path: "{{ home_dir }}/pt_files"
 
 
 # It is not necessary to edit the following variables related to Docker.
@@ -15,6 +20,8 @@ docker_vnc_port: "{{ x_server_number + 5900 }}"
 docker_pt_port: 39000
 installation_path: "/opt/pt"
 docker_contexts: "contexts"
+# Where should we mount the directory with the Packet Tracer files to be opened?
+files_mount_path: "/data/pt"
 
 
 # It is not necessary to edit the following variables related to backup files.

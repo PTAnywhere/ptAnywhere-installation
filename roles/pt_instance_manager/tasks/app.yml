@@ -85,6 +85,15 @@
    - api
 
 
+- name: Create directory for storing cached files
+  file: path="{{ files_cache_path }}" state=directory
+  tags:
+   - create
+   - cache
+   - directory
+   - api
+
+
 - name: Create script to start development server
   template: src=development_start.sh.j2 dest={{ devel_script }} mode=ug+x
   tags:

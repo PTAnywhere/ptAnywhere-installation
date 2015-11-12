@@ -14,3 +14,10 @@ uri: sqlite:///{{ database_file }}
 # Define in which ports Docker should make containers listen.
 lowest: {{ low_port }}
 highest: {{ high_port }}
+
+
+[CachedFiles]
+# The folder where PKT files will be cached.
+cache_dir: {{ files_cache_path }}
+# The directory where the cache will be mounted in the containers.
+container_dir: {{ files_mount_path }}
