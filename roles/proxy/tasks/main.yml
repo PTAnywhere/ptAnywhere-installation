@@ -1,6 +1,5 @@
 ---
 
-# TODO Unset them if they are empty and a non-empty value has been set before.
 - name: Set proxies as environment variables
   lineinfile:
     dest: .bashrc
@@ -9,6 +8,23 @@
     state: present
     backup: yes
   when: item.proxy_value
+  with_items:
+    - { var_name: 'http_proxy', proxy_value: '{{ proxy_env.http_proxy }}' }
+    - { var_name: 'https_proxy', proxy_value: '{{ proxy_env.https_proxy }}' }
+    - { var_name: 'ftp_proxy', proxy_value: '{{ proxy_env.ftp_proxy }}' }
+  tags:
+    - configure
+    - proxy
+    - environment
+
+
+- name: Unset proxies as environment variables
+  lineinfile:
+    dest: .bashrc
+    regexp: 'export {{ item.var_name }}'
+    state: absent
+    backup: yes
+  when: not item.proxy_value
   with_items:
     - { var_name: 'http_proxy', proxy_value: '{{ proxy_env.http_proxy }}' }
     - { var_name: 'https_proxy', proxy_value: '{{ proxy_env.https_proxy }}' }

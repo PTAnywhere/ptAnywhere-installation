@@ -23,11 +23,24 @@
     - yum
 
 
-# TODO Unset them if they are empty and a non-empty value has been set before.
-# git config --global --unset http.proxy
-- name: Configure proxies in Git
+- name: Set proxies in Git
   shell: "git config --global {{ item.var_name }} {{ item.proxy_value }}"
   when: item.proxy_value
+  with_items:
+    - { var_name: 'http.proxy', proxy_value: '{{ proxy_env.http_proxy }}' }
+    - { var_name: 'https.proxy', proxy_value: '{{ proxy_env.https_proxy }}' }
+  tags:
+    - configure
+    - proxy
+
+
+- name: Unset proxies in Git
+  shell: git config --global --unset '{{ item.var_name }}'
+  when: not item.proxy_value
+  register: git_return
+  # rc==5 means that the option didn't exist, which is ok too.
+  # https://www.kernel.org/pub/software/scm/git/docs/git-config.html
+  failed_when: git_return.rc!=0 and git_return.rc!=5
   with_items:
     - { var_name: 'http.proxy', proxy_value: '{{ proxy_env.http_proxy }}' }
     - { var_name: 'https.proxy', proxy_value: '{{ proxy_env.https_proxy }}' }
