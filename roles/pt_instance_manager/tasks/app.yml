@@ -75,6 +75,17 @@
     - existence
 
 
+# Before creating database file, as it might log something
+- name: Create log file for web application
+  file: path="{{ log_path }}" owner="{{ remote_user }}" state=touch
+  become: True
+  tags:
+   - create
+   - log
+   - file
+   - api
+
+
 - name: Create database file
   shell: "{{ venv_path }}/bin/python {{ venv_path }}/src/ptinstancemanager/src/ptinstancemanager/run.py -createdb -config {{ config_file }}"
   when: not dbfile.stat.exists
@@ -91,16 +102,6 @@
    - create
    - cache
    - directory
-   - api
-
-
-- name: Create log file for web application
-  file: path="{{ log_path }}" owner="{{ remote_user }}" state=touch
-  become: True
-  tags:
-   - create
-   - log
-   - file
    - api
 
 
