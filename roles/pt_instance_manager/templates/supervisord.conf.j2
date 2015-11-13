@@ -1,7 +1,15 @@
 [supervisord]
 
 [program:flask_app]
-command = {{ run_script }}
-user = {{ remote_user }}
-# stdout_logfile = /var/logs/gunicorn_supervisor.log
-redirect_stderr = true
+command={{ run_script }}
+user={{ remote_user }}
+environment=
+{%- if proxy_env.http_proxy %}
+http_proxy="{{ proxy_env.http_proxy }}"
+{%- if proxy_env.https_proxy %}
+, https_proxy="{{ proxy_env.https_proxy }}"
+{% endif %}
+{% endif %}
+stdout_logfile=/var/log/gunicorn.log
+stderr_logfile=/var/log/gunicorn.err
+redirect_stderr=true
