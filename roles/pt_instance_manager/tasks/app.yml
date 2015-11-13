@@ -94,6 +94,16 @@
    - api
 
 
+- name: Create log file for web application
+  file: path="{{ log_path }}" owner="{{ remote_user }}" state=touch
+  become: True
+  tags:
+   - create
+   - log
+   - file
+   - api
+
+
 - name: Create script to start development server
   template: src=development_start.sh.j2 dest={{ devel_script }} mode=ug+x
   tags:
