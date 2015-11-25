@@ -13,6 +13,14 @@ pt_port: {{ docker_pt_port }}
 uri: sqlite:///{{ database_file }}
 
 
+[Celery]
+broker_url: redis://localhost:6379/1
+
+
+[PTChecker]
+jar_path: {{ home_dir }}/JPTChecker-jar-with-dependencies.jar
+
+
 [Port]
 # Define in which ports Docker should make containers listen.
 lowest: {{ low_port }}

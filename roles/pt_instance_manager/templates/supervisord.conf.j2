@@ -1,6 +1,19 @@
 [supervisord]
 
+[program:celeryd]
+priority=10
+command={{ venv_path }}/bin/celery -A {{ celery_app }} worker --loglevel DEBUG
+user={{ remote_user }}
+environment=PTINSTANCEMNGR="{{ config_file }}"
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=600
+stdout_logfile=/var/log/celeryd.log
+stderr_logfile=/var/log/celeryd.log
+
 [program:flask_app]
+priority=20
 command={{ run_script }}
 user={{ remote_user }}
 environment=

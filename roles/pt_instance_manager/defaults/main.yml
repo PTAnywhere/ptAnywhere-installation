@@ -3,7 +3,7 @@
 venv_name: "ptapi"
 venv_path: "{{home_dir}}/{{venv_name}}"
 url: "git+https://github.com/PTAnywhere/pt-instances-management.git#egg=ptinstancemanager"
-
+celery_app: "ptinstancemanager.app.celery"
 
 config_file: "{{home_dir}}/config.ini"
 database_file: "{{home_dir}}/database.db"

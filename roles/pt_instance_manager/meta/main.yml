@@ -2,3 +2,4 @@
 
 dependencies:
   - { role: packetTracer_docker_xvfb, install_xfce: False }
+  - { role: redis }
