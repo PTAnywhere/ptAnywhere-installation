@@ -21,14 +21,17 @@ broker_url: redis://localhost:6379/1
 jar_path: {{ home_dir }}/JPTChecker-jar-with-dependencies.jar
 
 
-[Port]
-# Define in which ports Docker should make containers listen.
-lowest: {{ low_port }}
-highest: {{ high_port }}
-
-
 [CachedFiles]
 # The folder where PKT files will be cached.
 cache_dir: {{ files_cache_path }}
 # The directory where the cache will be mounted in the containers.
 container_dir: {{ files_mount_path }}
+
+
+[Thresholds]
+# Define thresholds for instances.
+# Percentage of total CPU (regardless of number of CPUs)
+cpu: {{ cpu_limit }}
+# Define in which ports Docker can make containers listen.
+lowest_port: {{ low_port }}
+highest_port: {{ high_port }}

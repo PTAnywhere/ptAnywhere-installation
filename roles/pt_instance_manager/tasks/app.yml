@@ -9,13 +9,16 @@
    - epel
 
 
-- name: Install Git and virtualenv
+- name: Install application requirements
   yum: name="{{ item }}" state=present
   become: True
   with_items:
     - git
     - python-pip
     - python-virtualenv
+    # the following dependencies are required by the 'psutil' package
+    - gcc
+    - python-devel
   # when: ansible_os_family == "RedHat"
   tags:
     - install

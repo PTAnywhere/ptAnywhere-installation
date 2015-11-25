@@ -10,6 +10,11 @@ include_pt: False
 # Where should we store the Packet Tracer files to be opened?
 files_cache_path: "{{ home_dir }}/pt_files"
 
+# Thresholds for Packet Tracer instance creation
+cpu_limit: 90.0  # Percentage of maximum CPU usage
+low_port: 39000
+high_port: 39050
+
 
 # It is not necessary to edit the following variables related to Docker.
 docker_base_image: "packettracer_base"

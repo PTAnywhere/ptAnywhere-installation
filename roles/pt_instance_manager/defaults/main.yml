@@ -9,7 +9,5 @@ config_file: "{{home_dir}}/config.ini"
 database_file: "{{home_dir}}/database.db"
 devel_script: "{{home_dir}}/development_start"
 
-low_port: 39000
-high_port: 39050
 log_path: /var/log/ptinstancemanager.log
 run_script: "{{home_dir}}/start"
