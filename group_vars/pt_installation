@@ -12,6 +12,7 @@ files_cache_path: "{{ home_dir }}/pt_files"
 
 # Thresholds for Packet Tracer instance creation
 cpu_limit: 90.0  # Percentage of maximum CPU usage
+memory_limit: 90.0  # Percentage of maximum memory usage
 low_port: 39000
 high_port: 39050
 

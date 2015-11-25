@@ -30,8 +30,10 @@ container_dir: {{ files_mount_path }}
 
 [Thresholds]
 # Define thresholds for instances.
-# Percentage of total CPU (regardless of number of CPUs)
+# Maximum percentage of CPU to be used (regardless of number of CPUs)
 cpu: {{ cpu_limit }}
+# Maximum percentage of memory to be used
+memory: {{ memory_limit }}
 # Define in which ports Docker can make containers listen.
 lowest_port: {{ low_port }}
 highest_port: {{ high_port }}
