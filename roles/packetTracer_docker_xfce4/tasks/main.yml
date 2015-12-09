@@ -1,10 +1,16 @@
 ---
 
 - include_vars: vars.secret.yml
+
+
+- name: "Create {{ xfce_context }} context"
+  file: path="{{ xfce_context }}" state=directory
+
+
 - name: Update and copy Dockerfile
   template:
     src: "Dockerfile.j2"
-    dest: "./Dockerfile_xfce4"
+    dest: "{{ xfce_context }}//Dockerfile"
   tags:
    - template
    - copy
@@ -13,7 +19,7 @@
 
 
 - name: Copy secondary files
-  copy: src="{{ item }}" dest="./"
+  copy: src="{{ item }}" dest="{{ xfce_context }}"
   with_items:
     - "xstartup"
     - "vncpasswd.sh"
@@ -27,7 +33,7 @@
 - name: Copy supervisor's configuration file
   template:
     src: "supervisord.conf.j2"
-    dest: "./supervisord.conf"
+    dest: "{{ xfce_context }}/supervisord.conf"
   tags:
    - copy
    - files
@@ -37,7 +43,7 @@
 # Problem that I have not been able to solve:
 #   https://github.com/ansible/ansible-modules-core/issues/921
 - name: Build docker container automatically
-  shell: "docker build --rm -t {{ docker_image }} -f Dockerfile_xfce4 ./"
+  shell: "docker build --rm -t {{ docker_xfce_image }} {{ xfce_context }}"
   ignore_errors: True
   register: container_build
   tags:
@@ -48,7 +54,7 @@
 
 - name: Build docker container manually
   when: container_build.rc == 1
-  debug: msg="docker build --rm -t {{ docker_image }} ./"
+  debug: msg="docker build --rm -t {{ docker_xfce_image }} {{ xfce_context }}"
 
 
 - name: Reminders for docker usage
@@ -57,7 +63,7 @@
    - "docker images"
    - "docker inspect {{ docker_image }}"
    - "docker rmi {{ docker_image }}"
-   - "docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_image }}"
+   - "docker run -p 5901:{{ docker_vnc_port }}  -p  39000:{{ docker_pt_port }} -ti {{ docker_xfce_image }}"
    - "docker ps  ( running containers )"
    - "docker ps -a  ( all containers )"
    - "docker start/stop/rm container_id"
