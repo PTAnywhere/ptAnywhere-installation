@@ -41,7 +41,7 @@ stderr_logfile=/var/log/xfce4.err
 
 [program:packetTracer]
 priority=30
-command=/bin/bash -c "unset http_proxy; {{installation_path}}/bin/PacketTracer6 saves/FORGE/ibookdemo611.pkt"
+command=/bin/bash -c "unset http_proxy; {{installation_path}}/bin/PacketTracer6 --ipc-port {{ docker_pt_port }} {% if not install_vnc %}--no-gui{% endif %} saves/FORGE/ibookdemo611.pkt"
 user=root
 environment=DISPLAY=":{{ x_server_number }}"
 directory={{ installation_path }}
@@ -49,6 +49,3 @@ autostart=true
 autorestart=true
 stdout_logfile=/var/log/packettracer.log
 stderr_logfile=/var/log/packettracer.err
-
-# Afterwards you could run other apps in this virtual display. E.g.:
-# DISPLAY=:{{ x_server_number }} firefox http://www.google.com &
