@@ -21,12 +21,20 @@ RUN   apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 {% if install_vnc %}
 # Configure VNC server
 RUN   mkdir ~/.vnc && x11vnc -storepasswd "{{ vnc_password }}" ~/.vnc/passwd
-{% endif %}
 
 
 # Set tasks to run in the appropriate order
 COPY  supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
-#ENTRYPOINT
 CMD   ["/usr/bin/supervisord"]
+{% else %}
+COPY  packettracer.sh /usr/bin/packettracer
+# Supervisor is actually unneeded, but it is still provided because
+#   (a) it doesn't add too much overhead to the image and
+#   (b) it offers an additional supervised way to run Packet Tracer if needed.
+COPY  supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+
+CMD   ["/usr/bin/packettracer"]
+{% endif %}

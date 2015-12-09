@@ -1,0 +1,7 @@
+#! /bin/bash
+
+unset http_proxy
+
+cd {{ installation_path }}
+
+xvfb-run ./bin/PacketTracer6 --ipc-port {{ docker_pt_port }} --no-gui saves/FORGE/ibookdemo611.pkt

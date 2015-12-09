@@ -29,6 +29,18 @@
    - docker
 
 
+- name: Copy Packet Tracer execution file
+  template:
+    src: "packettracer.sh.j2"
+    dest: "{{ context_path }}/packettracer.sh"
+    mode: ug+x
+  when: not install_vnc
+  tags:
+   - copy
+   - files
+   - docker
+
+
 # Problem that I have not been able to solve:
 #   https://github.com/ansible/ansible-modules-core/issues/921
 - name: Build docker container automatically
