@@ -1,7 +1,4 @@
 ---
 
-# docker image names
-docker_xfce_image: "packettracer_xfce"
-
-# docker building contexts
-xfce_context: "{{ docker_contexts }}/{{ docker_xfce_image }}"
+# docker building context
+xfce_context: "{{ docker_contexts }}/{{ docker_image }}"
