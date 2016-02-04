@@ -14,7 +14,7 @@ files_cache_path: "{{ home_dir }}/pt_files"
 cpu_limit: 90.0  # Percentage of maximum CPU usage
 memory_limit: 90.0  # Percentage of maximum memory usage
 low_port: 39000
-high_port: 39050
+high_port: 39999
 
 
 # It is not necessary to edit the following variables related to Docker.

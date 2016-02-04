@@ -1,16 +1,30 @@
 [supervisord]
 
-[program:celeryd]
-priority=10
-command={{ venv_path }}/bin/celery -A {{ celery_app }} worker --loglevel DEBUG
+[program:mkdir_pid]
+priority=1
+command=mkdir -p {{ celery_pid_folder }}
+autostart=true
+
+[program:chown_pid]
+priority=2
+command=chown {{ remote_user }} {{ celery_pid_folder }}
+autostart=true
+
+[program:multi]
+priority=3
+command={{ venv_path }}/bin/celery multi start priority normal -A {{ celery_app }} -Q:1 priority_high -Q:2 celery,priority_high -l WARNING --pidfile={{ celery_pid_folder }}/%%N.pid --logfile={{ celery_log_folder }}/%%N.log
 user={{ remote_user }}
 environment=PTINSTANCEMNGR="{{ config_file }}"
 autostart=true
-autorestart=true
-startsecs=10
+startsecs=2
 stopwaitsecs=600
-stdout_logfile=/var/log/celeryd.log
-stderr_logfile=/var/log/celeryd.log
+stdout_logfile={{ celery_log_folder }}/celery.log
+stderr_logfile={{ celery_log_folder }}/celery.err
+
+[group:celery]
+programs=mkdir_pid,chown_pid,multi
+priority=10
+
 
 [program:flask_app]
 priority=20

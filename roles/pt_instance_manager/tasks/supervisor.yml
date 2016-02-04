@@ -19,6 +19,21 @@
    - supervisor
 
 
+# celery_pid_folder created as a supervisor task because it is deleted during the reboot
+- name: Create folder needed for celery workers
+  file:
+    path: "{{ celery_log_folder }}"
+    state: directory
+    owner: "{{ remote_user }}"
+    group: "{{ remote_user }}"
+  become: True
+  tags:
+   - create
+   - folder
+   - log
+   - celery
+
+
 - name: Start supervisor upon reboot
   shell: systemctl enable supervisord
   become: True
