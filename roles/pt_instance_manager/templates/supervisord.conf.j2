@@ -32,9 +32,17 @@ stopwaitsecs=600
 stdout_logfile={{ celery_log_folder }}/priority.log
 stderr_logfile={{ celery_log_folder }}/priority.err
 
+[program:flower]
+command={{ venv_path }}/bin/celery flower -A {{ celery_app }} --port={{ celery_flower_port }}
+user={{ remote_user }}
+environment=PTINSTANCEMNGR="{{ config_file }}"
+autostart=false
+stdout_logfile={{ celery_log_folder }}/flower.log
+stderr_logfile={{ celery_log_folder }}/flower.err
+
 {# Number of worker processes by default: number of CPUs available. #}
 [group:celery]
-programs=normal,priority
+programs=normal,priority,flower
 priority=10
 
 

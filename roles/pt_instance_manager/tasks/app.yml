@@ -115,3 +115,13 @@
    - script
    - development
    - api
+
+
+# Flower will be installed but not started.
+# To start it, use 'supervisorctl start celery:flower'.
+- name: Install Flower to monitor Celery
+  pip: name=flower virtualenv="{{ venv_path }}"
+  tags:
+    - install
+    - flower
+    - celery

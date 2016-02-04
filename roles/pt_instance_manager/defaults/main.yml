@@ -15,3 +15,4 @@ supervisor_socket: "/tmp/supervisor.sock"
 
 celery_app: "ptinstancemanager.app.celery"
 celery_log_folder: "/var/log/celery"
+celery_flower_port: 5554
