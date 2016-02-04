@@ -11,5 +11,7 @@ devel_script: "{{home_dir}}/development_start"
 log_path: /var/log/ptinstancemanager.log
 run_script: "{{home_dir}}/start"
 
+supervisor_socket: "/tmp/supervisor.sock"
+
 celery_app: "ptinstancemanager.app.celery"
 celery_log_folder: "/var/log/celery"

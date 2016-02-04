@@ -1,4 +1,14 @@
+[unix_http_server]
+file={{ supervisor_socket }}
+
 [supervisord]
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix://{{ supervisor_socket }}
+
 
 [program:normal]
 command={{ venv_path }}/bin/celery worker -n normal -A {{ celery_app }} -Q celery,priority_high -l WARNING
