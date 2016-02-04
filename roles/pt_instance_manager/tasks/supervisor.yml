@@ -19,8 +19,7 @@
    - supervisor
 
 
-# celery_pid_folder created as a supervisor task because it is deleted during the reboot
-- name: Create folder needed for celery workers
+- name: Create folder needed for Celery workers' logs
   file:
     path: "{{ celery_log_folder }}"
     state: directory

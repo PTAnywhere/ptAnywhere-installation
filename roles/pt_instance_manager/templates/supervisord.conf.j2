@@ -1,28 +1,30 @@
 [supervisord]
 
-[program:mkdir_pid]
-priority=1
-command=mkdir -p {{ celery_pid_folder }}
-autostart=true
-
-[program:chown_pid]
-priority=2
-command=chown {{ remote_user }} {{ celery_pid_folder }}
-autostart=true
-
-[program:multi]
-priority=3
-command={{ venv_path }}/bin/celery multi start priority normal -A {{ celery_app }} -Q:1 priority_high -Q:2 celery,priority_high -l WARNING --pidfile={{ celery_pid_folder }}/%%N.pid --logfile={{ celery_log_folder }}/%%N.log
+[program:normal]
+command={{ venv_path }}/bin/celery worker -n normal -A {{ celery_app }} -Q celery,priority_high -l WARNING
 user={{ remote_user }}
 environment=PTINSTANCEMNGR="{{ config_file }}"
 autostart=true
-startsecs=2
+autorestart=true
+startsecs=10
 stopwaitsecs=600
-stdout_logfile={{ celery_log_folder }}/celery.log
-stderr_logfile={{ celery_log_folder }}/celery.err
+stdout_logfile={{ celery_log_folder }}/normal.log
+stderr_logfile={{ celery_log_folder }}/normal.err
 
+[program:priority]
+command={{ venv_path }}/bin/celery worker -n priority -A {{ celery_app }} -Q priority_high -l WARNING
+user={{ remote_user }}
+environment=PTINSTANCEMNGR="{{ config_file }}"
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=600
+stdout_logfile={{ celery_log_folder }}/priority.log
+stderr_logfile={{ celery_log_folder }}/priority.err
+
+{# Number of worker processes by default: number of CPUs available. #}
 [group:celery]
-programs=mkdir_pid,chown_pid,multi
+programs=normal,priority
 priority=10
 
 

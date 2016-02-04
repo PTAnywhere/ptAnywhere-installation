@@ -13,4 +13,3 @@ run_script: "{{home_dir}}/start"
 
 celery_app: "ptinstancemanager.app.celery"
 celery_log_folder: "/var/log/celery"
-celery_pid_folder: "/var/run/celery"
