@@ -10,7 +10,7 @@ SOCKFILE=/tmp/sock
 USER={{ remote_user }}
 GROUP={{ remote_group }}
 # Recomendation for sync workers from official documentation: 2 x $(num_cores) + 1.
-NUM_WORKERS=$NUM_CORES*2+1
+NUM_WORKERS=$(( $NUM_CORES*2+1 ))
 
 
 echo "Starting $NAME"
