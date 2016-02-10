@@ -10,6 +10,16 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 serverurl=unix://{{ supervisor_socket }}
 
 
+[program:beat]
+command={{ venv_path }}/bin/celery beat -A {{ celery_app }} -l WARNING
+environment=PTINSTANCEMNGR="{{ config_file }}"
+autostart=true
+autorestart=true
+startsecs=10
+stopwaitsecs=600
+stdout_logfile={{ celery_log_folder }}/beat.log
+stderr_logfile={{ celery_log_folder }}/beat.err
+
 [program:normal]
 command={{ venv_path }}/bin/celery worker -n normal -A {{ celery_app }} -Q celery,priority_high -l WARNING
 user={{ remote_user }}
@@ -42,7 +52,7 @@ stderr_logfile={{ celery_log_folder }}/flower.err
 
 {# Number of worker processes by default: number of CPUs available. #}
 [group:celery]
-programs=normal,priority,flower
+programs=beat,normal,priority,flower
 priority=10
 
 
