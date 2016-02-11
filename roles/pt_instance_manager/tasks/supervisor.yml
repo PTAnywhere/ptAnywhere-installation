@@ -19,18 +19,20 @@
    - supervisor
 
 
-- name: Create folder needed for Celery workers' logs
+- name: Create folders needed for logs
   file:
-    path: "{{ celery_log_folder }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ remote_user }}"
     group: "{{ remote_user }}"
   become: True
+  with_items:
+    - "{{ celery_log_folder }}"
+    - "{{ gunicorn_log_folder }}"
   tags:
    - create
    - folder
    - log
-   - celery
 
 
 - name: Start supervisor upon reboot

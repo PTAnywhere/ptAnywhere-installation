@@ -15,7 +15,8 @@ uri: sqlite:///{{ database_file }}
 
 [Celery]
 broker_url: redis://localhost:6379/1
-timeout: 5
+# Revoke task if it does not start in 2 seconds
+task_expiration: 2
 
 
 [PTChecker]

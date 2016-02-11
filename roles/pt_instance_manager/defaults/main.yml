@@ -9,7 +9,8 @@ database_file: "{{home_dir}}/database.db"
 devel_script: "{{home_dir}}/development_start"
 
 log_path: /var/log/ptinstancemanager.log
-run_script: "{{home_dir}}/start"
+gunicorn_config: "{{home_dir}}/gunicorn_config.py"
+gunicorn_log_folder: "/var/log/gunicorn"
 
 supervisor_socket: "/tmp/supervisor.sock"
 

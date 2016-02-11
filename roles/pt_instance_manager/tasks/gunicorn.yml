@@ -1,14 +1,18 @@
 ---
 
 - name: Install Gunicorn
-  pip: name=gunicorn virtualenv="{{ venv_path }}"
+  pip: name={{ item }} virtualenv="{{ venv_path }}"
+  with_items:
+    - gunicorn
+    - greenlet
+    - gevent
   tags:
     - install
     - gunicorn
 
 
-- name: Copy bash file to run unicorn with our app
-  template: src=gunicorn_start.sh.j2 dest="{{ run_script }}" mode=ug+x
+- name: Copy configuration file to run unicorn with our app
+  template: src=gunicorn_config.py.j2 dest="{{ gunicorn_config }}"
   tags:
    - copy
    - configuration

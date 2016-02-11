@@ -58,15 +58,13 @@ priority=10
 
 [program:flask_app]
 priority=20
-command={{ run_script }}
+command={{ venv_path }}/bin/gunicorn 'ptinstancemanager.wsgi:main("{{ config_file }}")' -c {{ gunicorn_config }}
 user={{ remote_user }}
-environment=
-{%- if proxy_env.http_proxy %}
-http_proxy="{{ proxy_env.http_proxy }}"
+{% if proxy_env.http_proxy %}
+environment=http_proxy="{{ proxy_env.http_proxy }}"
 {%- if proxy_env.https_proxy %}
 , https_proxy="{{ proxy_env.https_proxy }}"
 {% endif %}
 {% endif %}
-stdout_logfile=/var/log/gunicorn.log
-stderr_logfile=/var/log/gunicorn.err
-redirect_stderr=true
+stdout_logfile=/var/log/flask.log
+stderr_logfile=/var/log/flask.err
