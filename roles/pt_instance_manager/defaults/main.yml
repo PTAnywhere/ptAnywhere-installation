@@ -17,3 +17,7 @@ supervisor_socket: "/tmp/supervisor.sock"
 celery_app: "ptinstancemanager.app.celery"
 celery_log_folder: "/var/log/celery"
 celery_flower_port: 5554
+
+# Default log levels (debug_mode: False)
+gunicorn_loglevel: "warning"
+celery_loglevel: "WARNING"

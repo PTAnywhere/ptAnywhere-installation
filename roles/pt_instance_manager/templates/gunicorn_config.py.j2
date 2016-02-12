@@ -1,14 +1,17 @@
-import multiprocessing
-
 
 bind = "127.0.0.1:8000"
 proc_name = "PacketTracer instances' management API"
-# Recomendation for sync workers from official documentation: 2 x $(num_cores) + 1.
-workers = 1 # multiprocessing.cpu_count() * 2 + 1
 user = "{{ remote_user }}"
 group = "{{ remote_group }}"
-loglevel = "debug"
+
+# Logging settings
+loglevel = "{{ gunicorn_loglevel }}"
 accesslog = "{{ gunicorn_log_folder }}/access.log"
 errorlog = "{{ gunicorn_log_folder }}/gunicorn.err"
+
+# Recommendation for sync workers from official documentation: 2 x $(num_cores) + 1.
+# import multiprocessing
+# workers = multiprocessing.cpu_count() * 2 + 1
+workers = 1
 worker_class = "gevent"
 worker_connections = 2000

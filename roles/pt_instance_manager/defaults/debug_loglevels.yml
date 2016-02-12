@@ -1,0 +1,5 @@
+---
+
+gunicorn_loglevel: "debug"
+# Better to use Flower to debug Celery.
+celery_loglevel: "WARNING"

@@ -11,7 +11,7 @@ serverurl=unix://{{ supervisor_socket }}
 
 
 [program:beat]
-command={{ venv_path }}/bin/celery beat -A {{ celery_app }} -l WARNING
+command={{ venv_path }}/bin/celery beat -A {{ celery_app }} -l {{ celery_loglevel }}
 environment=PTINSTANCEMNGR="{{ config_file }}"
 autostart=true
 autorestart=true
@@ -21,7 +21,7 @@ stdout_logfile={{ celery_log_folder }}/beat.log
 stderr_logfile={{ celery_log_folder }}/beat.err
 
 [program:normal]
-command={{ venv_path }}/bin/celery worker -n normal -A {{ celery_app }} -Q celery,priority_high -l WARNING
+command={{ venv_path }}/bin/celery worker -n normal -A {{ celery_app }} -Q celery,priority_high -l {{ celery_loglevel }}
 user={{ remote_user }}
 environment=PTINSTANCEMNGR="{{ config_file }}"
 autostart=true
@@ -32,7 +32,7 @@ stdout_logfile={{ celery_log_folder }}/normal.log
 stderr_logfile={{ celery_log_folder }}/normal.err
 
 [program:priority]
-command={{ venv_path }}/bin/celery worker -n priority -A {{ celery_app }} -Q priority_high -l WARNING
+command={{ venv_path }}/bin/celery worker -n priority -A {{ celery_app }} -Q priority_high -l {{ celery_loglevel }}
 user={{ remote_user }}
 environment=PTINSTANCEMNGR="{{ config_file }}"
 autostart=true

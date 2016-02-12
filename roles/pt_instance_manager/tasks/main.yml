@@ -2,6 +2,9 @@
 
 # file: main.yml
 
+- include_vars: "debug_loglevels.yml"
+  when: debug_mode
+
 - include: app.yml
 - include: gunicorn.yml
 - include: supervisor.yml

@@ -11,6 +11,9 @@ home_dir: "{{ ansible_env.HOME }}"
 # So far it is only used for the app handled by gunicorn.
 remote_group: "{{ remote_user }}"
 
+# To configuring the log verbosity.
+debug_mode: True
+
 proxy_env:
 #  http_proxy: http://wwwcache.open.ac.uk:80
 #  https_proxy: http://wwwcache.open.ac.uk:80
