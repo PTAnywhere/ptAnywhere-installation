@@ -1,4 +1,4 @@
-FROM  ubuntu:15.10
+FROM  ubuntu:16.04
 MAINTAINER "Aitor Gomez-Goiri" <aitor.gomez-goiri@open.ac.uk>
 
 # Sources:
@@ -26,7 +26,7 @@ RUN   dpkg --add-architecture i386
 # Install Packet Tracer requirements and supervisor
 RUN   apt-get update && apt-get install -y \
       # BEGIN: PacketTracer's requirements
-      lib32nss-mdns \
+      libnss-mdns:i386 \
       libgtk2.0-0:i386 \
       libnss3-1d:i386 \
       libnspr4-0d:i386  \
