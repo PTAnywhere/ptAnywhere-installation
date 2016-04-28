@@ -10,7 +10,7 @@
 - name: Update and copy Dockerfile
   template:
     src: "Dockerfile.j2"
-    dest: "{{ xfce_context }}//Dockerfile"
+    dest: "{{ xfce_context }}/Dockerfile"
   tags:
    - template
    - copy
@@ -23,7 +23,16 @@
   with_items:
     - "xstartup"
     - "vncpasswd.sh"
-    - "{{ installation_file }}"
+  tags:
+   - copy
+   - files
+   - docker
+
+
+- name: Copy installation file
+  copy:
+    src: "{{ installation_file }}"
+    dest: "{{ xfce_context }}/{{ compressed_installation_file.name }}"
   tags:
    - copy
    - files

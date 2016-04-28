@@ -18,7 +18,7 @@
 - name: Copy installation file
   copy:
     src: "{{ installation_file }}"
-    dest: "{{ context_path }}/"
+    dest: "{{ context_path }}/{{ compressed_installation_file.name }}"
   tags:
    - copy
    - files
