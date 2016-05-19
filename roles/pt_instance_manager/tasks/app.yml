@@ -1,7 +1,8 @@
 ---
 
 - name: Install EPEL Repository
-  yum: name="http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm" state=present
+#  yum: name="http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm" state=present
+  yum: name="epel-release" state=present
   become: True
   tags:
    - install
