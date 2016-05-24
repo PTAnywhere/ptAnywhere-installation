@@ -1,19 +1,19 @@
 # Inventory file
 
-ptanywhere ansible_ssh_host=192.168.34.202
+ptanywhere ansible_host=192.168.34.202
 
 
 [web]
-ptAnywere
+ptanywhere
 
 [scheduling]
-ptAnywere
+ptanywhere
 
 [pt_configuration]
-ptAnywere
+ptanywhere
 
 [pt_backend]
-ptAnywere
+ptanywhere
 
 [pt_installation:children]
 pt_backend

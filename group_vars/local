@@ -7,17 +7,13 @@ home_dir: "{{ ansible_env.HOME }}"
 
 ## EDITABLE VARIABLES ##
 
-# Change it only if your remote user should belong to a different group.
-# So far it is only used for the app handled by gunicorn.
-remote_group: "{{ remote_user }}"
-
 # To configuring the log verbosity.
 debug_mode: True
 
-proxy_env:
-#  http_proxy: http://wwwcache.open.ac.uk:80
-#  https_proxy: http://wwwcache.open.ac.uk:80
-#  ftp_proxy: http://wwwcache.open.ac.uk:80
-  http_proxy:
-  https_proxy:
-  ftp_proxy:
+# So far it is only used for the app handled by gunicorn.
+# By default, is set to the remote_user's group.
+########
+# If your remote user should belong to a different group,
+# define a "custom_remote_group" variable in the inventory file.
+########
+remote_group: "{{ custom_remote_group | default(remote_user) }}"
