@@ -1,0 +1,6 @@
+---
+
+proxy_env:
+  http_proxy: http://wwwcache.open.ac.uk:80
+  https_proxy: http://wwwcache.open.ac.uk:80
+  ftp_proxy: http://wwwcache.open.ac.uk:80

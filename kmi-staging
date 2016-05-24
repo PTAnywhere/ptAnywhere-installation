@@ -1,0 +1,40 @@
+# Inventory file
+
+forge ansible_host=forge.kmi.open.ac.uk ansible_ssh_private_key_file=~/.ssh/forge_rsa
+pt001 ansible_host=forge-pt001.kmi.open.ac.uk ansible_ssh_private_key_file=~/.ssh/forge-pt002_rsa
+
+
+[web]
+forge
+
+[scheduling]
+forge
+
+[pt_backend]
+pt001
+
+[pt_configuration]
+pt001
+
+[pt_installation:children]
+pt_backend
+pt_configuration
+
+[local:children]
+web
+scheduling
+pt_installation
+
+
+## KMi specific configuration.
+
+[kmi_proxied]
+pt001
+
+[kmi_dmz]
+forge
+
+[local:vars]
+# Change it only if your remote user should belong to a different group.
+# So far it is only used for the app handled by gunicorn.
+custom_remote_group="kmi"
