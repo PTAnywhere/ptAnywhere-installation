@@ -21,7 +21,7 @@ Please go to [project wiki](https://github.com/PTAnywhere/ptAnywhere-installatio
  * The Docker image cannot been built correctly the first time you run the Ansible script: ```dial unix /var/run/docker.sock: permission denied ```
   * What happens? The SSH connection used by Ansible does not know that the user is now part of the _docker_ group (because it has join the group within the same session). This problem is explained in more detail [here](http://stackoverflow.com/questions/26677064/create-and-use-group-without-restart) (BTW, the solution described there does not work for me).
   * Quick solution: run the Ansible script (or the Vagrant one which uses it) a second time.
- * The PT instance gets stuck in a machine running behind a HTTP proxy and logs don't show any meaningul information.
+ * The PT instance gets stuck in a machine running behind a HTTP proxy and logs don't show any meaningful information.
   * Strange as it may sound, you might want to [unset the proxy for PacketTracer](https://github.com/PTAnywhere/ptAnywhere-installation/commit/b7518b994264c0516e540e21261e96cf6bc77318).
 
 
